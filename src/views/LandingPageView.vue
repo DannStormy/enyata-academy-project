@@ -1,12 +1,12 @@
 <template>
   <div class="container">
       <nav class="navbar">
-          <div class="company_name">
+          <div class="company_logo">
               <img src="../assets/svgs/Group1.svg" alt="" srcset="">
           </div>
           <ul class="navigation">
-              <li>Home</li>
-              <li>Sign In</li>
+              <router-link to="/"><li>Home</li></router-link>
+              <router-link to="/sign-in"><li>Sign In</li></router-link>
           </ul>
       </nav>
       <div class="article">
@@ -17,7 +17,9 @@
               <p class="article-thin">
                   Join enyata academy today and bring your long awaiting dream to reality.
               </p>
-              <button>Register Now</button>
+              <router-link to="/register">
+                <button class="register-button">Register Now</button>
+              </router-link>
           </div>
           <div class="right">
               <img src="../assets/images/Group2.png" alt="" srcset="">
@@ -29,11 +31,11 @@
               <p>Why us?</p>
           </div>
           <div class="allservices">
-              <div class="each-service">
+              <div class="each-service dark">
                   <p class="service-title">
                       Learn from the best
                   </p>
-                  <p class="servie-paragragh">
+                  <p class="service-paragraph">
                       Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation amet.
                   </p>
               </div>
@@ -41,15 +43,15 @@
                   <p class="service-title">
                       100% online classes
                   </p>
-                  <p class="servie-paragragh">
+                  <p class="service-paragraph">
                       Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation amet.
                   </p>
               </div>
-              <div class="each-service">
+              <div class="each-service dark">
                   <p class="service-title">
                       Get paid while learning
                   </p>
-                  <p class="servie-paragragh">
+                  <p class="service-paragraph">
                       Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation amet.
                   </p>
               </div>
@@ -57,16 +59,16 @@
                   <p class="service-title">
                       Work on real project
                   </p>
-                  <p class="servie-paragragh">
+                  <p class="service-paragraph">
                       Amet minim mollit non deserunt ullamco est sit aliqua dolor do amet sint. Velit officia consequat duis enim velit mollit. Exercitation amet.
                   </p>
               </div>
           </div>
       </div>
-      <footer>
-          Copyright © Enyata 2021
-      </footer>
   </div>
+    <footer>
+        Copyright © Enyata 2021
+    </footer>
 </template>
 
 <script>
@@ -75,6 +77,137 @@ export default {
 }
 </script>
 
-<style scoped>
-
+<style>
+    *{
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+    body {
+        background: white;
+        background-image: url("@/assets/svgs/background.svg");
+        background-repeat: no-repeat;
+        background-position: right -13.82% top 5.94%;
+    }
+    .container {
+        width: 1168px;
+        margin: 0 auto;
+    }  
+    .navbar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-top: 70px;
+        margin-bottom: 128px;
+    }
+    .company_logo {
+        cursor: pointer;
+    }
+    .navigation{
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 130px;
+    }
+    .navigation li {
+        list-style: none;
+        font-weight: 400;
+        font-size: 16px;
+        line-height: 24px;
+        color: rgba(33, 31, 38, 0.71);
+        cursor: pointer;
+    }
+    a {
+        text-decoration: none;
+    }
+    .article {
+        display: flex;
+        margin-bottom: 134px;
+    }
+    .left {
+        margin-top: 95px;
+    }
+    .right img {
+        width: 582px;
+        height: 490px;
+        margin-left: -35px;
+    }
+    .article-bold {
+        font-weight: 700;
+        font-size: 41px;
+        line-height: 57px;
+        letter-spacing: 0.035em;
+        color: #211F26;
+        width: 633px;
+        height: 173.32px;
+        margin-bottom: 23px;
+    }
+    .article-thin {
+        width: 508px;
+        height: 67px;
+        font-weight: 400;
+        font-size: 20px;
+        line-height: 30px;
+        letter-spacing: 0.02em;
+        color: rgba(33, 31, 38, 0.71);
+        margin-bottom: 32px;
+    }
+    .register-button {
+        width: 152px;
+        height: 48px;
+        color: #FFFFFF;
+        background-color: #7557D3;
+        border: none;
+        cursor: pointer;
+    }
+    .services-heading {
+        display: flex;
+        justify-content: space-between;
+        width: 150px;
+        margin-bottom: 40px;
+    }
+    .services-heading p {
+        font-weight: 700;
+        font-size: 24px;
+        line-height: 140%;
+        letter-spacing: 0.01em;
+        color: #211F26;
+    }
+    .allservices {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 24px;
+    }
+    .each-service {
+        width: 292px;
+        height: 202px;
+        padding: 22px;
+    }
+    .dark {
+        background: rgba(117, 87, 211, 0.1);
+    }
+    .service-title {
+        font-weight: 500;
+        font-size: 16px;
+        line-height: 140%;
+        letter-spacing: 0.01em;
+        color: #211F26;
+        margin-bottom: 12px;
+    }
+    .service-paragraph {
+        font-weight: 400;
+        font-size: 14px;
+        line-height: 156%;
+        letter-spacing: 0.01em;
+        color: rgba(33, 31, 38, 0.6);
+    }
+    footer {
+        width: 100%;
+        text-align: center;
+        padding-top: 55px;
+        padding-bottom: 88px;
+        background: #7557D3;
+        color: white;
+    }
 </style>
