@@ -17,7 +17,9 @@
           Don’t have an account yet?
           <router-link to="/signup">Sign Up</router-link>
         </p>
-        <p>Forgot Password?</p>
+        <router-link to="/forgotpassword" class="forgot-p"
+          >Forgot Password?</router-link
+        >
       </div>
     </div>
   </div>
@@ -75,6 +77,7 @@ input {
   width: 100%;
   height: 48px;
   border: 1.5px solid #bdbdbd;
+  padding: 15px;
   border-radius: 4px;
 }
 .login {
@@ -102,5 +105,8 @@ input {
 a {
   text-decoration-line: underline;
   color: #1a2c56;
+}
+.forgot-p {
+  text-decoration: none;
 }
 </style>

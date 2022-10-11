@@ -102,6 +102,7 @@ input {
   height: 48px;
   border: 1.5px solid #bdbdbd;
   border-radius: 4px;
+  padding: 15px;
 }
 .sign-up {
   width: 520px;
