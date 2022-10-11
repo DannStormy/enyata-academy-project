@@ -5,8 +5,8 @@
               <img src="../assets/svgs/Group1.svg" alt="" srcset="">
           </div>
           <ul class="navigation">
-              <li>Home</li>
-              <li>Sign In</li>
+              <router-link to="/"><li>Home</li></router-link>
+              <router-link to="/sign-in"><li>Sign In</li></router-link>
           </ul>
       </nav>
       <div class="article">
@@ -17,7 +17,9 @@
               <p class="article-thin">
                   Join enyata academy today and bring your long awaiting dream to reality.
               </p>
-              <button class="register-button">Register Now</button>
+              <router-link to="/register">
+                <button class="register-button">Register Now</button>
+              </router-link>
           </div>
           <div class="right">
               <img src="../assets/images/Group2.png" alt="" srcset="">
@@ -114,6 +116,9 @@ export default {
         line-height: 24px;
         color: rgba(33, 31, 38, 0.71);
         cursor: pointer;
+    }
+    a {
+        text-decoration: none;
     }
     .article {
         display: flex;
