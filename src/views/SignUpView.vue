@@ -31,7 +31,7 @@
         <button class="sign-up">Sign Up</button>
       </form>
       <p class="sign-in">
-        Already have an account? <router-link to="/signin">Sign In</router-link>
+        Already have an account? <router-link to="/login">Sign In</router-link>
       </p>
     </div>
   </div>
@@ -43,7 +43,7 @@ export default {
 };
 </script>
 
-<style>
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 body {
   font-family: "Lato", sans-serif;
@@ -52,7 +52,7 @@ body {
   background: white;
   background-image: url("~@/assets/svgs/background.svg");
   background-repeat: no-repeat;
-  background-position: right -23.82% top -84.06%;
+  background-position: right -23% top -50%;
   padding-top: 230px;
   padding-bottom: 170px;
 }
@@ -61,14 +61,16 @@ body {
   margin: 0 auto;
 }
 .heading {
-  width: 110px;
-  height: 21px;
   margin: auto;
-  margin-bottom: 69px;
+  margin-bottom: 60px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
+}
+.heading img {
+  width: 110px;
+  height: 21px;
 }
 .title {
   font-weight: 500;
@@ -115,7 +117,7 @@ input {
 }
 .sign-in {
   font-weight: 400;
-  font-size: 14px;
+  font-size: 15px;
   line-height: 17px;
   color: #4f4f4f;
   text-align: center;
