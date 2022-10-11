@@ -93,11 +93,12 @@ export default {
   background: white;
   background-image: url("~@/assets/svgs/background.svg");
   background-repeat: no-repeat;
-  background-position: right -13.82% top 5.94%;
-  padding-top: 70px;
+  /* background-position: right -13.82% top 5.94%; */
+  background-position: right -8% top -10%;
+  padding-top: 50px;
 }
 .container {
-  width: 1168px;
+  width: 85%;
   margin: 0 auto;
 }
 .navbar {
@@ -128,16 +129,17 @@ a {
   text-decoration: none;
 }
 .article {
+  width: 100%;
   display: flex;
   margin-bottom: 134px;
+  justify-content: space-between;
 }
 .left {
   margin-top: 95px;
 }
 .right img {
-  width: 582px;
-  height: 490px;
-  margin-left: -35px;
+  width: 100%;
+  height: 450px;
 }
 .article-bold {
   font-weight: 700;
