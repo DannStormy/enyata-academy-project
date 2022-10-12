@@ -21,14 +21,19 @@
         <div class="further-info">
             <div class="updates">
                 <p class="finfo">Updates</p>
-                <textarea name="updates" id="notes" cols="40" rows="6" class="notes"></textarea>
+                <ul>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                    <li></li>
+                </ul>
             </div>
             <div class="assessments">
                 <p class="finfo">Take Assessment</p>
                 <div class="assessment-details">
                     <p>We have 4 days left until the next assessment</p>
                     <p>Watch this space</p>
-                    <button>Take Assessment</button>
+                    <router-link to="/assessment"><button class="assessment-button">Take Assessment</button></router-link>
                 </div>
             </div>
         </div>
@@ -40,9 +45,9 @@
 <script>
     import SideMenu from '@/components/SideMenu.vue'
     export default {
-    name: 'DashBoard',
+    name: 'SideMenu',
     components: {
-        SideMenu
+     SideMenu
     }
     }
 </script>
@@ -107,23 +112,18 @@
         border: 1px solid #ECECF9;
         border-radius: 4px;
         padding: 25px 35px;
+        width: 482px;
    }
    .finfo{
         font-weight: 700;
         letter-spacing: -0.02em;
         color: #2B3C4E;
    }
-   .notes{
-        background-attachment: local;
-        background-image:
-            linear-gradient(to right, white , transparent 0),
-            linear-gradient(to left, white 0, transparent 0),
-            repeating-linear-gradient(white, white 59px, #ccc 60px, #ccc 50px, white 50px);
-        line-height: 60px;
-        outline: none;
-        resize: none;
-        /* max-height: 400px; */
-        border: none;
+   ul li{
+     list-style: none;
+     border-bottom: 1px solid #CECECE;
+     padding-top: 74px;
+     max-width: 412.5px;
    }
    .assessment-details{
     text-align: center;
@@ -133,7 +133,7 @@
     color: #4F4F4F;
     margin: 144px 0
    }
-   .assessment-details>button{
+   .assessment-button{
     background-color: #B1B1B1;
     color: white;
     cursor: pointer;

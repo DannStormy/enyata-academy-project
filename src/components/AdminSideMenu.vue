@@ -1,21 +1,26 @@
 <template>
     <div class="side-menu">
         <div class="user-details">
-            <div><img src="../assets/svgs/user-profile.svg" alt="user profile picture"></div>
+            <div><img src="../assets/svgs/admin-profile.svg" alt="admin profile picture"></div>
             <p class="user-name">Jane Doe</p>
             <p class="user-email">doe@enyata.com</p>
         </div>
         <div class="nav-buttons">
             <router-link to="/dashboard"><button><img src="../assets/svgs/dashboard-logo.svg" alt="dashboard icon" class="nav-button-img">Dashboard</button></router-link>
-            <router-link to="/assessment"><button class="assessment-button"><img src="../assets/svgs/assessment-logo.svg" alt="assessment icon" class="nav-button-img">Assessment</button></router-link>
-            <router-link to="/logout"><button><img src="../assets/svgs/logout-logo.svg" alt="logout icon" class="nav-button-img">Log Out</button></router-link>
+            <router-link to="/create-applcation"><button><img src="../assets/svgs/upload.svg" alt="create application icon" class="nav-button-img">Create Application</button></router-link>
+            <router-link to="/application-entries"><button><img src="../assets/svgs/application-entries.svg" alt="application entries(download) icon" class="nav-button-img">Application Entries</button></router-link>
+            <router-link to="/compose-assessment"><button><img src="../assets/svgs/note.svg" alt="compose assessment icon" class="nav-button-img">Compose Assessment</button></router-link>
+            <router-link to="/history"><button><img src="../assets/svgs/history.svg" alt="clock winding back(history) icon" class="nav-button-img">Assessment History</button></router-link>
+            <router-link to="/results"><button><img src="../assets/svgs/results.svg" alt="results icon" class="nav-button-img">Results</button></router-link>
+            <router-link to="/settings"><button><img src="../assets/svgs/settings.svg" alt="seetings icon" class="nav-button-img">Settings</button></router-link>
+            <router-link to="/logout"><button class="logout-button"><img src="../assets/svgs/logout-logo.svg" alt="logout icon" class="nav-button-img">Log Out</button></router-link>
         </div>
     </div>
 </template>
 
 <script>
     export default {
-        name: 'SideMenu'
+        name: 'AdminSideMenu'
     }
 </script>
 
@@ -47,6 +52,9 @@
     .user-email{
         font-style: italic;
         font-weight:400;
+    }
+    .logout-button{
+        margin-top: 35px;
     }
     .nav-button-img{
         margin-right: 16.56px;
