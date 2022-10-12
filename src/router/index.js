@@ -41,6 +41,16 @@ const routes = [
     path: '/create-application',
     name: 'CreateApplication',
     component: () => import('../views/admin_views/CreateApplication.vue')
+  },
+  {
+    path: '/assessment-history',
+    name: 'AssessmentHistory',
+    component: () => import('../views/admin_views/AssessmentHistory.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Profile-Settings',
+    component: () => import('../views/admin_views/Profile-Settings.vue')
   }
 ]
 

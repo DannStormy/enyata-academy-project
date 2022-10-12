@@ -47,7 +47,7 @@
           />Compose Assessment
         </button></router-link
       >
-      <router-link to="/history"
+      <router-link to="/assessment-history"
         ><button>
           <img
             src="../assets/svgs/history.svg"
@@ -85,6 +85,7 @@
       >
     </div>
   </div>
+  <router-view />
 </template>
 
 <script>
@@ -100,9 +101,10 @@ export default {
   font-size: 16px;
 }
 .side-menu {
-  width: 292px;
+  max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: 100vh;
+  height: auto;
+  /* height: 100vh; */
   /* position: fixed; */
 }
 .user-details {
@@ -123,7 +125,8 @@ export default {
   font-weight: 400;
 }
 .logout-button {
-  margin-top: 35px;
+  margin-top: 230px;
+  padding-bottom: 160px;
 }
 .nav-button-img {
   margin-right: 16.56px;
