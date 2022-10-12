@@ -51,7 +51,7 @@ export default {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px;
   margin: 0 auto;
-  margin-top: 230px;
+  margin-top: 100px;
   display: flex;
   flex-direction: column;
   align-items: center;
