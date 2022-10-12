@@ -3,7 +3,7 @@
     <div class="container">
       <nav class="navbar">
         <div class="company_logo">
-          <img src="../assets/svgs/Group1.svg" alt="company-logo" />
+          <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         </div>
         <ul class="navigation">
           <router-link to="/"><li>Home</li></router-link>
@@ -25,14 +25,14 @@
         </div>
         <div class="right">
           <img
-            src="../assets/images/Group2.png"
+            src="@/assets/images/Group2.png"
             alt="a picture of a tutor and student"
           />
         </div>
       </div>
       <div class="services">
         <div class="services-heading">
-          <img src="../assets/svgs/Group5.svg" alt="golden dash" />
+          <img src="@/assets/svgs/Group5.svg" alt="golden dash" />
           <p>Why us?</p>
         </div>
         <div class="allservices">

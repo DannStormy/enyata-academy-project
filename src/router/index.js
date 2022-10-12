@@ -5,40 +5,65 @@ const routes = [
   {
     path: '/assessment',
     name: 'TakeAssessment',
-    component: ()=> import('../views/TakeAssessment.vue')
-  },
-  { 
-    path:'/',
-    name: 'landingPage',
-    component: () => import('../views/LandingPageView.vue')
+    component: () => import('../views/TakeAssessment.vue')
   },
   {
-    path:'/dashboard',
-    name: 'Dashboard',
-    component: ()=> import('../views/Dashboard.vue')
+    path: '/',
+    name: 'landingPage',
+    component: () => import('../views/user_views/LandingPageView.vue')
   },
   {
     path: '/signup',
     name: 'Sign-Up',
-    component: () => import('../views/SignUpView.vue')
+    component: () => import('../views/user_views/SignUpView.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/LoginView.vue')
+    component: () => import('../views/user_views/LoginView.vue')
   },
   {
     path: '/forgotpassword',
     name: 'ForgotPassword',
-    component: () => import('../views/ForgotPasswordView.vue')
+    component: () => import('../views/user_views/ForgotPasswordView.vue')
   },
-  { 
-    path:'/questions',
+  {
+    path: '/applicationform',
+    name: 'ApplicationForm',
+    component: () => import('../views/user_views/ApplicationForm.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('../views/user_views/Dashboard.vue')
+  },
+  {
+    path: '/admin-login',
+    name: 'AdminLogin',
+    component: () => import('../views/admin_views/AdminLogin.vue')
+  },
+  {
+    path: '/create-application',
+    name: 'CreateApplication',
+    component: () => import('../views/admin_views/CreateApplication.vue')
+  },
+  {
+    path: '/assessment-history',
+    name: 'AssessmentHistory',
+    component: () => import('../views/admin_views/AssessmentHistory.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Profile-Settings',
+    component: () => import('../views/admin_views/Profile-Settings.vue')
+  },
+  {
+    path: '/questions',
     name: 'QuestionsView',
     component: () => import('../views/QuestionsView.vue')
   },
-  { 
-    path:'/success',
+  {
+    path: '/success',
     name: 'SuccessfulView',
     component: () => import('../views/SuccessfulView.vue')
   }

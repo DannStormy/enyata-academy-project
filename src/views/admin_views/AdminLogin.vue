@@ -2,8 +2,8 @@
   <div class="wrapper">
     <div class="container">
       <div class="heading">
-        <img src="../assets/svgs/Group1.svg" alt="company-logo" />
-        <p class="title">Log In</p>
+        <img src="@/assets/svgs/enyata-white.svg" alt="company-logo" />
+        <p class="title">Admin Log In</p>
       </div>
       <form action="">
         <label for="lname">Email Address</label><br />
@@ -12,37 +12,28 @@
         <input type="password" id="password" name="password" /><br />
         <button class="login">Sign In</button>
       </form>
-      <div class="footer">
-        <p>
-          Don’t have an account yet?
-          <router-link to="/signup">Sign Up</router-link>
-        </p>
-        <router-link to="/forgotpassword" class="forgot-p"
-          >Forgot Password?</router-link
-        >
-      </div>
     </div>
   </div>
 </template>
 
 <script>
 export default {
-  name: "LoginView",
+  name: "AdminLogin",
 };
 </script>
 
 <style scoped>
 .wrapper {
-  background: white;
-  background-image: url("@/assets/svgs/background.svg");
+  background: #7557d3;
+  background-image: url("@/assets/images/Group.png");
   background-repeat: no-repeat;
-  background-position: right -24% top -30%;
-  padding-top: 230px;
-  padding-bottom: 300px;
+  background-position: right -8% top 100px;
+  padding-top: 240px;
+  height: 928px;
 }
 .heading {
   margin: auto;
-  margin-bottom: 60px;
+  margin-bottom: 24px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -53,10 +44,10 @@ export default {
   height: 21px;
 }
 .title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
   line-height: 29px;
-  color: #2b3c4e;
+  color: white;
   margin-top: 24px;
   font-style: italic;
 }
@@ -65,10 +56,10 @@ form {
   margin: 0 auto;
 }
 label {
-  font-weight: 400;
-  font-size: 14px;
+  font-weight: 500;
+  font-size: 16px;
   line-height: 17px;
-  color: #4f4f4f;
+  color: white;
   display: inline-block;
   margin-bottom: 5px;
   margin-top: 22px;
@@ -76,37 +67,23 @@ label {
 input {
   width: 100%;
   height: 48px;
-  border: 1.5px solid #bdbdbd;
+  border: 1.5px solid white;
+  background-color: #7557d3;
   padding: 15px;
   border-radius: 4px;
 }
 .login {
   width: 100%;
   height: 50px;
-  background: #7557d3;
-  color: white;
+  background: white;
+  color: #7557d3;
   border: none;
   border-radius: 4px;
   cursor: pointer;
   margin: 0 auto;
   margin-top: 40px;
-  margin-bottom: 12px;
-}
-.footer {
-  width: 380px;
-  margin: 0 auto;
-  display: flex;
-  justify-content: space-between;
-  font-style: italic;
-  font-weight: 400;
-  font-size: 15px;
-  color: #4f4f4f;
-}
-a {
-  text-decoration-line: underline;
-  color: #1a2c56;
-}
-.forgot-p {
-  text-decoration: none;
+  margin-bottom: 300px;
+  font-weight: 600;
+  font-size: 16px;
 }
 </style>
