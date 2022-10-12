@@ -7,15 +7,15 @@
                     <h1 class="title">Take Assessment</h1>
                     <p class="description">Click the button below to start assessment, you have limited time for this test</p>
                 </div>
-                
+            <TimerBar/>
             </div>
             <div class="main">
                 <div class="logo">
-                    <img :src="picture" alt="TimeSand-logo">
+                    <img src="@/assets/svgs/hourglass-logo.svg" alt="TimeSand-logo">
                 </div>
                 <p class="notification">We have 4 days left until the next assessment
                 Watch this space</p>
-                <button>Take Assessment</button>
+                <router-link to="/questions"><button>Take Assessment</button></router-link>
             </div>
         </div>
     </div>
@@ -26,15 +26,17 @@
 
 <script>
 import SideMenu from '@/components/SideMenu.vue'
+import TimerBar from '@/components/TimerBar.vue'
     export default{
         name: 'TakeAssessment',
         data() {
             return {
-                picture:'../assets/svgs/hourglass-logo.png'
+                picture:'../assets/svgs/hourglass-logo.svg'
             }
         },
         components:{
-            SideMenu
+            SideMenu,
+            TimerBar
         }
     }
 </script>
@@ -54,7 +56,7 @@ import SideMenu from '@/components/SideMenu.vue'
           display:flex;  
         }
         .container{
-            margin: 107px 0 86px 294px;
+            margin: 90px 0 86px 292px;
             width:1148px;
             padding: 0 47px;
             
@@ -63,6 +65,7 @@ import SideMenu from '@/components/SideMenu.vue'
             display:flex;
             justify-content: space-between;
             margin-left:47px;
+            margin-bottom:130px;
         }
         .assessment{
             align-items:center;
@@ -81,42 +84,39 @@ import SideMenu from '@/components/SideMenu.vue'
             font-size: 16px;
             line-height: 19px;
         }
-
-        .timer{
+        .main{
             display:flex;
             flex-direction:column;
-            margin-right:98px;
+            justify-content: center;
+            align-items:center;
+            height:100%;
         }
-
-        .timer p{
+        .logo{
+            width: 72px;
+            height: 72px;
+            margin-bottom:21px;
+        }
+        .logo img{
+            width:100%;
+            height:100%;
+        }
+        .notification{
+            width: 342.91px;
+            height: 46px;
             font-style: normal;
             font-weight: 400;
-            font-size: 14px;
-            line-height: 17px;
+            font-size: 16.7273px;
+            line-height: 20px;
             text-align: center;
             color: #4F4F4F;
+            margin-bottom:24px;
         }
-        .time{
-            display:flex;
-        }
-        .time h1{
-            font-style: normal;
-            font-weight: 300;
-            font-size: 48px;
-            line-height: 58px;
-            text-align: center;
-            color: #2B3C4E;
-            position:relative;
-        }
-
-        .time span{
-            font-style: normal;
-            font-weight: 400;
-            font-size: 12px;
-            line-height: 14px;
-            text-align: center;
-            color: #4F4F4F;
-            position:absolute;
-            
+        button{
+            width: 205px;
+            height: 41px;
+            background-color:#B1B1B1;
+            color:white;
+            border:none;
+            border-radius:4px;     
         }
 </style>
