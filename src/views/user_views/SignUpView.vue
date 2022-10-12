@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="container">
       <div class="heading">
-        <img src="../assets/svgs/Group1.svg" alt="company-logo" />
+        <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Sign Up</p>
       </div>
       <form class="form-container">
@@ -52,9 +52,8 @@ body {
   background: white;
   background-image: url("~@/assets/svgs/background.svg");
   background-repeat: no-repeat;
-  background-position: right -23% top -50%;
-  padding-top: 230px;
-  padding-bottom: 170px;
+  background-position: right -8% top -10%;
+  padding-top: 100px;
 }
 .container {
   width: 784px;
@@ -73,7 +72,7 @@ body {
   height: 21px;
 }
 .title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
   line-height: 29px;
   color: #2b3c4e;
@@ -89,7 +88,7 @@ body {
   justify-content: space-between;
 }
 label {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 17px;
   color: #4f4f4f;
@@ -115,9 +114,11 @@ input {
   margin: 0 auto;
   margin-top: 40px;
   margin-bottom: 10px;
+  font-weight: 600;
+  font-size: 16px;
 }
 .sign-in {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 15px;
   line-height: 17px;
   color: #4f4f4f;

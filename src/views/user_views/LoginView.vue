@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="container">
       <div class="heading">
-        <img src="../assets/svgs/Group1.svg" alt="company-logo" />
+        <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Log In</p>
       </div>
       <form action="">
@@ -36,9 +36,8 @@ export default {
   background: white;
   background-image: url("@/assets/svgs/background.svg");
   background-repeat: no-repeat;
-  background-position: right -24% top -30%;
-  padding-top: 230px;
-  padding-bottom: 300px;
+  background-position: right -8% top -10%;
+  padding-top: 100px;
 }
 .heading {
   margin: auto;
@@ -53,7 +52,7 @@ export default {
   height: 21px;
 }
 .title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
   line-height: 29px;
   color: #2b3c4e;
@@ -65,7 +64,7 @@ form {
   margin: 0 auto;
 }
 label {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 17px;
   color: #4f4f4f;
@@ -91,6 +90,8 @@ input {
   margin: 0 auto;
   margin-top: 40px;
   margin-bottom: 12px;
+  font-weight: 600;
+  font-size: 16px;
 }
 .footer {
   width: 380px;
@@ -98,7 +99,7 @@ input {
   display: flex;
   justify-content: space-between;
   font-style: italic;
-  font-weight: 400;
+  font-weight: 500;
   font-size: 15px;
   color: #4f4f4f;
 }

@@ -5,22 +5,32 @@ const routes = [
   {
     path: '/',
     name: 'landingPage',
-    component: () => import('../views/LandingPageView.vue')
+    component: () => import('../views/user_views/LandingPageView.vue')
   },
   {
     path: '/signup',
     name: 'Sign-Up',
-    component: () => import('../views/SignUpView.vue')
+    component: () => import('../views/user_views/SignUpView.vue')
   },
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/LoginView.vue')
+    component: () => import('../views/user_views/LoginView.vue')
   },
   {
     path: '/forgotpassword',
     name: 'ForgotPassword',
-    component: () => import('../views/ForgotPasswordView.vue')
+    component: () => import('../views/user_views/ForgotPasswordView.vue')
+  },
+  {
+    path: '/applicationform',
+    name: 'ApplicationForm',
+    component: () => import('../views/user_views/ApplicationForm.vue')
+  },
+  {
+    path: '/dashboard',
+    name: 'Dashboard',
+    component: () => import('../views/user_views/Dashboard.vue')
   }
 ]
 
