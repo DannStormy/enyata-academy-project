@@ -63,7 +63,9 @@
         cursor: pointer;
         line-height: 19.2px;
         text-align: left;
-        width: 100%
+        width: 100%;
+        display: flex;
+        align-items: center;
     }
     button:active, button:focus{
         border-left: 4px solid #7557D3;
