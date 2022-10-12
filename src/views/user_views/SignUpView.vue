@@ -2,7 +2,7 @@
   <div class="wrapper">
     <div class="container">
       <div class="heading">
-        <img src="../assets/svgs/Group1.svg" alt="company-logo" />
+        <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Sign Up</p>
       </div>
       <form class="form-container">

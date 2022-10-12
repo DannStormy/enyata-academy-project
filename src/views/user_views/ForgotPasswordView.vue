@@ -4,7 +4,7 @@
     <p class="select">Please select option to send link to reset password</p>
     <div class="es-container active">
       <div class="icon">
-        <img src="../assets/svgs/mail.svg" alt="mail-icon" />
+        <img src="@/assets/svgs/mail.svg" alt="mail-icon" />
       </div>
       <div class="header">
         <p class="title">Reset via Email</p>
@@ -13,12 +13,12 @@
         </p>
       </div>
       <div class="check-icon">
-        <img src="../assets/svgs/checkmark.svg" alt="checkmark" />
+        <img src="@/assets/svgs/checkmark.svg" alt="checkmark" />
       </div>
     </div>
     <div class="es-container">
       <div class="icon">
-        <img src="../assets/svgs/calling.svg" alt="calling-icon" />
+        <img src="@/assets/svgs/calling.svg" alt="calling-icon" />
       </div>
       <div class="header">
         <p class="title">Reset via Sms</p>
@@ -27,7 +27,7 @@
         </p>
       </div>
       <div class="check-icon">
-        <img src="../assets/svgs/checkmark.svg" alt="checkmark" />
+        <img src="@/assets/svgs/checkmark.svg" alt="checkmark" />
       </div>
     </div>
     <button class="send-link">Send Link</button>

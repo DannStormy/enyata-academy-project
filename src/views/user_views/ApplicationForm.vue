@@ -2,14 +2,14 @@
   <div class="wrapper">
     <div class="container">
       <div class="heading">
-        <img src="../assets/svgs/Group1.svg" alt="company-logo" />
+        <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Application Form</p>
       </div>
       <form class="form-container">
         <div class="uploads">
           <button class="upload-buttons">
             <img
-              src="../assets/svgs/upload.svg"
+              src="@/assets/svgs/upload.svg"
               alt="upload-icon"
               class="upload-img"
             />
@@ -17,7 +17,7 @@
           </button>
           <button class="upload-buttons">
             <img
-              src="../assets/svgs/upload.svg"
+              src="@/assets/svgs/upload.svg"
               alt="upload-icon"
               class="upload-img"
             />
@@ -40,7 +40,7 @@
             <input type="text" id="lname" name="lname" /><br />
             <label for="dob">Date of Birth</label><br />
             <input
-              type="text"
+              type="date"
               id="dob"
               name="dob"
               placeholder="dd/mm/yyyy"
@@ -73,8 +73,8 @@ body {
   background-image: url("~@/assets/svgs/background.svg");
   background-repeat: no-repeat;
   background-position: right -23.82% top -84.06%;
-  padding-top: 230px;
-  padding-bottom: 170px;
+  padding-top: 100px;
+  padding-bottom: 100px;
 }
 .container {
   width: 963px;
@@ -138,18 +138,17 @@ input:focus {
   cursor: pointer;
   margin: 0 auto;
   margin-top: 43px;
-  margin-bottom: 145px;
   font-weight: 700;
   font-size: 16px;
 }
-.sign-in {
+/* .sign-in {
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
   color: #4f4f4f;
   text-align: center;
   font-style: italic;
-}
+} */
 a {
   text-decoration-line: underline;
   color: #1a2c56;
