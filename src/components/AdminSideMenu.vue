@@ -103,9 +103,8 @@ export default {
 .side-menu {
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: auto;
-  /* height: 100vh; */
-  /* position: fixed; */
+  height: 100vh;
+  position: fixed;
 }
 .user-details {
   background-color: #7557d3;
@@ -125,8 +124,8 @@ export default {
   font-weight: 400;
 }
 .logout-button {
-  margin-top: 230px;
-  padding-bottom: 160px;
+  margin-top: 100px;
+  /* padding-bottom: 160px;  */
 }
 .nav-button-img {
   margin-right: 16.56px;
