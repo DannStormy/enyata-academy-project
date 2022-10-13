@@ -1,6 +1,12 @@
+// import Vue from 'vue'
 import { createApp } from 'vue'
 import App from './App.vue'
 import router from './router'
 import store from './store'
+// import Vuelidate from 'vuelidate';
 
-createApp(App).use(store).use(router).mount('#app')
+const app = createApp(App);
+app.use(store)
+app.use(router)
+// app.use(Vuelidate)
+app.mount('#app')

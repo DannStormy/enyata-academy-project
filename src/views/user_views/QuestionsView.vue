@@ -82,7 +82,7 @@ import TimerBar from '@/components/TimerBar.vue'
 
 .container {
     margin: 90px 0 8px 292px;
-    width: 1148px;
+    width: 100%;
     padding: 0 47px;
 
 }

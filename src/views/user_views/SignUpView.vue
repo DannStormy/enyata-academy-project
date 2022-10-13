@@ -5,27 +5,159 @@
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Sign Up</p>
       </div>
-      <form class="form-container">
+      <form class="form-container" @submit.prevent="signup">
         <div class="form-sub-container">
           <div class="form-right">
-            <label for="fname">First Name</label><br />
-            <input type="text" id="fname" name="fname" /><br />
-            <label for="lname">Email Address</label><br />
-            <input type="email" id="email" name="email" /><br />
-            <label for="password">Password</label><br />
-            <input type="password" id="password" name="password" /><br />
+            <div class="form__input">
+              <label for="firstName">First Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.firstName.$error,
+                }"
+                type="text"
+                id="firstName"
+                name="firstName"
+                v-model="userData.firstName"
+              />
+              <div
+                v-if="submitted && !v$.userData.firstName.$model"
+                class="invalid-feedback"
+              >
+                First Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="email">Email Address</label><br />
+              <input
+                :class="{ 'is-invalid': submitted && v$.userData.email.$error }"
+                type="email"
+                id="email"
+                name="email"
+                v-model="userData.email"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.email.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.email.$model">Email is required</span>
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="password">Password</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.password.$error,
+                }"
+                type="password"
+                id="password"
+                name="password"
+                v-model="userData.password"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.password.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.password.$model"
+                  >Password is required</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    !v$.userData.password.$validator
+                  "
+                  >Password must be at least 6 characters</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsUppercase.$invalid
+                  "
+                  >At least one UpperCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsLowercase.$invalid
+                  "
+                  >At least one LowerCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsNumber.$invalid
+                  "
+                  >At least one Number</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsSpecial.$invalid
+                  "
+                  >At least one Special Character: #?!@$%^&*-</span
+                >
+              </div>
+            </div>
           </div>
           <div class="form-left">
-            <label for="lname">Last Name</label><br />
-            <input type="text" id="lname" name="lname" /><br />
-            <label for="tel">Phone Number</label><br />
-            <input type="tel" id="tel" name="phone-number" /><br />
-            <label for="confirm-password">Confirm Password</label><br />
-            <input
-              type="password"
-              id="confirm-password"
-              name="confirm-password"
-            /><br />
+            <div class="form__input">
+              <label for="lname">Last Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.lastName.$error,
+                }"
+                type="text"
+                id="lastName"
+                name="lastName"
+                v-model="userData.lastName"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.lastName.$model"
+                class="invalid-feedback"
+              >
+                Last Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="tel">Phone Number</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.phone.$error,
+                }"
+                type="tel"
+                id="tel"
+                name="phone-number"
+                v-model="userData.phone"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.phone.$model"
+                class="invalid-feedback"
+              >
+                Phone Number is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="confirm-password">Confirm Password</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.confirmPassword.$error,
+                }"
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                v-model="userData.confirmPassword"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.confirmPassword.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.confirmPassword.$model"
+                  >Confirm Password is required</span
+                >
+                <span v-else-if="!v$.userData.confirmPassword.$validator"
+                  >Passwords must match</span
+                >
+              </div>
+            </div>
           </div>
         </div>
         <button class="sign-up">Sign Up</button>
@@ -38,14 +170,79 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  data: () => ({
+    userData: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    submitted: false,
+    valid: false,
+    firstName: true,
+    lastName: true,
+  }),
+  validations: {
+    userData: {
+      firstName: { required },
+      lastName: { required },
+      email: { required, email },
+      phone: { required },
+      password: {
+        required,
+        minLength: minLength(6),
+        containsUppercase: function (value) {
+          return /[A-Z]/.test(value);
+        },
+        containsLowercase: function (value) {
+          return /[a-z]/.test(value);
+        },
+        containsNumber: function (value) {
+          return /[0-9]/.test(value);
+        },
+        containsSpecial: function (value) {
+          return /[#?!@$%^&*-]/.test(value);
+        },
+      },
+      confirmPassword: { required, sameAsPassword: sameAs("password") },
+    },
+  },
+  methods: {
+    signup() {
+      this.submitted = true;
+      // stop here if form is invalid
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
+
+      alert(JSON.stringify(this.userData));
+    },
+  },
   name: "SignUpView",
 };
 </script>
 
 <style scoped>
-body {
-  font-family: "Lato";
+.is-invalid {
+  border: 1px solid red;
+}
+.invalid-feedback {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+span {
+  display: block;
 }
 .wrapper {
   background: white;
@@ -53,6 +250,7 @@ body {
   background-repeat: no-repeat;
   background-position: right -8% top -10%;
   padding-top: 100px;
+  padding-bottom: 100px;
 }
 .container {
   width: 784px;
@@ -60,7 +258,7 @@ body {
 }
 .heading {
   margin: auto;
-  margin-bottom: 60px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -86,6 +284,9 @@ body {
   display: flex;
   justify-content: space-between;
 }
+.form__input {
+  height: 100px;
+}
 label {
   font-weight: 500;
   font-size: 14px;
@@ -102,6 +303,10 @@ input {
   border-radius: 4px;
   padding: 15px;
 }
+input:focus {
+  outline: none !important;
+  border: 1px solid #7557d3;
+}
 .sign-up {
   width: 520px;
   height: 50px;
@@ -111,11 +316,15 @@ input {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 80px;
   margin-bottom: 10px;
   font-weight: 600;
   font-size: 16px;
 }
+.sign-up:disabled {
+  opacity: 0.6;
+}
+
 .sign-in {
   font-weight: 500;
   font-size: 15px;
