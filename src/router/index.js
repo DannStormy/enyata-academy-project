@@ -66,6 +66,11 @@ const routes = [
     path: '/success',
     name: 'SuccessfulView',
     component: () => import('../views/SuccessfulView.vue')
+  },
+  {
+    path: '/admin-dashboard',
+    name: 'AdminsDashboard',
+    component: () => import('../views/admin_views/AdminDashboard.vue')
   }
 ]
 
