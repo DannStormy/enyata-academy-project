@@ -3,6 +3,11 @@ import { createRouter, createWebHistory } from 'vue-router'
 
 const routes = [
   {
+    path: '/assessment',
+    name: 'TakeAssessment',
+    component: () => import('../views/TakeAssessment.vue')
+  },
+  {
     path: '/',
     name: 'landingPage',
     component: () => import('../views/user_views/LandingPageView.vue')
@@ -31,6 +36,36 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../views/user_views/Dashboard.vue')
+  },
+  {
+    path: '/admin-login',
+    name: 'AdminLogin',
+    component: () => import('../views/admin_views/AdminLogin.vue')
+  },
+  {
+    path: '/create-application',
+    name: 'CreateApplication',
+    component: () => import('../views/admin_views/CreateApplication.vue')
+  },
+  {
+    path: '/assessment-history',
+    name: 'AssessmentHistory',
+    component: () => import('../views/admin_views/AssessmentHistory.vue')
+  },
+  {
+    path: '/settings',
+    name: 'Profile-Settings',
+    component: () => import('../views/admin_views/Profile-Settings.vue')
+  },
+  {
+    path: '/questions',
+    name: 'QuestionsView',
+    component: () => import('../views/QuestionsView.vue')
+  },
+  {
+    path: '/success',
+    name: 'SuccessfulView',
+    component: () => import('../views/SuccessfulView.vue')
   }
 ]
 
