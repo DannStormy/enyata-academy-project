@@ -87,7 +87,6 @@ export default {
 .side-menu {
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: auto;
   height: 100vh;
   position: fixed;
 }
@@ -117,11 +116,11 @@ export default {
 .nav-buttons a {
   height: 49px;
   display: block;
-  background-color: #ffffff;
+  background-color: inherit;
   color: #2b3c4e;
   outline: none;
   border: none;
-  border-left: 4px solid #ffffff;
+  border-left: 4px solid inherit;
   padding-left: 30px;
   cursor: pointer;
   line-height: 19.2px;
