@@ -3,42 +3,55 @@
       <AdminSideMenu />
       <div class="container">
         <h1>Dashboard</h1>
-        <p class="description">
-          Your Application is currently being review, you wil be notified if
-          successful
-        </p>
         <div class="dashboard-status">
-          <div class="dofapplication">
-            <p class="titles">Date of Application</p>
-            <p class="data">09.09.19</p>
+          <div class="current-applciation">
+            <p class="titles">Current Applications</p>
+            <p class="data">233</p>
             <hr />
-            <p class="comments">4 days since applied</p>
+            <p class="comments">Academy 2.0</p>
           </div>
-          <div class="status">
-            <p class="titles">Application Status</p>
-            <p class="data">Pending</p>
+          <div class="total-application">
+            <p class="titles">Total Applications</p>
+            <p class="data">4253</p>
             <hr />
-            <p class="comments">We will get back to you</p>
+            <p class="comments">All entries do far</p>
+          </div>
+          <div class="batch">
+            <p class="titles">Academy’s</p>
+            <p class="data">4.0</p>
+            <hr />
+            <p class="comments">So far</p>
           </div>
         </div>
         <div class="further-info">
-          <div class="updates">
-            <p class="finfo">Updates</p>
+          <div class="history">
+            <p class="finfo">History</p>
+            <p class="finfo-description">Last Update  18:24, 22/02/19</p>
             <ul>
-              <li></li>
-              <li></li>
-              <li></li>
-              <li></li>
+              <li>
+                <p class="history-title">Academy Batch 1.0</p>
+                <p class="candidates">15 candidates</p>
+                <p class="history-date">started 11/09/15</p>
+              </li>
+             <li>
+                <p class="history-title">Academy Batch 1.0</p>
+                <p class="candidates">15 candidates</p>
+                <p class="history-date">started 11/09/15</p>
+              </li>
+              <li>
+                <p class="history-title">Academy Batch 1.0</p>
+                <p class="candidates">15 candidates</p>
+                <p class="history-date">started 11/09/15</p>
+              </li>
             </ul>
           </div>
           <div class="assessments">
-            <p class="finfo">Take Assessment</p>
+            <p class="finfo">Create Assessment</p>
             <div class="assessment-details">
-              <p>We have 4 days left until the next assessment</p>
-              <p>Watch this space</p>
-              <router-link to="/assessment"
+              <p>Create test question for an incoming academy <br>students</p>
+              <router-link to="/create-application"
                 ><button class="assessment-button">
-                  Take Assessment
+                    Create Assessment
                 </button></router-link
               >
             </div>
@@ -75,11 +88,7 @@
     font-weight: 300;
     font-size: 43.56px;
     letter-spacing: -0.02em;
-  }
-  .description {
-    font-weight: 500;
-    font-style: italic;
-    margin: 14.28px 0 61px;
+    margin-bottom: 65.28px
   }
   .dashboard-status {
     display: flex;
@@ -92,15 +101,19 @@
   .data {
     font-weight: 300;
     font-size: 48px;
+    margin: 8px 0 11px
   }
   hr {
     width: 148px;
     border: 4px solid #006df0;
     border-radius: 4px;
-    margin: 19px 0 9px;
+    margin-bottom: 9px
   }
-  .status > hr {
-    border: 4px solid #f09000;
+  .total-application > hr {
+    border: 4px solid #00F026;
+  }
+  .batch > hr {
+    border: 4px solid #F09000;
   }
   .comments {
     font-size: 12px;
@@ -114,23 +127,42 @@
     grid-template-rows: 100%;
     gap: 74px;
   }
-  .updates,
+  .history,
   .assessments {
     border: 1px solid #ececf9;
     border-radius: 4px;
     padding: 25px 35px;
     width: 482px;
   }
+  .history{
+    border: none
+  }
   .finfo {
     font-weight: 700;
     letter-spacing: -0.02em;
     color: #2b3c4e;
   }
-  ul li {
+  .finfo-description{
+    font-size: 12px;
+    margin-top: 4px
+  }
+  li {
     list-style: none;
-    border-bottom: 1px solid #cecece;
-    padding-top: 74px;
     max-width: 412.5px;
+    padding: 22px 18px;
+    margin-top: 32px;
+    background: #FFFFFF;
+    border-left: 7px solid #FFFFFF;
+  }
+  li {
+    display: flex;
+    justify-content: space-between;
+  }
+  li:hover{
+    box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+    border-radius: 8px;
+    border-left: 7px solid #7557D3;
+    transition: 0.2s;
   }
   .assessment-details {
     text-align: center;
@@ -138,7 +170,7 @@
     font-weight: 400;
     line-height: 20.07px;
     color: #4f4f4f;
-    margin: 144px 0;
+    margin: 70px 0 80px;
   }
   .assessment-button {
     background-color: #b1b1b1;
