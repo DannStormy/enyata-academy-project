@@ -45,7 +45,7 @@
 <script>
     import SideMenu from '@/components/SideMenu.vue'
     export default {
-    name: 'SideMenu',
+    name: 'DashBoard',
     components: {
      SideMenu
     }
