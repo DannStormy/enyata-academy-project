@@ -43,6 +43,11 @@ const routes = [
     component: () => import('../views/admin_views/AdminLogin.vue')
   },
   {
+    path: '/compose-assessment',
+    name: 'ComposeAssessment',
+    component: () => import('../views/admin_views/ComposeAssessmentView.vue')
+  },
+  {
     path: '/create-application',
     name: 'CreateApplication',
     component: () => import('../views/admin_views/CreateApplication.vue')
