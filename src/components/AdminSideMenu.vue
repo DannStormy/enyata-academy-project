@@ -56,7 +56,7 @@
           />Assessment History
        </router-link
       >
-      <router-link to="/results"
+      <router-link to="/results" class="result-router"
         >
           <img
             src="../assets/svgs/results.svg"
@@ -148,6 +148,10 @@ export default {
     }
     a.router-link-exact-active{
         border-left: 4px solid #7557D3;
+        font-weight: 700;
+    }
+    a.router-link-exact-active.result-router{
+        border-left: 4px solid #31D283;
         font-weight: 700;
     }
 a {

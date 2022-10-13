@@ -153,8 +153,6 @@
     margin-top: 32px;
     background: #FFFFFF;
     border-left: 7px solid #FFFFFF;
-  }
-  li {
     display: flex;
     justify-content: space-between;
   }
@@ -173,7 +171,7 @@
     margin: 70px 0 80px;
   }
   .assessment-button {
-    background-color: #b1b1b1;
+    background-color: hsl(0, 0%, 69%);
     color: white;
     cursor: pointer;
     border: none;
@@ -183,4 +181,8 @@
     font-weight: 700;
     margin-top: 34px;
   }
+  .assessment-button:hover {
+    background-color: hsl(0, 0%, 75%);
+    transition: .1s
+    }
   </style>
