@@ -60,13 +60,40 @@
                 <span v-if="!v$.userData.password.$model"
                   >Password is required</span
                 >
-                <br />
                 <span
                   v-if="
                     v$.userData.password.$model &&
                     !v$.userData.password.$validator
                   "
                   >Password must be at least 6 characters</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsUppercase.$invalid
+                  "
+                  >At least one UpperCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsLowercase.$invalid
+                  "
+                  >At least one LowerCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsNumber.$invalid
+                  "
+                  >At least one Number</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsSpecial.$invalid
+                  "
+                  >At least one Special Character: @#$%&^</span
                 >
               </div>
             </div>
@@ -170,7 +197,22 @@ export default {
       lastName: { required },
       email: { required, email },
       phone: { required },
-      password: { required, minLength: minLength(6) },
+      password: {
+        required,
+        minLength: minLength(6),
+        containsUppercase: function (value) {
+          return /[A-Z]/.test(value);
+        },
+        containsLowercase: function (value) {
+          return /[a-z]/.test(value);
+        },
+        containsNumber: function (value) {
+          return /[0-9]/.test(value);
+        },
+        containsSpecial: function (value) {
+          return /[#?!@$%^&*-]/.test(value);
+        },
+      },
       confirmPassword: { required, sameAsPassword: sameAs("password") },
     },
   },
@@ -198,6 +240,9 @@ export default {
   color: red;
   font-size: 12px;
   margin-top: 4px;
+}
+span {
+  display: block;
 }
 .wrapper {
   background: white;
@@ -271,7 +316,7 @@ input:focus {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 auto;
-  margin-top: 40px;
+  margin-top: 80px;
   margin-bottom: 10px;
   font-weight: 600;
   font-size: 16px;
