@@ -6,9 +6,9 @@
             <p class="user-email">doe@enyata.com</p>
         </div>
         <div class="nav-buttons">
-            <router-link to="/dashboard"><button><img src="../assets/svgs/dashboard-logo.svg" alt="dashboard icon" class="nav-button-img">Dashboard</button></router-link>
-            <router-link to="/assessment"><button class="assessment-button"><img src="../assets/svgs/assessment-logo.svg" alt="assessment icon" class="nav-button-img">Assessment</button></router-link>
-            <router-link to="/logout"><button><img src="../assets/svgs/logout-logo.svg" alt="logout icon" class="nav-button-img">Log Out</button></router-link>
+            <router-link to="/dashboard"><img src="../assets/svgs/dashboard-logo.svg" alt="dashboard icon" class="nav-button-img">Dashboard</router-link>
+            <router-link to="/assessment" class="assessment-button"><img src="../assets/svgs/assessment-logo.svg" alt="assessment icon" class="nav-button-img">Assessment</router-link>
+            <router-link to="/logout"><img src="../assets/svgs/logout-logo.svg" alt="logout icon" class="nav-button-img">Log Out</router-link>
         </div>
     </div>
 </template>
@@ -51,7 +51,7 @@
     .nav-button-img{
         margin-right: 16.56px;
     }
-    button{
+    .nav-buttons a{
         height: 49px;
         display: block;
         background-color:#FFFFFF;
@@ -63,9 +63,11 @@
         cursor: pointer;
         line-height: 19.2px;
         text-align: left;
-        width: 100%
+        width: 100%;
+        display: flex;
+        align-items: center;
     }
-    button:active, button:focus{
+    a.router-link-exact-active{
         border-left: 4px solid #7557D3;
         font-weight: 700;
     }
