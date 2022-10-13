@@ -11,78 +11,62 @@
       <p class="user-email">doe@enyata.com</p>
     </div>
     <div class="nav-buttons">
-      <router-link to="/admin-dashboard"
-        ><button>
-          <img
-            src="../assets/svgs/dashboard-logo.svg"
-            alt="dashboard icon"
-            class="nav-button-img"
-          />Dashboard
-        </button></router-link
-      >
-      <router-link to="/create-application"
-        ><button>
-          <img
-            src="../assets/svgs/upload.svg"
-            alt="create application icon"
-            class="nav-button-img"
-          />Create Application
-        </button></router-link
-      >
-      <router-link to="/application-entries"
-        ><button>
-          <img
-            src="../assets/svgs/application-entries.svg"
-            alt="application entries(download) icon"
-            class="nav-button-img"
-          />Application Entries
-        </button></router-link
-      >
-      <router-link to="/compose-assessment"
-        ><button>
-          <img
-            src="../assets/svgs/note.svg"
-            alt="compose assessment icon"
-            class="nav-button-img"
-          />Compose Assessment
-        </button></router-link
-      >
-      <router-link to="/assessment-history"
-        ><button>
-          <img
-            src="../assets/svgs/history.svg"
-            alt="clock winding back(history) icon"
-            class="nav-button-img"
-          />Assessment History
-        </button></router-link
-      >
-      <router-link to="/results"
-        ><button>
-          <img
-            src="../assets/svgs/results.svg"
-            alt="results icon"
-            class="nav-button-img"
-          />Results
-        </button></router-link
-      >
-      <router-link to="/settings"
-        ><button>
-          <img
-            src="../assets/svgs/settings.svg"
-            alt="seetings icon"
-            class="nav-button-img"
-          />Settings
-        </button></router-link
-      >
-      <router-link to="/logout"
-        ><button class="logout-button">
-          <img
-            src="../assets/svgs/logout-logo.svg"
-            alt="logout icon"
-            class="nav-button-img"
-          />Log Out
-        </button></router-link
-      >
+      <router-link to="/admin-dashboard">
+        <img
+          src="../assets/svgs/dashboard-logo.svg"
+          alt="dashboard icon"
+          class="nav-button-img"
+        />Dashboard
+      </router-link>
+      <router-link to="/create-application">
+        <img
+          src="../assets/svgs/upload.svg"
+          alt="create application icon"
+          class="nav-button-img"
+        />Create Application
+      </router-link>
+      <router-link to="/application-entries">
+        <img
+          src="../assets/svgs/application-entries.svg"
+          alt="application entries(download) icon"
+          class="nav-button-img"
+        />Application Entries
+      </router-link>
+      <router-link to="/compose-assessment">
+        <img
+          src="../assets/svgs/note.svg"
+          alt="compose assessment icon"
+          class="nav-button-img"
+        />Compose Assessment
+      </router-link>
+      <router-link to="/assessment-history">
+        <img
+          src="../assets/svgs/history.svg"
+          alt="clock winding back(history) icon"
+          class="nav-button-img"
+        />Assessment History
+      </router-link>
+      <router-link to="/results">
+        <img
+          src="../assets/svgs/results.svg"
+          alt="results icon"
+          class="nav-button-img"
+        />Results
+      </router-link>
+      <router-link to="/settings">
+        <img
+          src="../assets/svgs/settings.svg"
+          alt="seetings icon"
+          class="nav-button-img"
+        />Settings
+      </router-link>
+      <router-link to="/logout" class="logout-button">
+        <img
+          src="../assets/svgs/logout-logo.svg"
+          alt="logout icon"
+          class="nav-button-img"
+        />Log Out
+      </router-link>
     </div>
   </div>
   <router-view />
@@ -103,6 +87,7 @@ export default {
 .side-menu {
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+  height: auto;
   height: 100vh;
   position: fixed;
 }
@@ -124,13 +109,12 @@ export default {
   font-weight: 400;
 }
 .logout-button {
-  margin-top: 100px;
-  /* padding-bottom: 160px;  */
+  margin-top: 50px;
 }
 .nav-button-img {
   margin-right: 16.56px;
 }
-button {
+.nav-buttons a {
   height: 49px;
   display: block;
   background-color: #ffffff;
@@ -146,8 +130,7 @@ button {
   display: flex;
   align-items: center;
 }
-button:active,
-button:focus {
+a.router-link-exact-active {
   border-left: 4px solid #7557d3;
   font-weight: 700;
 }
