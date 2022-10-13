@@ -93,7 +93,7 @@
                     v$.userData.password.$model &&
                     v$.userData.password.containsSpecial.$invalid
                   "
-                  >At least one Special Character: @#$%&^</span
+                  >At least one Special Character: #?!@$%^&*-</span
                 >
               </div>
             </div>
