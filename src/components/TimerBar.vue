@@ -38,7 +38,6 @@ export default {
 .timer {
     display: flex;
     flex-direction: column;
-    margin-right: 88px;
 }
 
 .timer p {
