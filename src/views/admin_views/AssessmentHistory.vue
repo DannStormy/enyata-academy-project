@@ -56,6 +56,7 @@ export default {
 }
 .table-container {
   margin-top: 111px;
+  margin-left: 334px;
   width: 800px;
 }
 .title {

@@ -45,6 +45,7 @@ export default {
 }
 .cont {
   margin-top: 90px;
+  margin-left: 340px;
   width: 732px;
 }
 .title {

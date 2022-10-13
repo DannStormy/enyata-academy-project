@@ -54,13 +54,13 @@ export default {
 <style scoped>
 .flex-container {
   display: flex;
-  gap: 75px;
 }
 .container {
   width: 100%;
 }
 .application {
   margin-top: 137px;
+  margin-left: 367px;
   width: 100%;
 }
 .title {
