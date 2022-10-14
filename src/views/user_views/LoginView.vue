@@ -5,11 +5,21 @@
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Log In</p>
       </div>
-      <form action="">
+      <form action="" @submit.prevent="login">
         <label for="lname">Email Address</label><br />
-        <input type="email" id="email" name="email" /><br />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          v-model="user.email"
+        /><br />
         <label for="password">Password</label><br />
-        <input type="password" id="password" name="password" /><br />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="user.password"
+        /><br />
         <button class="login">Sign In</button>
       </form>
       <div class="footer">
@@ -26,7 +36,33 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "@/router";
+
 export default {
+  data: () => ({
+    user: {
+      email: "",
+      password: "",
+    },
+  }),
+  methods: {
+    login() {
+      if (!this.user.email || !this.user.password) {
+        return;
+      }
+      axios
+        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, this.user)
+        .then(function (response) {
+          console.log(response);
+          alert(`Successfully Logged In, ${response.data.data}`);
+          router.push("/dashboard");
+        })
+        .catch(function (error) {
+          console.log(error.response.data.message);
+        });
+    },
+  },
   name: "LoginView",
 };
 </script>
@@ -78,6 +114,10 @@ input {
   border: 1.5px solid #bdbdbd;
   padding: 15px;
   border-radius: 4px;
+}
+input:focus {
+  outline: none !important;
+  border: 1px solid #7557d3;
 }
 .login {
   width: 100%;

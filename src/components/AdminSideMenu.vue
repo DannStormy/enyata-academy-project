@@ -87,7 +87,6 @@ export default {
 .side-menu {
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: auto;
   height: 100vh;
   position: fixed;
 }
@@ -97,7 +96,7 @@ export default {
   text-align: center;
   color: #ffffff;
   letter-spacing: -0.02em;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .user-name {
   margin: 13px 0 5px;
@@ -115,13 +114,13 @@ export default {
   margin-right: 16.56px;
 }
 .nav-buttons a {
-  height: 49px;
+  height: 40px;
   display: block;
-  background-color: #ffffff;
+  background-color: inherit;
   color: #2b3c4e;
   outline: none;
   border: none;
-  border-left: 4px solid #ffffff;
+  border-left: 4px solid inherit;
   padding-left: 30px;
   cursor: pointer;
   line-height: 19.2px;
