@@ -78,6 +78,11 @@ const routes = [
     component: () => import('../views/user_views/SuccessfulView.vue')
   },
   {
+    path: '/dash',
+    name: 'SideBarEntry',
+    component: () => import('../components/SideBarEntry.vue')
+  },
+  {
     path: '/admin-dashboard',
     name: 'AdminsDashboard',
     component: () => import('../views/admin_views/AdminDashboard.vue')

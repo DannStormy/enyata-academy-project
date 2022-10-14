@@ -1,4 +1,5 @@
 <template>
+    
     <div class="wrapper">
         <AdminSideMenu />
         <div class="container">
@@ -56,11 +57,17 @@ import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
 
 export default {
     name: 'ComposeAssessment2',
-    data() {
-        return {
-            isActive: false
-        }
+    data: () => ({
+        isActive: false,
+            }),
+    methods: {
+        createApplication() {
+            this.isActive = true;
     },
+    noConfirm() {
+      this.isActive = false;
+    },
+  },
     components: {
         AdminSideMenu,
         TimeBarAdmin
@@ -151,6 +158,12 @@ textarea{
     height: 41px;
     width: 406px;
     padding: 15px;
+}
+
+input:focus,
+textarea:focus {
+    outline: none !important;
+    border: 1px solid #7557d3;
 }
 
 
