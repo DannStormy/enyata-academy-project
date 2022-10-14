@@ -36,6 +36,8 @@
 </template>
 
 <script>
+// import { mapActions, mapState } from "vuex";
+
 import axios from "axios";
 import router from "@/router";
 
@@ -54,7 +56,8 @@ export default {
       axios
         .post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, this.user)
         .then(function (response) {
-          console.log(response);
+          // console.log(response.data.data.token);
+          localStorage.setItem("accessToken", response.data.data.token);
           alert(`Successfully Logged In, ${response.data.data}`);
           router.push("/dashboard");
         })
@@ -63,6 +66,9 @@ export default {
         });
     },
   },
+  // computed: {
+  //   ...mapState(["access", "isLoading", "totalResults", "error"]),
+  // },
   name: "LoginView",
 };
 </script>

@@ -1,6 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
-
+import store from '@/store';
 const routes = [
   {
     path: '/assessment',
@@ -20,7 +19,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/user_views/LoginView.vue')
+    component: () => import('../views/user_views/LoginView.vue'),
   },
   {
     path: '/forgotpassword',
@@ -84,9 +83,42 @@ const routes = [
   }
 ]
 
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
+router.beforeEach((to, from, next) => {
+  store.dispatch('fetchAccessToken');
+  if (to.fullPath === '/users') {
+    if (!store.state.accessToken) {
+      next('/login');
+    }
+  }
+  if (to.fullPath === '/login') {
+    if (store.state.accessToken) {
+      next('/users');
+    }
+  }
+  next();
+});
+
+router.beforeEach((to, from, next) => {
+  if (to.fullPath === '/dashboard') {
+    if (!store.state.user_dashboard.accessToken) {
+      next({ name: 'Login' })
+      return
+    }
+  }
+  next();
+  return
+});
+
+
+// export default {
+//   computed: {
+//     ...mapState(['userToken'])
+//   }
+// }
 export default router
