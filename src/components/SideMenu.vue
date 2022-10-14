@@ -29,7 +29,9 @@
         width: 292px;
         box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
         height: 100vh;
-        position: fixed
+        position: fixed;
+        background-color: white;
+        z-index: 1;
     }
     .user-details{
         background-color: #7557D3;

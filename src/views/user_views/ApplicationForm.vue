@@ -5,50 +5,204 @@
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Application Form</p>
       </div>
-      <form class="form-container">
-        <div class="uploads">
-          <button class="upload-buttons">
+      <form class="form-container" @submit.prevent="submit">
+        <div class="files">
+          <div class="uploads">
+          <div class="fileUpload">
+            <input type="file" class="upload" />
+            <span>
+              <img src="@/assets/svgs/upload.svg" alt="upload-icon" class="upload-img"/>
+              Upload CV
+            </span>
+        </div>
+        </div>
+          <!-- <button class="upload-buttons">
             <img
               src="@/assets/svgs/upload.svg"
               alt="upload-icon"
               class="upload-img"
             />
             Upload CV
-          </button>
-          <button class="upload-buttons">
-            <img
-              src="@/assets/svgs/upload.svg"
-              alt="upload-icon"
-              class="upload-img"
-            />
-            Upload Photo
-          </button>
+          </button> -->
+          <div class="fileUpload">
+            <input type="file" class="upload" />
+            <span>
+              <img src="@/assets/svgs/upload.svg" alt="upload-icon" class="upload-img"/>
+              Upload Photo
+            </span>
         </div>
+        </div>
+       
         <div class="form-sub-container">
           <div class="form-right">
-            <label for="fname">First Name</label><br />
-            <input type="text" id="fname" name="fname" /><br />
-            <label for="lname">Email</label><br />
-            <input type="email" id="email" name="email" /><br />
-            <label for="address">Address</label><br />
-            <input type="text" id="address" name="address" /><br />
-            <label for="course">Course of Study</label><br />
-            <input type="text" id="course" name="course" /><br />
+            <div class="form__input">
+              <label for="firstName">First Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.firstName.$error,
+                }"
+                type="text"
+                id="firstName"
+                name="firstName"
+                v-model="userData.firstName"
+              />
+              <div
+                v-if="submitted && !v$.userData.firstName.$model"
+                class="invalid-feedback"
+              >
+                First Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="email">Email Address</label><br />
+              <input
+                :class="{ 'is-invalid': submitted && v$.userData.email.$error }"
+                type="email"
+                id="email"
+                name="email"
+                v-model="userData.email"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.email.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.email.$model">Email is required</span>
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="firstName">Address</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.firstName.$error,
+                }"
+                type="text"
+                id="firstName"
+                name="firstName"
+                v-model="userData.firstName"
+              />
+              <div
+                v-if="submitted && !v$.userData.firstName.$model"
+                class="invalid-feedback"
+              >
+                First Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="password">Password</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.password.$error,
+                }"
+                type="password"
+                id="password"
+                name="password"
+                v-model="userData.password"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.password.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.password.$model"
+                  >Password is required</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    !v$.userData.password.$validator
+                  "
+                  >Password must be at least 6 characters</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsUppercase.$invalid
+                  "
+                  >At least one UpperCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsLowercase.$invalid
+                  "
+                  >At least one LowerCase Value</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsNumber.$invalid
+                  "
+                  >At least one Number</span
+                >
+                <span
+                  v-if="
+                    v$.userData.password.$model &&
+                    v$.userData.password.containsSpecial.$invalid
+                  "
+                  >At least one Special Character: #?!@$%^&*-</span
+                >
+              </div>
+            </div>
           </div>
           <div class="form-left">
-            <label for="lname">Last Name</label><br />
-            <input type="text" id="lname" name="lname" /><br />
-            <label for="dob">Date of Birth</label><br />
-            <input
-              type="date"
-              id="dob"
-              name="dob"
-              placeholder="dd/mm/yyyy"
-            /><br />
-            <label for="university">University</label><br />
-            <input type="text" id="university" name="university" /><br />
-            <label for="cgpa">CGPA</label><br />
-            <input type="text" id="cgpa" name="cgpa" /><br />
+            <div class="form__input">
+              <label for="lname">Last Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.lastName.$error,
+                }"
+                type="text"
+                id="lastName"
+                name="lastName"
+                v-model="userData.lastName"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.lastName.$model"
+                class="invalid-feedback"
+              >
+                Last Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="tel">Phone Number</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.phone.$error,
+                }"
+                type="tel"
+                id="tel"
+                name="phone-number"
+                v-model="userData.phone"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.phone.$model"
+                class="invalid-feedback"
+              >
+                Phone Number is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="confirm-password">Confirm Password</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.confirmPassword.$error,
+                }"
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                v-model="userData.confirmPassword"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.confirmPassword.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.confirmPassword.$model"
+                  >Confirm Password is required</span
+                >
+                <span v-else-if="!v$.userData.confirmPassword.$validator"
+                  >Passwords must match</span
+                >
+              </div>
+            </div>
           </div>
         </div>
         <button class="submit">Submit</button>
@@ -56,41 +210,153 @@
     </div>
   </div>
 </template>
-  
-  <script>
+
+<script>
+import useVuelidate from "@vuelidate/core";
+import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  data: () => ({
+    userData: {
+      firstName: "",
+      lastName: "",
+      phone: "",
+      email: "",
+      password: "",
+      confirmPassword: "",
+    },
+    submitted: false,
+    valid: false,
+    firstName: true,
+    lastName: true,
+  }),
+  validations: {
+    userData: {
+      firstName: { required },
+      lastName: { required },
+      email: { required, email },
+      phone: { required },
+      password: {
+        required,
+        minLength: minLength(6),
+        containsUppercase: function (value) {
+          return /[A-Z]/.test(value);
+        },
+        containsLowercase: function (value) {
+          return /[a-z]/.test(value);
+        },
+        containsNumber: function (value) {
+          return /[0-9]/.test(value);
+        },
+        containsSpecial: function (value) {
+          return /[#?!@$%^&*-]/.test(value);
+        },
+      },
+      confirmPassword: { required, sameAsPassword: sameAs("password") },
+    },
+  },
+  methods: {
+    submit() {
+      this.submitted = true;
+      // stop here if form is invalid
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
+
+      alert(JSON.stringify(this.userData));
+    },
+  },
   name: "ApplicationForm",
 };
 </script>
-  
-  <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
-body {
-  font-family: "Lato", sans-serif;
+
+<style scoped>
+.files{
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+}
+.fileUpload {
+	overflow: hidden;
+	position: relative;
+	text-align: center;
+  cursor: pointer;
+  padding: 14px;
+  border: 1.5px dashed #2B3C4E;
+  border-radius: 2.87205px;
+  width: 211px;
+  background: white;
+}
+.fileUpload:hover{
+  cursor: pointer;
+}
+.fileUpload input.upload {
+    position: absolute;
+    top: 0;
+    right: 0;
+    margin: 0;
+    padding: 0;
+    font-size: 20px;
+    cursor: pointer;
+    opacity: 0;
+    filter: alpha(opacity=0);
+    width: 148px;
+    height: 46px;
+  cursor: pointer;
+}
+
+input[type="file"] {
+    position: fixed;
+    right: 100%;
+    bottom: 100%;
+}
+.custom-file-upload {
+    border: 1px solid #ccc;
+    display: inline-block;
+    padding: 6px 12px;
+    cursor: pointer;
+}
+.is-invalid {
+  border: 1px solid red;
+}
+.invalid-feedback {
+  color: red;
+  font-size: 12px;
+  margin-top: 4px;
+}
+span {
+  display: block;
 }
 .wrapper {
   background: white;
   background-image: url("~@/assets/svgs/background.svg");
   background-repeat: no-repeat;
-  background-position: right -23.82% top -84.06%;
+  background-position: right -8% top -10%;
   padding-top: 100px;
   padding-bottom: 100px;
 }
 .container {
-  width: 963px;
+  width: 784px;
   margin: 0 auto;
 }
 .heading {
-  height: 21px;
   margin: auto;
-  margin-bottom: 69px;
+  margin-bottom: 50px;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
 }
+.heading img {
+  width: 110px;
+  height: 21px;
+}
 .title {
-  font-weight: 500;
+  font-weight: 600;
   font-size: 24px;
   line-height: 29px;
   color: #2b3c4e;
@@ -100,15 +366,16 @@ body {
 .form-container {
   display: flex;
   flex-direction: column;
-  padding: 0 61px;
 }
 .form-sub-container {
   display: flex;
   justify-content: space-between;
-  /* gap: 73px; */
+}
+.form__input {
+  height: 100px;
 }
 label {
-  font-weight: 400;
+  font-weight: 500;
   font-size: 14px;
   line-height: 17px;
   color: #4f4f4f;
@@ -117,19 +384,18 @@ label {
   margin-top: 22px;
 }
 input {
-  padding: 18px 13px;
-  width: 379px;
+  width: 365px;
+  height: 48px;
   border: 1.5px solid #bdbdbd;
   border-radius: 4px;
-  font-family: "Lato", sans-serif;
-  outline: none;
-  font-size: 16px;
+  padding: 15px;
 }
 input:focus {
-  border: 1.5px solid #2b3c4e;
+  outline: none !important;
+  border: 1px solid #7557d3;
 }
 .submit {
-  width: 379px;
+  width: 520px;
   height: 50px;
   background: #7557d3;
   color: white;
@@ -137,45 +403,12 @@ input:focus {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 auto;
-  margin-top: 43px;
-  font-weight: 700;
+  margin-top: 80px;
+  margin-bottom: 10px;
+  font-weight: 600;
   font-size: 16px;
 }
-/* .sign-in {
-  font-weight: 400;
-  font-size: 14px;
-  line-height: 17px;
-  color: #4f4f4f;
-  text-align: center;
-  font-style: italic;
-} */
-a {
-  text-decoration-line: underline;
-  color: #1a2c56;
-}
-.upload-buttons {
-  padding: 14px 53px;
-  background-color: white;
-  border: 1.5px dashed #2b3c4e;
-  border-radius: 2.87205px;
-  font-family: "Lato", sans-serif;
-  color: #2b3c4e;
-  font-weight: 400;
-  font-size: 16px;
-}
-button:hover {
-  cursor: pointer;
-}
-.upload-img {
-  margin-right: 13.97px;
-}
-.uploads {
-  display: flex;
-  justify-content: center;
-  margin-top: 93.58px;
-  margin-bottom: 32.03px;
-}
-.uploads > button:first-child {
-  margin-right: 32px;
+.submit:disabled {
+  opacity: 0.6;
 }
 </style>
