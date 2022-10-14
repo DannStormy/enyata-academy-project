@@ -125,6 +125,7 @@
     display: grid;
     grid-template-columns: repeat(2, auto);
     grid-template-rows: 100%;
+    gap: 2%
   }
   .history,
   .assessments {
