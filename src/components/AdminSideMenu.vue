@@ -96,7 +96,7 @@ export default {
   text-align: center;
   color: #ffffff;
   letter-spacing: -0.02em;
-  margin-bottom: 28px;
+  margin-bottom: 20px;
 }
 .user-name {
   margin: 13px 0 5px;
@@ -114,7 +114,7 @@ export default {
   margin-right: 16.56px;
 }
 .nav-buttons a {
-  height: 49px;
+  height: 40px;
   display: block;
   background-color: inherit;
   color: #2b3c4e;
