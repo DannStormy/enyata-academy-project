@@ -1,15 +1,28 @@
 <template>
-  <div class="flex-container">
+  <ScrollBar />
+  <div class="confirmation-container" v-if="isActive">
+    <div class="confirmation-box">
+      <form class="question-box" @submit.prevent>
+        <div class="que">Are you sure you want to submit this application?</div>
+        <div class="buttons">
+          <button>Yes</button>
+          <button @click="noConfirm">No</button>
+        </div>
+      </form>
+    </div>
+  </div>
+  <div :class="['flex-container', { active: isActive }]">
     <AdminSideMenu />
     <div class="application">
       <div class="title">
         <p>Create Application</p>
       </div>
-      <form action="" class="container">
+      <form action="" class="container" @submit.prevent="createApplication">
         <div class="top">
           <div>
             <label for="closure">Application closure date</label><br />
             <input
+              :disabled="isActive"
               type="date"
               id="date"
               name="date"
@@ -19,7 +32,8 @@
           <div>
             <label for="batch">Batch ID</label><br />
             <input
-              type="number"
+              :disabled="isActive"
+              type="text"
               id="id"
               name="batch-ID"
               placeholder="Enyata Academy 6.0"
@@ -27,16 +41,16 @@
           </div>
         </div>
         <label for="instructions">Instructions</label><br />
-        <textarea rows="9" cols="50"> </textarea>
+        <textarea :disabled="isActive" rows="9" cols="50"> </textarea>
         <div>
           <span>
-            <img src="@/assets/svgs/Paperclip.svg" alt="paperclip" />
-            Attach question
+            <label for="files" class="btn">Select question</label>
+            <input id="files" style="display: none" type="file" />
           </span>
         </div>
         <br />
         <div class="button-container">
-          <button class="submit">Submit</button>
+          <button class="submit" :disabled="isActive">Submit</button>
         </div>
       </form>
     </div>
@@ -45,22 +59,93 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import ScrollBar from "@/components/ScrollBar.vue";
 export default {
+  data: () => ({
+    isActive: false,
+  }),
+  methods: {
+    createApplication() {
+      this.isActive = true;
+    },
+    noConfirm() {
+      this.isActive = false;
+    },
+  },
   name: "CreateApplication",
-  components: { AdminSideMenu },
+  components: { AdminSideMenu, ScrollBar },
 };
 </script>
 
 <style scoped>
+.confirmation-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  margin-top: -100px;
+  margin-left: -250px;
+  z-index: 30;
+}
+.confirmation-box {
+  width: 477px;
+  height: 300px;
+  border-radius: 4px;
+  background: #ffffff;
+  border-radius: 4px;
+  overflow: hidden;
+  filter: blur(0);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.question-box {
+  width: 257px;
+  height: 150px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-direction: column;
+}
+.que {
+  font-weight: 500;
+  font-size: 18px;
+  line-height: 150%;
+  text-align: center;
+  color: #4f4f4f;
+  margin-bottom: 48px;
+}
+.buttons button {
+  width: 128.5px;
+  height: 48px;
+  color: black;
+  background: white;
+  cursor: pointer;
+  border-radius: 4px;
+  border: none;
+}
+.buttons button:hover {
+  background: #7557d3;
+  color: white;
+}
 .flex-container {
   display: flex;
-  gap: 75px;
+}
+.nav-buttons a {
+  background-color: red;
+}
+.active {
+  background: rgb(25, 13, 74, 0.2);
+  filter: blur(2px);
 }
 .container {
   width: 100%;
 }
 .application {
   margin-top: 137px;
+  margin-left: 367px;
   width: 100%;
 }
 .title {
@@ -91,21 +176,34 @@ input {
   height: 41px;
   padding: 15px;
   margin-bottom: 36px;
+  background-color: inherit;
+}
+input:focus,
+textarea:focus {
+  outline: none !important;
+  border: 1px solid #7557d3;
 }
 textarea {
   width: 764px;
   margin-bottom: 14px;
   padding: 5px;
   border: 1.5px solid #2b3c4e;
+  background-color: inherit;
 }
 span {
   font-style: italic;
   font-weight: 400;
   font-size: 14px;
   line-height: 17px;
-  color: #2b3c4e;
-  display: flex;
-  align-items: center;
+  background: #2b3c4e;
+  border-radius: 10px;
+  width: 145px;
+  height: 36px;
+  padding: 8px 16px;
+}
+label[for="files"] {
+  color: white;
+  cursor: pointer;
 }
 .submit {
   width: 379px;
@@ -116,7 +214,7 @@ span {
   border-radius: 4px;
   cursor: pointer;
   margin: 0 auto;
-  margin-bottom: 12px;
+  margin-bottom: 200px;
   font-weight: 600;
   font-size: 16px;
 }
