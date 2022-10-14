@@ -170,6 +170,8 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "@/router";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 
@@ -224,8 +226,18 @@ export default {
       if (this.v$.$invalid) {
         return;
       }
-
-      alert(JSON.stringify(this.userData));
+      axios
+        .post(
+          `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
+          this.userData
+        )
+        .then(function (response) {
+          alert(`Successfully Logged In, ${response.data.data}`);
+          router.push("/login");
+        })
+        .catch(function (error) {
+          alert(error.response.data.message);
+        });
     },
   },
   name: "SignUpView",

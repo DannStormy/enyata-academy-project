@@ -1,9 +1,9 @@
 import { createStore } from 'vuex'
-import signup from './modules/form_modules/signup'
+import user_dashboard from './modules/form_modules/user_dashboard'
 
 const store = createStore({
   modules: {
-    signup
+    user_dashboard
   }
 });
 

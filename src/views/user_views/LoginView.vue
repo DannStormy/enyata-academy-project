@@ -36,14 +36,14 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
+import router from "@/router";
 
 export default {
   data: () => ({
     user: {
       email: "",
       password: "",
-      info: null,
     },
   }),
   methods: {
@@ -51,7 +51,16 @@ export default {
       if (!this.user.email || !this.user.password) {
         return;
       }
-      alert(JSON.stringify(this.user));
+      axios
+        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, this.user)
+        .then(function (response) {
+          console.log(response);
+          alert(`Successfully Logged In, ${response.data.data}`);
+          router.push("/dashboard");
+        })
+        .catch(function (error) {
+          console.log(error.response.data.message);
+        });
     },
   },
   name: "LoginView",
