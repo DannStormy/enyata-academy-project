@@ -38,7 +38,7 @@
                         <button class="next">Next</button>
                     </div>
                     <router-link to="/successful">
-                        <button class="finish">Finish</button>
+                        <button class="finish">Save</button>
                     </router-link>
                 </div>
 
@@ -141,6 +141,7 @@ textarea{
     border-radius: 4px;
     height: 144px;
     margin-bottom:47px;
+    padding: 15px;
 }
 
 .options input{
@@ -149,6 +150,7 @@ textarea{
     border-radius: 4px;
     height: 41px;
     width: 406px;
+    padding: 15px;
 }
 
 
@@ -189,7 +191,9 @@ label {
     height: 41px;
     margin-right: 529px;
     background-color: #211F26;
+    border-radius: 4px;
     color:white;
+    cursor:pointer;
 }
 
 .next {
@@ -198,6 +202,7 @@ label {
     background-color: #7557D3;
     color: white;
     border-radius: 4px;
+    cursor: pointer;
     border: none;
 }
 
@@ -209,6 +214,7 @@ label {
     color: white;
     border: none;
     border-radius: 4px;
+    cursor: pointer;
     margin-bottom: 206px;
 }
 </style>
