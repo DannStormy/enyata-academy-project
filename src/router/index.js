@@ -5,7 +5,7 @@ const routes = [
   {
     path: '/assessment',
     name: 'TakeAssessment',
-    component: () => import('../views/TakeAssessment.vue')
+    component: () => import('../views/user_views/TakeAssessment.vue')
   },
   {
     path: '/',
@@ -70,17 +70,22 @@ const routes = [
   {
     path: '/questions',
     name: 'QuestionsView',
-    component: () => import('../views/QuestionsView.vue')
+    component: () => import('../views/user_views/QuestionsView.vue')
   },
   {
     path: '/success',
     name: 'SuccessfulView',
-    component: () => import('../views/SuccessfulView.vue')
+    component: () => import('../views/user_views/SuccessfulView.vue')
   },
   {
     path: '/admin-dashboard',
     name: 'AdminsDashboard',
     component: () => import('../views/admin_views/AdminDashboard.vue')
+  },
+  {
+    path: '/results',
+    name: 'ResultsView',
+    component: () => import('../views/admin_views/ResultsView.vue')
   }
 ]
 

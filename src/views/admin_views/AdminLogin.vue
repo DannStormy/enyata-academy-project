@@ -71,6 +71,10 @@ input {
   background-color: #7557d3;
   padding: 15px;
   border-radius: 4px;
+  color: white;
+}
+input:focus {
+  outline: none !important;
 }
 .login {
   width: 100%;

@@ -1,14 +1,10 @@
 import { createStore } from 'vuex'
+import signup from './modules/form_modules/signup'
 
-export default createStore({
-  state: {
-  },
-  getters: {
-  },
-  mutations: {
-  },
-  actions: {
-  },
+const store = createStore({
   modules: {
+    signup
   }
-})
+});
+
+export default store;
