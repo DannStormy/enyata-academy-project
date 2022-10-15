@@ -1,9 +1,12 @@
 <template>
   <div class="wrapper">
+    <!-- <FlashMessage :position="'right bottom'" /> -->
+
     <div class="container">
       <div class="heading">
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Log In</p>
+        <!-- <p v-show="elementVisible" v-if="message">{{ message }}</p> -->
       </div>
       <form action="" @submit.prevent="login">
         <label for="lname">Email Address</label><br />
@@ -36,8 +39,9 @@
 </template>
 
 <script>
-import axios from "axios";
-import router from "@/router";
+import { mapActions, mapGetters, mapState } from "vuex";
+
+// import router from "@/router";
 
 export default {
   data: () => ({
@@ -45,23 +49,35 @@ export default {
       email: "",
       password: "",
     },
+    elementVisible: false,
   }),
   methods: {
+    ...mapActions([
+      "userLogin",
+      "fetchAccessToken",
+      "removeAccessToken",
+      "fetchUser",
+    ]),
     login() {
       if (!this.user.email || !this.user.password) {
         return;
       }
-      axios
-        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, this.user)
-        .then(function (response) {
-          console.log(response);
-          alert(`Successfully Logged In, ${response.data.data}`);
-          router.push("/dashboard");
-        })
-        .catch(function (error) {
-          console.log(error.response.data.message);
-        });
+      this.userLogin(this.user);
+      // this.flashMessage.setStrategy("single");
+      // this.flashMessage.error({
+      //   title: "Yayyyyy",
+      //   message: this.message,
+      // });
     },
+  },
+  computed: {
+    ...mapState({ message: (state) => state.user_dashboard.message }),
+    ...mapState({ accessToken: (state) => state.user_dashboard.accessToken }),
+    ...mapGetters(["isAuthenticated"]),
+  },
+  created() {
+    // console.log(this.flashMessage);
+    // setTimeout(() => (this.elementVisible = false), 10);
   },
   name: "LoginView",
 };

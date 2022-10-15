@@ -1,5 +1,5 @@
 import { createStore } from 'vuex'
-import user_dashboard from './modules/form_modules/user_dashboard'
+import user_dashboard from './modules/user_dashboard'
 
 const store = createStore({
   modules: {

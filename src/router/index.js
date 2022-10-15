@@ -1,5 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import HomeView from '../views/HomeView.vue'
+import store from '@/store';
+const ifNotAuthenticated = (to, from, next) => {
+  store.dispatch('fetchAccessToken');
+  if (store.state.user_dashboard.isAuthenticated) {
+    next()
+    return
+  }
+  next('/login')
+}
 
 const routes = [
   {
@@ -20,7 +28,7 @@ const routes = [
   {
     path: '/login',
     name: 'Login',
-    component: () => import('../views/user_views/LoginView.vue')
+    component: () => import('../views/user_views/LoginView.vue'),
   },
   {
     path: '/forgotpassword',
@@ -35,7 +43,8 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/user_views/Dashboard.vue')
+    component: () => import('../views/user_views/Dashboard.vue'),
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/admin-login',
@@ -84,9 +93,29 @@ const routes = [
   }
 ]
 
+
 const router = createRouter({
   history: createWebHistory(process.env.BASE_URL),
   routes
 })
 
+
+// router.beforeEach((to, from, next) => {
+//   store.dispatch('fetchAccessToken')
+//   if (to.fullPath === '/dashboard') {
+//     if (!store.state.user_dashboard.accessToken) {
+//       next({ name: 'Login' })
+//       return
+//     }
+//   }
+//   next();
+//   return
+// });
+
+
+// export default {
+//   computed: {
+//     ...mapState(['userToken'])
+//   }
+// }
 export default router
