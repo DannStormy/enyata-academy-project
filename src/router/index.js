@@ -1,5 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-import store from '@/store';
+// import store from '@/store';
+// const isAuthenticated = (to, from, next) => {
+//   if (store.getters.isAuthenticated) {
+//     next()
+//     return
+//   }
+//   next('/login')
+// }
+
 const routes = [
   {
     path: '/assessment',
@@ -34,7 +42,8 @@ const routes = [
   {
     path: '/dashboard',
     name: 'Dashboard',
-    component: () => import('../views/user_views/Dashboard.vue')
+    component: () => import('../views/user_views/Dashboard.vue'),
+    // beforeEnter: isAuthenticated
   },
   {
     path: '/admin-login',
@@ -89,31 +98,18 @@ const router = createRouter({
   routes
 })
 
-router.beforeEach((to, from, next) => {
-  store.dispatch('fetchAccessToken');
-  if (to.fullPath === '/users') {
-    if (!store.state.accessToken) {
-      next('/login');
-    }
-  }
-  if (to.fullPath === '/login') {
-    if (store.state.accessToken) {
-      next('/users');
-    }
-  }
-  next();
-});
 
-router.beforeEach((to, from, next) => {
-  if (to.fullPath === '/dashboard') {
-    if (!store.state.user_dashboard.accessToken) {
-      next({ name: 'Login' })
-      return
-    }
-  }
-  next();
-  return
-});
+// router.beforeEach((to, from, next) => {
+//   store.dispatch('fetchAccessToken')
+//   if (to.fullPath === '/dashboard') {
+//     if (!store.state.user_dashboard.accessToken) {
+//       next({ name: 'Login' })
+//       return
+//     }
+//   }
+//   next();
+//   return
+// });
 
 
 // export default {
