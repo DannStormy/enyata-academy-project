@@ -7,7 +7,8 @@ export default {
         lastName: '',
         currentUser: [],
         accessToken: null,
-        message: ''
+        message: '',
+        isAuthenticated: false
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -18,6 +19,9 @@ export default {
         },
         UPDATE_USER: (state, user) => {
             state.currentUser = user
+        },
+        AUTH: (state, isAuthenticated) => {
+            state.isAuthenticated = isAuthenticated
         }
     },
     actions: {
@@ -43,16 +47,18 @@ export default {
         async userLogin({ commit }, user) {
             try {
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, user)
+                let token = response.data.data.token
                 let firstName = response.data.data.applicant[0].firstname
                 let lastName = response.data.data.applicant[0].lastname
                 let email = response.data.data.applicant[0].email
                 const currentUser = {
-                    "accessToken": response.data.data.token,
+                    "accessToken": token,
                     "firstName": firstName,
                     "lastName": lastName,
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
+                commit('AUTH', true)
                 router.push('/dashboard')
 
             } catch (error) {
@@ -61,9 +67,5 @@ export default {
 
             }
         },
-    },
-    getters: {
-        isAuthenticated: state => !!state.accessToken,
-        authStatus: state => state.status,
     }
 }

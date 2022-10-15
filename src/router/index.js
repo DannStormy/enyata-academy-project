@@ -1,12 +1,13 @@
 import { createRouter, createWebHistory } from 'vue-router'
-// import store from '@/store';
-// const isAuthenticated = (to, from, next) => {
-//   if (store.getters.isAuthenticated) {
-//     next()
-//     return
-//   }
-//   next('/login')
-// }
+import store from '@/store';
+const ifNotAuthenticated = (to, from, next) => {
+  store.dispatch('fetchAccessToken');
+  if (store.state.user_dashboard.isAuthenticated) {
+    next()
+    return
+  }
+  next('/login')
+}
 
 const routes = [
   {
@@ -43,7 +44,7 @@ const routes = [
     path: '/dashboard',
     name: 'Dashboard',
     component: () => import('../views/user_views/Dashboard.vue'),
-    // beforeEnter: isAuthenticated
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/admin-login',
