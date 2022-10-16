@@ -71,7 +71,7 @@ export default {
 };
 </script>
   
-  <style scoped>
+<style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 * {
   font-family: "Lato", sans-serif;
@@ -186,116 +186,4 @@ li:hover {
   transition: 0.1s;
 }
 </style>
-  <!-- @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
-  * {
-    font-family: "Lato", sans-serif;
-    color: #2b3c4e;
-  }
-  .flex-container {
-    display: flex;
-  }
-  .container {
-    margin: 107px 0 86px 290px;
-    padding: 0 58px;
-  }
-  h1 {
-    font-weight: 300;
-    font-size: 43.56px;
-    letter-spacing: -0.02em;
-    margin-bottom: 65.28px
-  }
-  .dashboard-status {
-    display: flex;
-    gap: 87px;
-  }
-  .titles {
-    font-size: 14px;
-    color: #4f4f4f;
-  }
-  .data {
-    font-weight: 300;
-    font-size: 48px;
-    margin: 8px 0 11px
-  }
-  hr {
-    width: 148px;
-    border: 4px solid #006df0;
-    border-radius: 4px;
-    margin-bottom: 9px
-  }
-  .total-application > hr {
-    border: 4px solid #00F026;
-  }
-  .batch > hr {
-    border: 4px solid #F09000;
-  }
-  .comments {
-    font-size: 12px;
-    font-weight: 400;
-    color: #4f4f4f;
-    margin-bottom: 97px;
-  }
-  .further-info {
-    display: grid;
-    grid-template-columns: repeat(2, auto);
-    grid-template-rows: 100%;
-  }
-  .history,
-  .assessments {
-    border: 1px solid #ececf9;
-    border-radius: 4px;
-    padding: 25px 35px;
-    width: 482px;
-  }
-  .history{
-    border: none
-  }
-  .finfo {
-    font-weight: 700;
-    letter-spacing: -0.02em;
-    color: #2b3c4e;
-  }
-  .finfo-description{
-    font-size: 12px;
-    margin-top: 4px
-  }
-  li {
-    list-style: none;
-    max-width: 412.5px;
-    padding: 22px 18px;
-    margin-top: 32px;
-    background: #FFFFFF;
-    border-left: 7px solid #FFFFFF;
-    display: flex;
-    justify-content: space-between;
-  }
-  li:hover{
-    box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-    border-radius: 8px;
-    border-left: 7px solid #7557D3;
-    transition: 0.2s;
-  }
-  .assessment-details {
-    text-align: center;
-    font-size: 16.73px;
-    font-weight: 400;
-    line-height: 20.07px;
-    color: #4f4f4f;
-    margin: 70px 0 80px;
-  }
-  .assessment-button {
-    background-color: hsl(0, 0%, 69%);
-    color: white;
-    cursor: pointer;
-    border: none;
-    outline: none;
-    padding: 10px 42px;
-    border-radius: 4px;
-    font-weight: 700;
-    margin-top: 34px;
-  }
-  .assessment-button:hover {
-    background-color: hsl(0, 0%, 75%);
-    transition: .1s
-    }
-  </style> -->
+  

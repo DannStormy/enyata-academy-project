@@ -19,7 +19,7 @@
             Join enyata academy today and bring your long awaiting dream to
             reality.
           </p>
-          <router-link to="/signup">
+          <router-link to="/applicationform">
             <button class="register-button">Register Now</button>
           </router-link>
         </div>

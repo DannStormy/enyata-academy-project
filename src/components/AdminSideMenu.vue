@@ -46,7 +46,7 @@
           class="nav-button-img"
         />Assessment History
       </router-link>
-      <router-link to="/results">
+      <router-link to="/results" class="results">
         <img
           src="../assets/svgs/results.svg"
           alt="results icon"
@@ -132,6 +132,9 @@ export default {
 a.router-link-exact-active {
   border-left: 4px solid #7557d3;
   font-weight: 700;
+}
+a.router-link-exact-active.results {
+  border-left: 4px solid #31D283;
 }
 a {
   text-decoration: none;

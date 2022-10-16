@@ -38,7 +38,8 @@ const routes = [
   {
     path: '/applicationform',
     name: 'ApplicationForm',
-    component: () => import('../views/user_views/ApplicationForm.vue')
+    component: () => import('../views/user_views/ApplicationForm.vue'),
+    // beforeEnter: ifNotAuthenticated
   },
   {
     path: '/dashboard',
