@@ -71,6 +71,8 @@ export default {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   height: 100vh;
   position: fixed;
+  background-color: white;
+  z-index: 1;
 }
 .user-details {
   background-color: #7557d3;
@@ -92,8 +94,7 @@ export default {
 .nav-button-img {
   margin-right: 16.56px;
 }
-.nav-buttons a,
-.logout {
+.nav-buttons a {
   height: 49px;
   display: block;
   background-color: #ffffff;
