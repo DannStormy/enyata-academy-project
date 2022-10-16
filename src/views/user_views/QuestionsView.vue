@@ -14,7 +14,7 @@
                 <div class="question">
                     <p>Question 1</p>
                     <span>What is the purpose of HDR technology?</span>
-                    <div :class="{'active': isActive}">
+                    <div :class="{'active': isActive}" >
                         <input type="radio" id="A" name="question" value="A"/>
                         <label for="A">A. To reduce the file size of images and videos.</label><br>
                         <input type="radio" id="B" name="question" value="B" />
@@ -30,7 +30,7 @@
                         <button class="previous">Previous</button>
                         <button class="next">Next</button>
                     </div>
-                        <router-link to="/successful">
+                        <router-link to="/success">
                             <button class="finish">Finish</button>
                         </router-link>
                 </div>
@@ -52,12 +52,7 @@ import TimerBar from '@/components/TimerBar.vue'
             return{
                 isActive:false
             }
-        },
-        // methods:{
-        //     toggleBox:function(){
-        //         this.isActive = !this.isActive;
-        //         },
-        // }, 
+        }, 
         components:{
             SideMenu,
             TimerBar
@@ -81,9 +76,9 @@ import TimerBar from '@/components/TimerBar.vue'
 }
 
 .container {
-    margin: 90px 0 8px 292px;
+    margin: 111px 0 8px 292px;
     width: 100%;
-    padding: 0 47px;
+    
 
 }
 
@@ -117,7 +112,6 @@ import TimerBar from '@/components/TimerBar.vue'
 .main {
     display: flex;
     flex-direction: column;
-    width: 406px;
     height: 299px;
     margin-left: 47px;
     margin-bottom:206px;
@@ -168,7 +162,6 @@ label{
 .navigate{
     display: flex;
     flex-direction:column;
-    margin-left:193px;
     margin-bottom:80px;
     margin-top:80px;
     justify-content:center;
