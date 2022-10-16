@@ -36,14 +36,16 @@
 </template>
 
 <script>
-// import axios from "axios";
+// import { mapActions, mapState } from "vuex";
+
+import axios from "axios";
+import router from "@/router";
 
 export default {
   data: () => ({
     user: {
       email: "",
       password: "",
-      info: null,
     },
   }),
   methods: {
@@ -51,9 +53,22 @@ export default {
       if (!this.user.email || !this.user.password) {
         return;
       }
-      alert(JSON.stringify(this.user));
+      axios
+        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, this.user)
+        .then(function (response) {
+          // console.log(response.data.data.token);
+          localStorage.setItem("accessToken", response.data.data.token);
+          alert(`Successfully Logged In, ${response.data.data}`);
+          router.push("/dashboard");
+        })
+        .catch(function (error) {
+          console.log(error.response.data.message);
+        });
     },
   },
+  // computed: {
+  //   ...mapState(["access", "isLoading", "totalResults", "error"]),
+  // },
   name: "LoginView",
 };
 </script>

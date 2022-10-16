@@ -6,11 +6,16 @@
             <div class="header">
                 <div class="assessment">
                     <h1 class="title">Compose Assessment</h1>
-                    <p class="description">0/30</p>
                 </div>
                 <TimeBarAdmin/>
             </div>
             <div class="main">
+                <div class="assessment-1">
+                    <p>0/30</p>
+                    <div class="choose_file">
+                        <span>+</span><span>Choose file</span>
+                    </div>
+                </div>
                 <form>
                     <p><label for="question">Questions</label></p>
                     <textarea id="question" name="question"></textarea>
@@ -117,12 +122,6 @@ export default {
     margin-bottom: 14px;
 }
 
-.description {
-    font-style: italic;
-    font-weight: 500;
-    font-size: 16px;
-    line-height: 19px;
-}
 
 .main {
     display: flex;
@@ -130,6 +129,34 @@ export default {
     width: 876px;
     margin-left: 47px;
 }
+.assessment-1{
+    margin-top: 62px;
+}
+
+.assessment-1 p {
+    font-family: 'Lato';
+    font-style: normal;
+    font-weight: 700;
+    font-size: 16px;
+    line-height: 19px;
+    color: #2B3C4E;
+}
+
+.choose_file {
+    margin-top: 21px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 13px;
+    width: 456px;
+    cursor:pointer;
+    height: 108px;
+    border: 1.55172px dashed #2B3C4E;
+    border-radius: 6.2069px;
+    margin-bottom: 25px;
+}
+    
+
 form{
     display: flex;
     flex-direction: column;
@@ -161,10 +188,10 @@ textarea{
 }
 
 input:focus,
-textarea:focus {
-    outline: none !important;
-    border: 1px solid #7557d3;
-}
+    textarea:focus {
+        outline: none !important;
+        border: 1px solid #7557d3;
+    }
 
 
 label {

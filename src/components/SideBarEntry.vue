@@ -53,7 +53,7 @@
             </div>
         </form>
         <div class="decide">
-            <button class="approve">Approve</button>
+            <button class="approve" @click="createApplication">Approve</button>
             <button class="decline">Decline</button>
         </div>
     </div>

@@ -4,13 +4,13 @@
       <div class="container">
         <div class="header">
             <label for="cars">Results - </label>
-            <!-- <div class="select">
+            <div class="select">
                 <select id="batch" name="batchlist" form="batchform">
                     <option value="batch1">Batch 1</option>
                     <option value="batch2" selected>Batch 2</option>
                     <option value="batch3">Batch 3</option>
                 </select>
-            </div> -->
+            </div>
             <p class="header-title">Comprises of all that applied for batch 2</p>
         </div>
         <form action="">
