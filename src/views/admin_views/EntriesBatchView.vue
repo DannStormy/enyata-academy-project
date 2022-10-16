@@ -1,5 +1,5 @@
 <template>
-  <div class="wrapper">
+  <div class="['wrapper', { active: isActive }]">
     <AdminSideMenu />
     <div class="container">
       <div class="dashboard">

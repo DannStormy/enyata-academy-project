@@ -1,4 +1,5 @@
 <template>
+    <ScrollBar/>
     <div class="confirmation-container" v-if="isActive">
         <div class="confirmation-box">
             <form class="question-box" @submit.prevent>
@@ -61,6 +62,7 @@
 </template>
 
 <script>
+    import ScrollBar from "@/components/ScrollBar.vue";
         export default{
         data: () => ({
             isActive: false,
@@ -73,6 +75,7 @@
                 this.isActive = false;
             },
         },
+        components: { ScrollBar }
     }
 
 </script>
@@ -139,6 +142,10 @@
     cursor: pointer;
     border-radius: 4px;
     border: none;
+}
+.active {
+    background: rgb(25, 13, 74, 0.2);
+    filter: blur(2px);
 }
 
 .buttons button:hover {
