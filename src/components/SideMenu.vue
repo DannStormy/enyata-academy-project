@@ -53,7 +53,7 @@ export default {
   computed: {
     ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
   },
-  created() {
+  mounted() {
     this.fetchUser();
   },
   name: "SideMenu",

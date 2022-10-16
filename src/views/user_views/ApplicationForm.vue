@@ -279,8 +279,19 @@ export default {
         return;
       }
 
+      const customConfig = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Basic ${this.currentUser.accessToken}`,
+        },
+      };
+
       axios
-        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/apply`, formData)
+        .post(
+          `${process.env.VUE_APP_SERVER_URL}/applicant/apply`,
+          formData,
+          customConfig
+        )
         .then((response) => {
           if (response.data.status === "Success") {
             alert("Application Successful");

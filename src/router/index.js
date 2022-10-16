@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 const ifNotAuthenticated = (to, from, next) => {
   store.dispatch('fetchAccessToken');
-  if (store.state.user_dashboard.isAuthenticated) {
+  if (store.state.user_dashboard.accessToken) {
     next()
     return
   }
@@ -39,7 +39,7 @@ const routes = [
     path: '/applicationform',
     name: 'ApplicationForm',
     component: () => import('../views/user_views/ApplicationForm.vue'),
-    // beforeEnter: ifNotAuthenticated
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/dashboard',
