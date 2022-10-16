@@ -8,56 +8,204 @@
       <form class="form-container" @submit.prevent="submit">
         <div class="files">
           <div class="uploads">
+            <div class="fileUpload">
+              <input
+                type="file"
+                @change="onFileChange"
+                :class="[
+                  'upload',
+                  {
+                    'is-invalid': submitted && v$.selectedFile.$error,
+                  },
+                ]"
+              />
+              <span>
+                <img
+                  src="@/assets/svgs/upload.svg"
+                  alt="upload-icon"
+                  class="upload-img"
+                />
+                Upload CV
+              </span>
+              <div
+                v-if="submitted && !v$.selectedFile.$model"
+                class="invalid-feedback"
+              >
+                No file found
+              </div>
+            </div>
+          </div>
           <div class="fileUpload">
-            <input type="file" class="upload" />
-            <span>
-              <img src="@/assets/svgs/upload.svg" alt="upload-icon" class="upload-img"/>
-              Upload CV
-            </span>
-        </div>
-        </div>
-          <!-- <button class="upload-buttons">
-            <img
-              src="@/assets/svgs/upload.svg"
-              alt="upload-icon"
-              class="upload-img"
+            <input
+              type="file"
+              @change="onPhotoChange"
+              :class="[
+                'upload',
+                { 'is-invalid': submitted && v$.selectedPhoto.$error },
+              ]"
             />
-            Upload CV
-          </button> -->
-          <div class="fileUpload">
-            <input type="file" class="upload" />
             <span>
-              <img src="@/assets/svgs/upload.svg" alt="upload-icon" class="upload-img"/>
+              <img
+                src="@/assets/svgs/upload.svg"
+                alt="upload-icon"
+                class="upload-img"
+              />
               Upload Photo
             </span>
+            <div
+              v-if="submitted && !v$.selectedPhoto.$model"
+              class="invalid-feedback"
+            >
+              No photo found
+            </div>
+          </div>
         </div>
-        </div>
-       
         <div class="form-sub-container">
           <div class="form-right">
-            <label for="fname">First Name</label><br />
-            <input type="text" id="fname" name="fname" /><br />
-            <label for="lname">Email</label><br />
-            <input type="email" id="email" name="email" /><br />
-            <label for="address">Address</label><br />
-            <input type="text" id="address" name="address" /><br />
-            <label for="course">Course of Study</label><br />
-            <input type="text" id="course" name="course" /><br />
+            <div class="form__input">
+              <label for="firstName">First Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.firstName.$error,
+                }"
+                type="text"
+                id="firstName"
+                name="firstName"
+                v-model="userData.firstName"
+              />
+              <div
+                v-if="submitted && !v$.userData.firstName.$model"
+                class="invalid-feedback"
+              >
+                First Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="email">Email</label><br />
+              <input
+                :class="{ 'is-invalid': submitted && v$.userData.email.$error }"
+                type="email"
+                id="email"
+                name="email"
+                v-model="userData.email"
+              /><br />
+              <div
+                v-if="submitted && v$.userData.email.$error"
+                class="invalid-feedback"
+              >
+                <span v-if="!v$.userData.email.$model">Email is required</span>
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="address">Address</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.address.$error,
+                }"
+                type="text"
+                id="address"
+                name="address"
+                v-model="userData.address"
+              />
+              <div
+                v-if="submitted && !v$.userData.address.$model"
+                class="invalid-feedback"
+              >
+                Address is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="course">Course of Study</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.course.$error,
+                }"
+                type="text"
+                id="course"
+                name="course"
+                v-model="userData.course"
+              />
+              <div
+                v-if="submitted && v$.userData.course.$error"
+                class="invalid-feedback"
+              >
+                Course of Study is required
+              </div>
+            </div>
           </div>
           <div class="form-left">
-            <label for="lname">Last Name</label><br />
-            <input type="text" id="lname" name="lname" /><br />
-            <label for="dob">Date of Birth</label><br />
-            <input
-              type="date"
-              id="dob"
-              name="dob"
-              placeholder="dd/mm/yyyy"
-            /><br />
-            <label for="university">University</label><br />
-            <input type="text" id="university" name="university" /><br />
-            <label for="cgpa">CGPA</label><br />
-            <input type="number" id="cgpa" name="cgpa" /><br />
+            <div class="form__input">
+              <label for="lname">Last Name</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.lastName.$error,
+                }"
+                type="text"
+                id="lastName"
+                name="lastName"
+                v-model="userData.lastName"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.lastName.$model"
+                class="invalid-feedback"
+              >
+                Last Name is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="dob">Date of Birth</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.dob.$error,
+                }"
+                type="date"
+                id="date"
+                name="date"
+                v-model="userData.dob"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.dob.$model"
+                class="invalid-feedback"
+              >
+                Date of Birth is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="university">University</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.university.$error,
+                }"
+                type="text"
+                id="university"
+                name="university"
+                v-model="userData.university"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.university.$model"
+                class="invalid-feedback"
+              >
+                University is required
+              </div>
+            </div>
+            <div class="form__input">
+              <label for="cgpa">CGPA</label><br />
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.cgpa.$error,
+                }"
+                type="text"
+                id="cgpa"
+                name="cgpa"
+                v-model="userData.cgpa"
+              /><br />
+              <div
+                v-if="submitted && !v$.userData.cgpa.$model"
+                class="invalid-feedback"
+              >
+                CGPA is required
+              </div>
+            </div>
           </div>
         </div>
         <button class="submit">Submit</button>
@@ -67,57 +215,136 @@
 </template>
 
 <script>
+import useVuelidate from "@vuelidate/core";
+import { required, email } from "vuelidate/lib/validators";
+import axios from "axios";
+import { mapActions, mapState } from "vuex";
+import router from "@/router";
 
 export default {
+  setup() {
+    return { v$: useVuelidate() };
+  },
+  data: () => ({
+    userData: {
+      firstName: "",
+      lastName: "",
+      email: "",
+      address: "",
+      dob: "",
+      university: "",
+      cgpa: "",
+      course: "",
+    },
+    selectedFile: "",
+    selectedPhoto: "",
+    submitted: false,
+    // valid: false,
+  }),
+  validations: {
+    userData: {
+      firstName: { required },
+      lastName: { required },
+      email: { required, email },
+      address: { required },
+      dob: { required },
+      university: { required },
+      cgpa: { required },
+      course: { required },
+    },
+    selectedFile: { required },
+    selectedPhoto: { required },
+  },
+  methods: {
+    ...mapActions(["fetchUser"]),
+    onFileChange(e) {
+      const selectedFile = e.target.files[0]; // accessing file
+      this.selectedFile = selectedFile;
+    },
+    onPhotoChange(e) {
+      const selectedPhoto = e.target.files[0]; // accessing file
+      this.selectedPhoto = selectedPhoto;
+    },
+    submit() {
+      const formData = new FormData();
+      formData.append("file", this.selectedFile);
+      formData.append("image", this.selectedPhoto);
+      formData.append("user_id", this.currentUser.email);
+      for (var key in this.userData) {
+        formData.append(key, this.userData[key]);
+      }
+      this.submitted = true;
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
+
+      axios
+        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/apply`, formData)
+        .then((response) => {
+          if (response.data.status === "Success") {
+            alert("Application Successful");
+            router.push("/dashboard");
+          }
+        })
+        .catch((error) => console.log(error));
+    },
+  },
+  computed: {
+    ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
+  },
+  mounted() {
+    this.fetchUser();
+  },
   name: "ApplicationForm",
 };
 </script>
 
 <style scoped>
-.files{
-    display: flex;
-    justify-content: center;
-    gap: 32px;
+.files {
+  display: flex;
+  justify-content: center;
+  gap: 32px;
 }
 .fileUpload {
-	overflow: hidden;
-	position: relative;
-	text-align: center;
+  overflow: hidden;
+  position: relative;
+  text-align: center;
   cursor: pointer;
   padding: 14px;
-  border: 1.5px dashed #2B3C4E;
+  border: 1.5px dashed #2b3c4e;
   border-radius: 2.87205px;
   width: 211px;
   background: white;
 }
-.fileUpload:hover{
+.fileUpload:hover {
   cursor: pointer;
 }
 .fileUpload input.upload {
-    position: absolute;
-    top: 0;
-    right: 0;
-    margin: 0;
-    padding: 0;
-    font-size: 20px;
-    cursor: pointer;
-    opacity: 0;
-    filter: alpha(opacity=0);
-    width: 148px;
-    height: 46px;
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 148px;
+  height: 46px;
   cursor: pointer;
 }
 
 input[type="file"] {
-    position: fixed;
-    right: 100%;
-    bottom: 100%;
+  position: fixed;
+  right: 100%;
+  bottom: 100%;
 }
 .custom-file-upload {
-    border: 1px solid #ccc;
-    display: inline-block;
-    padding: 6px 12px;
-    cursor: pointer;
+  border: 1px solid #ccc;
+  display: inline-block;
+  padding: 6px 12px;
+  cursor: pointer;
 }
 .is-invalid {
   border: 1px solid red;

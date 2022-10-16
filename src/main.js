@@ -1,12 +1,12 @@
 import { createApp } from 'vue'
 import App from './App.vue'
-// import FlashMessage from '@smartweb/vue-flash-message';
+import FlashMessage from '@smartweb/vue-flash-message';
 import router from './router'
 import store from './store'
 
 
 const app = createApp(App);
-// app.use(FlashMessage);
+app.use(FlashMessage);
 app.use(store)
 app.use(router)
 app.mount('#app')

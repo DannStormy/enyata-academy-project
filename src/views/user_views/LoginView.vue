@@ -1,12 +1,11 @@
 <template>
   <div class="wrapper">
-    <!-- <FlashMessage :position="'right bottom'" /> -->
-
     <div class="container">
       <div class="heading">
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Log In</p>
         <!-- <p v-show="elementVisible" v-if="message">{{ message }}</p> -->
+        <!-- <FlashMessage position="left top" strategy="single" group="hints" /> -->
       </div>
       <form action="" @submit.prevent="login">
         <label for="lname">Email Address</label><br />
@@ -63,10 +62,10 @@ export default {
         return;
       }
       this.userLogin(this.user);
-      // this.flashMessage.setStrategy("single");
-      // this.flashMessage.error({
-      //   title: "Yayyyyy",
-      //   message: this.message,
+      // this.$flashMessage.show({
+      //   type: "error",
+      //   title: "Error Message Title",
+      //   text: "Oh, you broke my heart! Shame on you!",
       // });
     },
   },
@@ -76,7 +75,7 @@ export default {
     ...mapGetters(["isAuthenticated"]),
   },
   created() {
-    // console.log(this.flashMessage);
+    // console.log(this.$flashMessage);
     // setTimeout(() => (this.elementVisible = false), 10);
   },
   name: "LoginView",
