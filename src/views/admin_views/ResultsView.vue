@@ -90,7 +90,7 @@ export default {
   display: flex;
 }
 .container {
-  margin: 107px 0 86px 290px;
+  margin: 107px 93px 86px 290px;
   padding: 0 58px;
 }
 .header, select{
@@ -125,12 +125,12 @@ select {
   .select {
       position: relative;
       display: inline-flex;
-      width: 11rem;
-      height: auto;
+        width: 20em;
+        height: 3em;
       line-height: 3;
       background: #5c6664;
       overflow: hidden;
-      align-items: center;
+        border-radius: .25em;
   }
   .select::after {
       content: '\25BC';
@@ -139,7 +139,6 @@ select {
       cursor:pointer;
       pointer-events:none;
       transition:.25s all ease;
-      font-size: 12px;
   }
 .header-title{
   font-style: italic;
@@ -164,13 +163,15 @@ select {
   line-height: 17px;
   color: #FFFFFF;
 }
-th{
-  padding: 15px 42px;
+th {
+  padding: 15px 4px;
 }
-td{
-  padding: 15px;
-  margin-right: 50px;
+
+td {
+  padding: 15px 4px;
+  margin-right: 40px;
   text-align: center;
+  width:fit-content;
 }
 th img{
   margin-left: 7px;
@@ -182,52 +183,30 @@ table button{
   background-color: #FFFFFF;
   border: none;
   outline: none;
-  
 }
+  /* tr{
+    border-collapse:collapse;
+    border-spacing:0 15px;
+  } */
 .table-data{
   padding: 22px 18px;
-  background-color: transparent;
+    margin-top: 32px;
+    background: #FFFFFF;
   border-left: 7px solid #FFFFFF;
   border-spacing: 30px;
   border-radius: 8px;
-  position: relative;
-    left: -4px;
+   
 }
 .table-data:hover{
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+    border-top-left-radius: 8px;
+    border-left: 7px solid #7557D3;
   transition: 0.2s;
-}
-.scores>button{
-  display: inline-block
 }
 .scores>button>img{
   margin-left: 16px;
   /* width: 100%; */
   height: 100%
 }
-.table-data:hover td:first-of-type {
-  position: relative;
-  margin: none;
-  border: none;
-}
-.table-data:hover td:first-of-type::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 7px;
-  height: 100%;
-  background: #7557D3;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-  transition: 0.2s;
-}
-.email-button{
-  background: rgba(223, 224, 224, 0.5);
-border-radius: 5px;
-padding: 10px 16px
-}
-.email-button img{
-  margin-right: 5px;
-}
+  
 </style>
