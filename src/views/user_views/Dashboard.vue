@@ -112,7 +112,7 @@ hr {
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 100%;
-  gap: 74px;
+  gap: 36px;
 }
 .updates,
 .assessments {
