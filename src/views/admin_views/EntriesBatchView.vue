@@ -12,53 +12,55 @@
             <tr class="header-row">
               <th>Name</th>
               <th>Email</th>
-              <th>DOB - Age<img src="../../assets/svgs/sort-arrow.svg" alt="icon for sort"></th>
+              <th>
+                DOB - Age<img
+                  src="../../assets/svgs/sort-arrow.svg"
+                  alt="icon for sort"
+                />
+              </th>
               <th>Address</th>
               <th>University</th>
-              <th>CGPA<img src="../../assets/svgs/sort-arrow.svg" alt="icon for sort"></th>
-              <th colspan="2">Test Scores <img src="../../assets/svgs/sort-arrow.svg" alt="icon for sort"></th>
+              <th>
+                CGPA<img
+                  src="../../assets/svgs/sort-arrow.svg"
+                  alt="icon for sort"
+                />
+              </th>
+              <th colspan="2">
+                Test Scores
+                <img
+                  src="../../assets/svgs/sort-arrow.svg"
+                  alt="icon for sort"
+                />
+              </th>
             </tr>
-            <tr class="table-data">
+            <tr
+              class="table-data"
+              v-for="applicant in applicants"
+              :key="applicant.id"
+            >
               <td>
-                <input type="checkbox" id="username1" name="username" value="Ify Chinke">
-                <label for="username">Ify Chinke</label><br>
+                <input type="checkbox" id="username1" name="username" value= />
+                <label for="username"
+                  >{{ applicant.firstname }} {{ applicant.lastname }}</label
+                ><br />
               </td>
-              <td>ify@enyata.com</td>
-              <td>12/09/19 - 22</td>
-              <td>3 Sabo Ave, Yaba, Lagos</td>
-              <td>University of Nigeria</td>
-              <td>5.0</td>
-              <td class="scores"><span>15 </span><button><img src="../../assets/svgs/three-dots.svg"
-                    alt="send bulk email"></button></td>
-            </tr>
-            <tr class="table-data">
-              <td>
-                <input type="checkbox" id="username1" name="username" value="Ify Chinke">
-                <label for="username">Ify Chinke</label><br>
+              <td>{{ applicant.email }}</td>
+              <td>{{ applicant.address }} - {{ getAge(applicant.address) }}</td>
+              <td>{{ applicant.dob }}</td>
+              <td>{{ applicant.university }}</td>
+              <td>{{ applicant.cgpa }}</td>
+              <td class="scores">
+                <span>15 </span
+                ><button>
+                  <img
+                    src="../../assets/svgs/three-dots.svg"
+                    alt="send bulk email"
+                  />
+                </button>
               </td>
-              <td>ify@enyata.com</td>
-              <td>12/09/19 - 22</td>
-              <td>3 Sabo Ave, Yaba, Lagos</td>
-              <td>University of Nigeria</td>
-              <td>5.0</td>
-              <td class="scores"><span>15 </span><button><img src="../../assets/svgs/three-dots.svg"
-                    alt="send bulk email"></button></td>
-            </tr>
-            <tr class="table-data">
-              <td>
-                <input type="checkbox" id="username1" name="username" value="Ify Chinke">
-                <label for="username">Ify Chinke</label><br>
-              </td>
-              <td>ify@enyata.com</td>
-              <td>12/09/19 - 22</td>
-              <td>3 Sabo Ave, Yaba, Lagos</td>
-              <td>University of Nigeria</td>
-              <td>5.0</td>
-              <td class="scores"><span>15 </span><button><img src="../../assets/svgs/three-dots.svg"
-                    alt="send bulk email"></button></td>
             </tr>
           </tbody>
-      
         </table>
       </form>
     </div>
@@ -66,30 +68,53 @@
 </template>
 
 <script>
+import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 export default {
+  data: () => ({
+    applicants: null,
+  }),
+  methods: {
+    getAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    },
+  },
   components: {
     AdminSideMenu,
+  },
+  mounted() {
+    axios
+      .get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
+      .then((response) => {
+        this.applicants = response.data.data;
+        console.log(response.data.data);
+      })
+      .catch((error) => console.log(error));
   },
 };
 </script>
 
 <style scoped>
-*{
-margin:0;
-padding:0;
+* {
+  margin: 0;
+  padding: 0;
 }
 .wrapper {
   display: flex;
-
-
 }
-.container{
-    margin: 111px 93px 0px 323px;
-    width:100%;
+.container {
+  margin: 111px 93px 0px 323px;
+  width: 100%;
 }
-.dashboard{
-  margin-bottom:35px;
+.dashboard {
+  margin-bottom: 35px;
 }
 .dashboard h1 {
   font-family: "Lato";
@@ -100,16 +125,16 @@ padding:0;
   letter-spacing: -0.02em;
   color: #2b3c4e;
 }
-.dashboard p{
-  font-family: 'Lato';
-font-style: italic;
-font-weight: 400;
-font-size: 13px;
-line-height: 16px;
-color: #4F4F4F;  
+.dashboard p {
+  font-family: "Lato";
+  font-style: italic;
+  font-weight: 400;
+  font-size: 13px;
+  line-height: 16px;
+  color: #4f4f4f;
 }
 
-select>option {
+select > option {
   font-size: 16px;
 }
 
@@ -144,16 +169,16 @@ select::-ms-expand {
   line-height: 3;
   background: #5c6664;
   overflow: hidden;
-  border-radius: .25em;
+  border-radius: 0.25em;
 }
 
 .select::after {
-  content: '\25BC';
+  content: "\25BC";
   position: absolute;
   right: 0;
   cursor: pointer;
   pointer-events: none;
-  transition: .25s all ease;
+  transition: 0.25s all ease;
 }
 
 .header-title {
@@ -161,7 +186,7 @@ select::-ms-expand {
   font-weight: 400;
   font-size: 14px;
   line-height: 16px;
-  margin-bottom: 38px
+  margin-bottom: 38px;
 }
 
 .table {
@@ -172,15 +197,15 @@ select::-ms-expand {
 }
 
 .header-row {
-  background-color: #2B3C4E;
+  background-color: #2b3c4e;
   border: none;
   outline: none;
 }
 
-.header-row>th {
+.header-row > th {
   font-size: 14px;
   line-height: 17px;
-  color: #FFFFFF;
+  color: #ffffff;
 }
 
 th {
@@ -191,7 +216,7 @@ td {
   padding: 15px 4px;
   margin-right: 35px;
   text-align: center;
-  width:fit-content;
+  width: fit-content;
 }
 
 th img {
@@ -203,7 +228,7 @@ input {
 }
 
 table button {
-  background-color: #FFFFFF;
+  background-color: #ffffff;
   border: none;
   outline: none;
 }
@@ -211,23 +236,22 @@ table button {
 .table-data {
   padding: 22px 18px;
   margin-top: 32px;
-  background: #FFFFFF;
-  border-left: 7px solid #FFFFFF;
+  background: #ffffff;
+  border-left: 7px solid #ffffff;
   border-spacing: 30px;
   border-radius: 8px;
-
 }
 
 .table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px 0px 0px 8px;
-  border-left: 7px solid #7557D3;
+  border-left: 7px solid #7557d3;
   transition: 0.2s;
 }
 
-.scores>button>img {
+.scores > button > img {
   margin-left: 16px;
   /* width: 100%; */
-  height: 100%
+  height: 100%;
 }
 </style>
