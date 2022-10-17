@@ -52,6 +52,7 @@
 import SideMenu from "@/components/SideMenu.vue";
 export default {
   name: "DashBoard",
+  
   components: {
     SideMenu,
   },
@@ -119,7 +120,7 @@ hr {
   border: 1px solid #ececf9;
   border-radius: 4px;
   padding: 25px 35px;
-  width: 482px;
+  width: 450px;
 }
 .finfo {
   font-weight: 700;

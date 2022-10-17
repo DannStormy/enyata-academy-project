@@ -14,7 +14,7 @@
           <p class="header-title">Comprises of all that applied for batch 2</p>
       </div>
       <form action="">
-          <table class="table">
+          <table class="table" width="100px">
               <tbody>
                   <tr class="header-row">
                   <th>Name</th>
@@ -91,7 +91,7 @@ export default {
 }
 .container {
   margin: 107px 0 86px 290px;
-  padding: 0 58px;
+  padding: 0 0 0 40px;
 }
 .header, select{
   font-weight: 300;
@@ -165,10 +165,10 @@ select {
   color: #FFFFFF;
 }
 th{
-  padding: 15px 42px;
+  padding: 15px 0;
 }
 td{
-  padding: 15px;
+  padding: 15px 0;
   margin-right: 50px;
   text-align: center;
 }
