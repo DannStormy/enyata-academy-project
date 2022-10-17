@@ -84,7 +84,7 @@ export default {
   letter-spacing: -0.02em;
   margin-bottom: 28px;
 }
-.profile-pic img {
+.profile-pic {
   width: 80px;
   height: 80px;
   border-radius: 50%;
