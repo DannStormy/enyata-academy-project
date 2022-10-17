@@ -2,10 +2,10 @@
   <SideBarEntry
     :name="applicantData?.firstname + ' ' + applicantData?.lastname"
     :email="applicantData?.email"
-    :address="applicantData?.address"
+    :address="applicantData?.dob"
     :university="applicantData?.university"
     :course="applicantData?.cgpa"
-    :dob="applicantData?.dob"
+    :dob="applicantData?.address"
     :cgpa="applicantData?.course"
     :pdf="applicantData?.cv"
     :image="applicantData?.profilepic"

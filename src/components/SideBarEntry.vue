@@ -1,5 +1,5 @@
 <template>
-  <ScrollBar />
+  <!-- <ScrollBar /> -->
   <div class="confirmation-container" v-if="isActive">
     <div class="confirmation-box">
       <form class="question-box" @submit.prevent>
@@ -67,8 +67,11 @@
           <div>
             <p><label for="cv">CV</label></p>
             <!-- <a target="_blank"><iframe :src="pdf">Open</iframe></a> -->
-            <a :href="pdf" target="_blank">pdf</a>
-
+            <div class="pdf-container">
+              <img src="@/assets/images/pdf.svg" alt="pdf-image" />
+              <a :href="pdf" download="file.pdf">Download</a>
+            </div>
+            <!-- <object :data="pdf" type="application/pdf"></object> -->
             <!-- <input type="text" id="cgpa" name="cgpa" placeholder="5.0"> -->
           </div>
         </div>
@@ -82,7 +85,7 @@
 </template>
 
 <script>
-import ScrollBar from "@/components/ScrollBar.vue";
+// import ScrollBar from "@/components/ScrollBar.vue";
 export default {
   data: () => ({
     isActive: false,
@@ -117,7 +120,7 @@ export default {
   },
   emits: ["sendConfirm"],
   name: "SideBarEntry",
-  components: { ScrollBar },
+  //   components: { ScrollBar },
 };
 </script>
 
@@ -125,10 +128,12 @@ export default {
 * {
   color: #7d7d7d;
 }
+
 .wrapper {
   background-color: white;
   position: fixed;
   overflow-y: scroll;
+  width: 600px;
   max-height: 100%;
   z-index: 25;
   right: 0;
@@ -218,6 +223,7 @@ export default {
   margin-bottom: 43px;
 }
 .profile-picture img {
+  object-fit: cover;
   width: 100%;
   height: 100%;
 }
@@ -256,6 +262,12 @@ input:focus,
 textarea:focus {
   outline: none !important;
   border: 1px solid #7557d3;
+}
+.pdf-container {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  margin-top: 18px;
 }
 .decide {
   display: flex;
