@@ -10,13 +10,18 @@
       <div class="dashboard-status">
         <div class="dofapplication">
           <p class="titles">Date of Application</p>
-          <p class="data">09.09.19</p>
+          <p class="data">
+            {{ formatDate() }}
+            <!-- {{ formatDate(profile?.date?.split("T")[0]) }} -->
+            <!-- {{ profile?.date }} -->
+            <!-- {{ new Date() }} -->
+          </p>
           <hr />
-          <p class="comments">4 days since applied</p>
+          <p class="comments">{{ formatDateString() }}</p>
         </div>
         <div class="status">
           <p class="titles">Application Status</p>
-          <p class="data">Pending</p>
+          <p v-if="profile?.applied" class="data">Pending</p>
           <hr />
           <p class="comments">We will get back to you</p>
         </div>
@@ -50,8 +55,37 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
+
+import { mapActions, mapState } from "vuex";
 export default {
   name: "DashBoard",
+  methods: {
+    ...mapActions(["dashboardPic"]),
+    formatDate() {
+      let date = new Date(this.profile?.created_at);
+      let month = date.getUTCMonth() + 1;
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear()?.toString()?.slice(-2);
+      return day + "." + month + "." + year;
+    },
+    formatDateString() {
+      let date_1 = new Date(this.profile?.created_at);
+      let date_2 = new Date();
+
+      const days = (date_1, date_2) => {
+        let difference = date_1.getTime() - date_2.getTime();
+        let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
+        return TotalDays;
+      };
+      return days(date_1, date_2) + " days since applied";
+    },
+  },
+  computed: {
+    ...mapState({ profile: (state) => state.user_dashboard.profile }),
+  },
+  mounted() {
+    // this.dashboardPic();
+  },
   components: {
     SideMenu,
   },
@@ -119,7 +153,7 @@ hr {
   border: 1px solid #ececf9;
   border-radius: 4px;
   padding: 25px 35px;
-  width: 482px;
+  width: 450px;
 }
 .finfo {
   font-weight: 700;

@@ -2,12 +2,14 @@
   <div class="side-menu">
     <div class="user-details">
       <div>
-        <img src="../assets/svgs/user-profile.svg" alt="user profile picture" />
+        <img
+          :src="profile?.profilepic"
+          class="profile-pic"
+          alt="user profile picture"
+        />
       </div>
-      <p class="user-name">
-        {{ currentUser.firstName }} {{ currentUser.lastName }}
-      </p>
-      <p class="user-email">{{ currentUser.email }}</p>
+      <p class="user-name">{{ profile?.firstname }} {{ profile?.lastname }}</p>
+      <p class="user-email">{{ profile?.email }}</p>
     </div>
     <div class="nav-buttons">
       <router-link to="/dashboard"
@@ -44,7 +46,7 @@ export default {
     lastname: "",
   }),
   methods: {
-    ...mapActions(["fetchUser", "removeAccessToken"]),
+    ...mapActions(["fetchUser", "removeAccessToken", "dashboardPic"]),
     logout() {
       this.removeAccessToken();
       router.push("/login");
@@ -52,9 +54,12 @@ export default {
   },
   computed: {
     ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
+    ...mapState({ profile: (state) => state.user_dashboard.profile }),
   },
-  created() {
+  mounted() {
+    console.log("current user", this.currentUser);
     this.fetchUser();
+    this.dashboardPic();
   },
   name: "SideMenu",
 };
@@ -67,7 +72,8 @@ export default {
   font-size: 16px;
 }
 .side-menu {
-  width: 292px;
+  min-width: 290px;
+  max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   height: 100vh;
   position: fixed;
@@ -76,11 +82,17 @@ export default {
 }
 .user-details {
   background-color: #7557d3;
-  padding: 57px 91px;
+  padding: 57px 0;
   text-align: center;
   color: #ffffff;
   letter-spacing: -0.02em;
   margin-bottom: 28px;
+}
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .user-name {
   margin: 13px 0 5px;

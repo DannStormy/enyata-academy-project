@@ -27,7 +27,7 @@
                 </div>
                 <div class="navigate">
                     <div class="buttons">
-                        <button class="previous" @click="start">Previous</button>
+                        <button class="previous">Previous</button>
                         <button class="next">Next</button>
                     </div>
                         <router-link to="/success">

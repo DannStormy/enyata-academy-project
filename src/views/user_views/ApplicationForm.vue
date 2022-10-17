@@ -11,6 +11,7 @@
             <div class="fileUpload">
               <input
                 type="file"
+                accept=".pdf, .docx"
                 @change="onFileChange"
                 :class="[
                   'upload',
@@ -38,6 +39,7 @@
           <div class="fileUpload">
             <input
               type="file"
+              accept=".jpeg, .png, .jpg"
               @change="onPhotoChange"
               :class="[
                 'upload',
@@ -194,7 +196,7 @@
                 :class="{
                   'is-invalid': submitted && v$.userData.cgpa.$error,
                 }"
-                type="text"
+                type="number"
                 id="cgpa"
                 name="cgpa"
                 v-model="userData.cgpa"
@@ -257,6 +259,18 @@ export default {
   },
   methods: {
     ...mapActions(["fetchUser"]),
+    convertToBase64(file) {
+      return new Promise((resolve, reject) => {
+        const fileReader = new FileReader();
+        fileReader.readAsDataURL(file);
+        fileReader.onload = () => {
+          resolve(fileReader.result);
+        };
+        fileReader.onerror = (error) => {
+          reject(error);
+        };
+      });
+    },
     onFileChange(e) {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
@@ -265,22 +279,36 @@ export default {
       const selectedPhoto = e.target.files[0]; // accessing file
       this.selectedPhoto = selectedPhoto;
     },
-    submit() {
-      const formData = new FormData();
-      formData.append("file", this.selectedFile);
-      formData.append("image", this.selectedPhoto);
-      formData.append("user_id", this.currentUser.email);
-      for (var key in this.userData) {
-        formData.append(key, this.userData[key]);
-      }
+    async submit() {
       this.submitted = true;
       this.v$.$touch();
       if (this.v$.$invalid) {
         return;
       }
+      const formData = new FormData();
+      const file = await this.convertToBase64(this.selectedFile);
+      const photo = await this.convertToBase64(this.selectedPhoto);
+
+      formData.append("file", file);
+      formData.append("image", photo);
+      formData.append("user_id", this.currentUser.email);
+      for (var key in this.userData) {
+        formData.append(key, this.userData[key]);
+      }
+
+      const customConfig = {
+        headers: {
+          "Content-Type": "multipart/form-data",
+          Authorization: `Basic ${this.currentUser.accessToken}`,
+        },
+      };
 
       axios
-        .post(`${process.env.VUE_APP_SERVER_URL}/applicant/apply`, formData)
+        .post(
+          `${process.env.VUE_APP_SERVER_URL}/applicant/apply`,
+          formData,
+          customConfig
+        )
         .then((response) => {
           if (response.data.status === "Success") {
             alert("Application Successful");
