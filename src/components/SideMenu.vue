@@ -2,7 +2,11 @@
   <div class="side-menu">
     <div class="user-details">
       <div>
-        <img :src="profile?.profilepic" alt="user profile picture" />
+        <img
+          :src="profile?.profilepic"
+          class="profile-pic"
+          alt="user profile picture"
+        />
       </div>
       <p class="user-name">{{ profile?.firstname }} {{ profile?.lastname }}</p>
       <p class="user-email">{{ profile?.email }}</p>
@@ -88,6 +92,7 @@ export default {
   width: 80px;
   height: 80px;
   border-radius: 50%;
+  object-fit: cover;
 }
 .user-name {
   margin: 13px 0 5px;
