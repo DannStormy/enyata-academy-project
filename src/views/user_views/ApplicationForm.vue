@@ -280,6 +280,11 @@ export default {
       this.selectedPhoto = selectedPhoto;
     },
     async submit() {
+      this.submitted = true;
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
       const formData = new FormData();
       const file = await this.convertToBase64(this.selectedFile);
       const photo = await this.convertToBase64(this.selectedPhoto);
@@ -289,11 +294,6 @@ export default {
       formData.append("user_id", this.currentUser.email);
       for (var key in this.userData) {
         formData.append(key, this.userData[key]);
-      }
-      this.submitted = true;
-      this.v$.$touch();
-      if (this.v$.$invalid) {
-        return;
       }
 
       const customConfig = {

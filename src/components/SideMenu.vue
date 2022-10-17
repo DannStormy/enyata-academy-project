@@ -2,10 +2,14 @@
   <div class="side-menu">
     <div class="user-details">
       <div>
-        <img :src="profile.profilepic" alt="user profile picture" />
+        <img
+          :src="profile?.profilepic"
+          class="profile-pic"
+          alt="user profile picture"
+        />
       </div>
-      <p class="user-name">{{ profile.firstname }} {{ profile.lastname }}</p>
-      <p class="user-email">{{ profile.email }}</p>
+      <p class="user-name">{{ profile?.firstname }} {{ profile?.lastname }}</p>
+      <p class="user-email">{{ profile?.email }}</p>
     </div>
     <div class="nav-buttons">
       <router-link to="/dashboard"
@@ -84,10 +88,11 @@ export default {
   letter-spacing: -0.02em;
   margin-bottom: 28px;
 }
-.profile-pic img{
+.profile-pic {
   width: 80px;
   height: 80px;
-  border-radius: 50%
+  border-radius: 50%;
+  object-fit: cover;
 }
 .user-name {
   margin: 13px 0 5px;
