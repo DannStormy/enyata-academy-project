@@ -68,7 +68,8 @@ export default {
   font-size: 16px;
 }
 .side-menu {
-  width: 292px;
+  min-width: 290px;
+  max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   height: 100vh;
   position: fixed;
@@ -77,11 +78,16 @@ export default {
 }
 .user-details {
   background-color: #7557d3;
-  padding: 57px 91px;
+  padding: 57px 0;
   text-align: center;
   color: #ffffff;
   letter-spacing: -0.02em;
   margin-bottom: 28px;
+}
+.profile-pic img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%
 }
 .user-name {
   margin: 13px 0 5px;
