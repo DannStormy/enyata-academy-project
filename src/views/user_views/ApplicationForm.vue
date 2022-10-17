@@ -196,7 +196,7 @@
                 :class="{
                   'is-invalid': submitted && v$.userData.cgpa.$error,
                 }"
-                type="text"
+                type="number"
                 id="cgpa"
                 name="cgpa"
                 v-model="userData.cgpa"
