@@ -7,9 +7,14 @@
       </div>
       <form action="">
         <label for="lname">Email Address</label><br />
-        <input type="email" id="email" name="email" /><br />
+        <input type="email" id="email" name="email" v-model="email" /><br />
         <label for="password">Password</label><br />
-        <input type="password" id="password" name="password" /><br />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="password"
+        /><br />
         <button class="login">Sign In</button>
       </form>
     </div>
@@ -18,6 +23,10 @@
 
 <script>
 export default {
+  data: () => ({
+    email: "",
+    password: "",
+  }),
   name: "AdminLogin",
 };
 </script>

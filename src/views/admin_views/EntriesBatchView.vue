@@ -86,18 +86,22 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SideBarEntry from "@/components/SideBarEntry.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
   data: () => ({
-    applicants: null,
     applicantData: null,
     isActive: false,
     confirm: false,
   }),
+  computed: {
+    ...mapState({ applicants: (state) => state.admin.applicants }),
+  },
   methods: {
+    ...mapActions(["getEntries"]),
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -124,13 +128,7 @@ export default {
     SideBarEntry,
   },
   mounted() {
-    axios
-      .get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
-      .then((response) => {
-        this.applicants = response.data.data;
-        console.log(response.data.data);
-      })
-      .catch((error) => console.log(error));
+    this.getEntries();
   },
 };
 </script>
