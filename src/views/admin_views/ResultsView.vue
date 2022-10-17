@@ -144,6 +144,8 @@ export default {
   display: flex;
 }
 .container {
+  margin: 107px 0 86px 290px;
+  padding: 0 0 0 40px;
   margin: 107px 93px 86px 290px;
   padding: 0 58px;
 }
