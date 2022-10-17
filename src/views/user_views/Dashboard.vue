@@ -10,7 +10,9 @@
       <div class="dashboard-status">
         <div class="dofapplication">
           <p class="titles">Date of Application</p>
-          <p class="data">09.09.19</p>
+          <p class="data">
+            <!-- {{ profile.date.split("T")[0].replaceAll("-", ".") }} -->
+          </p>
           <hr />
           <p class="comments">4 days since applied</p>
         </div>
@@ -50,8 +52,18 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
+import { mapActions, mapState } from "vuex";
 export default {
   name: "DashBoard",
+  methods: {
+    ...mapActions(["dashboardPic"]),
+  },
+  computed: {
+    ...mapState({ profile: (state) => state.user_dashboard.profile }),
+  },
+  mounted() {
+    // this.dashboardPic();
+  },
   components: {
     SideMenu,
   },
