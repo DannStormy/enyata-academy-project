@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu">
     <div class="user-details">
-      <div>
+      <div class="profile-pic">
         <img
           src="../assets/svgs/admin-profile.svg"
           alt="admin profile picture"
@@ -98,6 +98,11 @@ export default {
   color: #ffffff;
   letter-spacing: -0.02em;
   margin-bottom: 20px;
+}
+.profile-pic img{
+  width: 80px;
+  height: 80px;
+  border-radius: 50%
 }
 .user-name {
   margin: 13px 0 5px;

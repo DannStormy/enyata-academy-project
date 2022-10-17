@@ -1,4 +1,5 @@
-let quiz = [
+let quiz = {
+  questions: [
     {
     numb: 1,
     question: "What does HTML stand for?",
@@ -54,6 +55,7 @@ let quiz = [
       "eXamine Multiple Language"
     ]
   }
-];
+]
+};
 
 export default quiz
