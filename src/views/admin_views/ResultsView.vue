@@ -90,13 +90,10 @@ export default {
   display: flex;
 }
 .container {
-<<<<<<< HEAD
   margin: 107px 0 86px 290px;
   padding: 0 0 0 40px;
-=======
   margin: 107px 93px 86px 290px;
   padding: 0 58px;
->>>>>>> c3214915cca7febf62d3e6de4f3e5bd0dd7fec51
 }
 .header, select{
   font-weight: 300;
@@ -168,14 +165,6 @@ select {
   line-height: 17px;
   color: #FFFFFF;
 }
-<<<<<<< HEAD
-th{
-  padding: 15px 0;
-}
-td{
-  padding: 15px 0;
-  margin-right: 50px;
-=======
 th {
   padding: 15px 4px;
 }
@@ -183,7 +172,6 @@ th {
 td {
   padding: 15px 4px;
   margin-right: 40px;
->>>>>>> c3214915cca7febf62d3e6de4f3e5bd0dd7fec51
   text-align: center;
   width:fit-content;
 }

@@ -1,7 +1,7 @@
 <template>
   <div class="side-menu">
     <div class="user-details">
-      <div>
+      <div class="profile-pic">
         <img :src="profile.profilepic" alt="user profile picture" />
       </div>
       <p class="user-name">{{ profile.firstname }} {{ profile.lastname }}</p>
