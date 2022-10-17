@@ -11,14 +11,14 @@
         <div class="dofapplication">
           <p class="titles">Date of Application</p>
           <p class="data">
-            <!-- {{ profile.date.split("T")[0].replaceAll("-", ".") }} -->
+            {{ profile?.date?.split("T")[0]?.replaceAll("-", ".") }}
           </p>
           <hr />
           <p class="comments">4 days since applied</p>
         </div>
         <div class="status">
           <p class="titles">Application Status</p>
-          <p class="data">Pending</p>
+          <p v-if="profile.applied" class="data">Pending</p>
           <hr />
           <p class="comments">We will get back to you</p>
         </div>
