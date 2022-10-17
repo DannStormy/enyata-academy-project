@@ -17,7 +17,7 @@
           <p class="comments">All entries do far</p>
         </div>
         <div class="batch">
-          <p class="titles">Academy’s</p>
+          <p class="titles">Academys</p>
           <p class="data">4.0</p>
           <hr />
           <p class="comments">So far</p>
@@ -82,7 +82,7 @@ export default {
 }
 .container {
   margin: 107px 0 86px 290px;
-  padding: 0 0 0 40px;
+  padding: 0 58px;
 }
 h1 {
   font-weight: 300;
@@ -125,6 +125,7 @@ hr {
   display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 100%;
+  gap: 74px;
 }
 .history,
 .assessments {
@@ -185,3 +186,4 @@ li:hover {
   transition: 0.1s;
 }
 </style>
+  

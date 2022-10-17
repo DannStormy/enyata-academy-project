@@ -56,15 +56,16 @@ import TimerBar from '@/components/TimerBar.vue'
           display:flex;  
         }
         .container{
-            margin: 90px 0 86px 292px;
+            margin: 111px 0 86px 292px;
             width:100%;
-            padding: 0 47px;
+            
+            
             
         }
         .header{
             display:flex;
             justify-content: space-between;
-            margin-left:47px;
+            margin-left: 47px;
             margin-bottom:130px;
         }
         .assessment{

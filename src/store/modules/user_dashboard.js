@@ -8,7 +8,8 @@ export default {
         currentUser: [],
         accessToken: null,
         message: '',
-        isAuthenticated: false
+        isAuthenticated: false,
+        profile: []
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -22,6 +23,9 @@ export default {
         },
         AUTH: (state, isAuthenticated) => {
             state.isAuthenticated = isAuthenticated
+        },
+        UPDATE_PROFILE: (state, profile) => {
+            state.profile = profile
         }
     },
     actions: {
@@ -29,7 +33,6 @@ export default {
             const currentUser = localStorage.getItem('user')
             if (currentUser) {
                 const user = JSON.parse(currentUser)
-                console.log(user)
                 commit('UPDATE_USER', user);
             }
         },
@@ -51,6 +54,7 @@ export default {
                 let firstName = response.data.data.applicant[0].firstname
                 let lastName = response.data.data.applicant[0].lastname
                 let email = response.data.data.applicant[0].email
+                console.log('Response', response)
                 const currentUser = {
                     "accessToken": token,
                     "firstName": firstName,
@@ -67,5 +71,14 @@ export default {
 
             }
         },
+        async dashboardPic({ state, commit }) {
+            try {
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
+                commit('UPDATE_PROFILE', response.data.data[0])
+                console.log('State: ', state.profile)
+            } catch (error) {
+                console.log(error)
+            }
+        }
     }
 }

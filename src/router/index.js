@@ -2,7 +2,7 @@ import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 const ifNotAuthenticated = (to, from, next) => {
   store.dispatch('fetchAccessToken');
-  if (store.state.user_dashboard.isAuthenticated) {
+  if (store.state.user_dashboard.accessToken) {
     next()
     return
   }
@@ -39,7 +39,7 @@ const routes = [
     path: '/applicationform',
     name: 'ApplicationForm',
     component: () => import('../views/user_views/ApplicationForm.vue'),
-    // beforeEnter: ifNotAuthenticated
+    beforeEnter: ifNotAuthenticated
   },
   {
     path: '/dashboard',
@@ -54,8 +54,13 @@ const routes = [
   },
   {
     path: '/compose-assessment',
-    name: 'ComposeAssessment',
-    component: () => import('../views/admin_views/ComposeAssessmentView.vue')
+    name: 'ComposeAssessment2',
+    component: () => import('../views/admin_views/ComposeAssessment2.vue')
+  },
+  {
+    path: '/application-entries',
+    name: 'EntriesBatch',
+    component: () => import('../views/admin_views/EntriesBatchView.vue')
   },
   {
     path: '/create-application',
@@ -81,6 +86,11 @@ const routes = [
     path: '/success',
     name: 'SuccessfulView',
     component: () => import('../views/user_views/SuccessfulView.vue')
+  },
+  {
+    path: '/dash',
+    name: 'SideBarEntry',
+    component: () => import('../components/SideBarEntry.vue')
   },
   {
     path: '/admin-dashboard',
