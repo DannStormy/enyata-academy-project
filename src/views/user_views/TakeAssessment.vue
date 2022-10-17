@@ -7,7 +7,7 @@
                     <h1 class="title">Take Assessment</h1>
                     <p class="description">Click the button below to start assessment, you have limited time for this test</p>
                 </div>
-            <TimerBar/>
+            <TimerBar :displayMinutes="displayMinutes"       :displaySeconds="displaySeconds"/>
             </div>
             <div class="main">
                 <div class="logo">
@@ -15,7 +15,7 @@
                 </div>
                 <p class="notification">We have 4 days left until the next assessment
                 Watch this space</p>
-                <router-link to="/questions"><button>Take Assessment</button></router-link>
+                <router-link to="/questions"><button @click="start">Take Assessment</button></router-link>
             </div>
         </div>
     </div>
@@ -29,9 +29,45 @@ import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
     export default{
         name: 'TakeAssessment',
-        data() {
-            return {
-                picture:'../assets/svgs/hourglass-logo.svg'
+
+        data: () => ({
+            isRunning: false,
+            timerInstance: null,
+            totalSeconds: 60 * 60,
+            currentTimer: 0,
+        }),
+
+        methods: {
+            formatTime(time) {
+                if (time < 10) {
+                    return '0' + time
+                }
+                return time.toString()
+            },
+            start() {
+                this.stop()
+                this.isRunning = true;
+                this.timerInstance = setInterval(() => {
+                    if (this.totalSeconds <= 0) {
+                        this.stop()
+                        return
+                    }
+                    this.totalSeconds -= 1
+                }, 1000)
+            },
+            stop() {
+                this.isRunning = false;
+                clearInterval(this.timerInstance)
+            },
+        },
+        computed: {
+            displayMinutes() {
+                const minutes = Math.floor(this.totalSeconds / 60);
+                return this.formatTime(minutes);
+            },
+            displaySeconds() {
+                const seconds = this.totalSeconds % 60;
+                return this.formatTime(seconds)
             }
         },
         components:{

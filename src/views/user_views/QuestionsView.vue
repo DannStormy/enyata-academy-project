@@ -8,7 +8,7 @@
                     <p class="description">Click the button below to start assessment, you have limited time for this
                         test</p>
                 </div>
-                <TimerBar />
+                <TimerBar :displayMinutes="displayMinutes"       :displaySeconds="displaySeconds"/>
             </div>
             <div class="main">
                 <div class="question">
@@ -27,7 +27,7 @@
                 </div>
                 <div class="navigate">
                     <div class="buttons">
-                        <button class="previous">Previous</button>
+                        <button class="previous" @click="start">Previous</button>
                         <button class="next">Next</button>
                     </div>
                         <router-link to="/success">
@@ -48,11 +48,48 @@ import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
     export default{
         name: 'QuestionsView',
-        data() {
-            return{
-                isActive:false
+        data: () => ({
+            isActive:false,
+            isRunning: true,
+            timerInstance: null,
+            totalSeconds: 60 * 60,
+            currentTimer: 0,
+        }),
+
+        methods: {
+            formatTime(time) {
+                if (time < 10) {
+                    return '0' + time
+                }
+                return time.toString()
+            },
+            start() {
+                this.isRunning = true;
+            },
+            stop() {
+                this.isRunning = false;
+                clearInterval(this.timerInstance)
+            },
+        },
+        computed: {
+            displayMinutes() {
+                const minutes = Math.floor(this.totalSeconds / 60);
+                return this.formatTime(minutes);
+            },
+            displaySeconds() {
+                const seconds = this.totalSeconds % 60;
+                return this.formatTime(seconds)
             }
-        }, 
+        },
+        mounted() {
+            this.timerInstance = setInterval(() => {
+                if (this.totalSeconds <= 0) {
+                    this.stop()
+                    return
+                }
+                this.totalSeconds -= 1
+            }, 1000)
+            },
         components:{
             SideMenu,
             TimerBar

@@ -2,15 +2,26 @@
     <div class="timer">
         <p>Timer</p>
         <div class="time">
-            <span>00<sub>min</sub></span>
-            <span>000<sub>sec</sub></span>
+            <span>{{displayMinutes}}<sub>min</sub></span>
+            <span>{{displaySeconds}}<sub>sec</sub></span>
         </div>
     </div>
 </template>
 
 <script>
 export default {
-    name: 'TimerBar'
+    name: 'TimerBar',
+    props:['displayMinutes', 'displaySeconds' ],
+
+    methods: {
+        formatTime(time) {
+            if (time < 10) {
+                return '0' + time
+            }
+            return time.toString()
+        },
+    },
+    
 }
 </script>
 <style scoped>

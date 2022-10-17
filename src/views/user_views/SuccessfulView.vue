@@ -1,4 +1,5 @@
 <template>
+    <ScrollBar/>
     <div class="wrapper">
         <SideMenu />
         <div class="container">
@@ -29,6 +30,7 @@
 <script>
 import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
+import ScrollBar from "@/components/ScrollBar.vue";
 export default {
     name: 'SuccessfulView',
     data() {
@@ -36,7 +38,8 @@ export default {
     },
     components: {
         SideMenu,
-        TimerBar
+        TimerBar,
+        ScrollBar
     }
 }
 </script>

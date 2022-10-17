@@ -85,7 +85,7 @@ padding:0;
 
 }
 .container{
-    margin: 111px 93px 0px 323px;
+    margin: 111px 20px 0px 323px;
     width:100%;
 }
 .dashboard{
@@ -209,16 +209,22 @@ table button {
 }
 
 .table-data {
-  padding: 22px 18px;
+  padding: 14px 12px;
   margin-top: 32px;
   background: #FFFFFF;
   border-left: 7px solid #FFFFFF;
   border-spacing: 30px;
   border-radius: 8px;
-
+  cursor: pointer;
 }
 
 .table-data:hover {
+  box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.10);
+  border-radius: 8px 0px 0px 8px;
+  border-left: 7px solid #7557D3;
+  transition: 0.2s;
+}
+.table-data:active {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px 0px 0px 8px;
   border-left: 7px solid #7557D3;

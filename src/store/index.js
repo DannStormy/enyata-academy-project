@@ -1,9 +1,11 @@
 import { createStore } from 'vuex'
 import user_dashboard from './modules/user_dashboard'
 
+
 const store = createStore({
   modules: {
-    user_dashboard
+    user_dashboard,
+    
   }
 });
 
