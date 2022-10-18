@@ -130,7 +130,8 @@ export default {
   mounted() {
     this.getEntries();
   },
-}
+  name: "EntriesBatchView",
+};
 </script>
 
 <style scoped>
@@ -140,7 +141,7 @@ export default {
 }
 .wrapper {
   display: flex;
-  height:100vh;
+  height: 100vh;
 }
 .container {
   margin: 111px 20px 0px 323px;
