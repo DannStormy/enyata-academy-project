@@ -13,7 +13,7 @@ export default {
     name: 'TimerBar',
     props:['displayMinutes', 'displaySeconds' ],
 
-    methods: {
+    watch: {
         formatTime(time) {
             if (time < 10) {
                 return '0' + time

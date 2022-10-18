@@ -102,8 +102,12 @@ export default {
   display: flex;
 }
 .container {
-  margin: 107px 0 86px 290px;
-  padding: 0 58px;
+  margin-top: 137px;
+  margin-left: 367px;
+  width: 970px;
+
+  /* margin: 107px 0 86px 290px;
+  padding: 0 58px; */
 }
 h1 {
   font-weight: 300;

@@ -11,29 +11,31 @@
                 <TimerBar :displayMinutes="displayMinutes"       
                           :displaySeconds="displaySeconds"/>
             </div>
-            <div class="main">
+            <div class="main" v-for="(question, index) in quiz.questions" :key="question.numb" v-show="index === questionIndex">
                 <div class="question">
-                    <p>Question 1</p>
-                    <span>What is the purpose of HDR technology?</span>
-                    <div :class="{'active': isActive}" >
-                        <input type="radio" id="A" name="question" value="A"/>
-                        <label for="A">A. To reduce the file size of images and videos.</label><br>
-                        <input type="radio" id="B" name="question" value="B" />
+                    <p>Question {{question.numb}}</p>
+                    <span>{{question.question}}</span>
+                    <div :class="{'active': isActive}" v-for="option in question.options" :key="option.correct">     
+                        <label :for="index">
+                            <input type="radio" :id="index" :name="question.question" :value="option.correct" v-model="userResponses[index]"/>{{option.text}}
+                        </label>
+                        <!-- <input type="radio" id="B" name="question" value="B" />
                         <label for="B">B. To speed up 3D rendering performance.</label><br>
                         <input type="radio" id="C" name="question" value="C" />
                         <label for="C">C. To support higher video resolutions.</label><br>
                         <input type="radio" id="D" name="question" value="D" />
-                        <label for="D">D. To display more colors in images and videos</label>
+                        <label for="D">D. To display more colors in images and videos</label> -->
                     </div>
-                </div>
-                <div class="navigate">
-                    <div class="buttons">
-                        <button class="previous">Previous</button>
-                        <button class="next">Next</button>
-                    </div>
-                        <router-link to="/success">
-                            <button class="finish">Finish</button>
+                    <div class="navigate">
+                        <div class="buttons">
+                            <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button> 
+                            <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
+                        </div>
+                        <router-link to="/success" >
+                            <button class="finish" :disabled="checkFinish" @click="stop">Finish</button>
                         </router-link>
+                        <p>Total score: {{ score() }} / {{ quiz.questions.length }}</p>
+                    </div>
                 </div>
                 
             </div>
@@ -45,6 +47,7 @@
 </template>
 
 <script>
+import quiz from '@/quiz'
 import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
     export default{
@@ -55,6 +58,9 @@ import TimerBar from '@/components/TimerBar.vue'
             timerInstance: null,
             totalSeconds: 60 * 60,
             currentTimer: 0,
+            quiz: quiz,
+            questionIndex: 0,
+            userResponses: Array(quiz.questions.length).fill(false)
         }),
 
         methods: {
@@ -71,6 +77,15 @@ import TimerBar from '@/components/TimerBar.vue'
                 this.isRunning = false;
                 clearInterval(this.timerInstance)
             },
+            next: function () {
+                this.questionIndex++;
+            },
+            prev: function () {
+                this.questionIndex--;
+            },
+            score: function () {
+                return this.userResponses.filter(function (val) { return val }).length;
+            }
         },
         computed: {
             displayMinutes() {
@@ -80,7 +95,20 @@ import TimerBar from '@/components/TimerBar.vue'
             displaySeconds() {
                 const seconds = this.totalSeconds % 60;
                 return this.formatTime(seconds)
+
+            },
+             checkPrev: function () {
+                return this.questionIndex > 0 ? false : true;
+            },
+            checkNext: function () {
+                return this.questionIndex < quiz.questions.length - 1 ? false : true;
+            },
+            checkFinish: function () {
+                return this.questionIndex == quiz.questions.length - 1 ? false : true;
             }
+        },
+        watch:{
+            
         },
         mounted() {
             this.timerInstance = setInterval(() => {
@@ -208,31 +236,48 @@ label{
     flex-direction:row;
     align-items:center;
     margin-bottom:80px;
+    gap: 220px;
 }
-.previous{
+button{
+    font-weight: 700;
+}
+button:hover{
+    cursor: pointer
+}
+.next:disabled, .previous:disabled{
     border: 1px solid #00000040;
     width: 125px;
     height: 41px;
-    margin-right:220px;
     color:#211F26;
+    background-color: #fff;
+    cursor: not-allowed;
 }
-.next{
+.previous, .next{
     width: 125px;
     height: 41px;
     background-color:#7557D3;
     color:white;
     border-radius:4px;
     border:none;
+    /* margin-right:220px; */
+}
+ .finish{
+    width: 205px;
+    height: 41px;
+    background-color:#7557D3;
+    color:white;
+    border-radius:4px;
+    border:none;
+    /* margin-right:220px; */
 }
 
-
-.finish{
+.finish:disabled{
     width: 205px;
     height: 41px;
     background-color: #CECECE;
     color: white;
     border: none;
     border-radius: 4px;
-    margin-bottom:206px;
+    cursor: not-allowed;
 }
 </style>

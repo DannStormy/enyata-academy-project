@@ -1,11 +1,12 @@
 <template>
+  <div class="message_containe" v-show="elementVisible">
+    <p class="message">{{ message }}</p>
+  </div>
   <div class="wrapper">
     <div class="container">
       <div class="heading">
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
         <p class="title">Log In</p>
-        <!-- <p v-show="elementVisible" v-if="message">{{ message }}</p> -->
-        <!-- <FlashMessage position="left top" strategy="single" group="hints" /> -->
       </div>
       <form action="" @submit.prevent="login">
         <label for="lname">Email Address</label><br />
@@ -39,7 +40,7 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
-
+// import F
 // import router from "@/router";
 
 export default {
@@ -48,7 +49,7 @@ export default {
       email: "",
       password: "",
     },
-    elementVisible: false,
+    elementVisible: true,
   }),
   methods: {
     ...mapActions([
@@ -62,11 +63,9 @@ export default {
         return;
       }
       this.userLogin(this.user);
-      // this.$flashMessage.show({
-      //   type: "error",
-      //   title: "Error Message Title",
-      //   text: "Oh, you broke my heart! Shame on you!",
-      // });
+      setTimeout(() => (this.elementVisible = false), 3000);
+
+      console.log("Message", this.message);
     },
   },
   computed: {
