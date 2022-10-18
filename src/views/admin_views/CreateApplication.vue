@@ -5,7 +5,7 @@
       <form class="question-box" @submit.prevent>
         <div class="que">Are you sure you want to submit this application?</div>
         <div class="buttons">
-          <button>Yes</button>
+          <button @click="submit">Yes</button>
           <button @click="noConfirm">No</button>
         </div>
       </form>
@@ -27,6 +27,7 @@
               id="date"
               name="date"
               placeholder="dd/mm/yyyy"
+              v-model="appInfo.date"
             /><br />
           </div>
           <div>
@@ -34,14 +35,22 @@
             <input
               :disabled="isActive"
               type="text"
+              step=".01"
               id="id"
               name="batch-ID"
               placeholder="Enyata Academy 6.0"
+              v-model="appInfo.batch_id"
             /><br />
           </div>
         </div>
         <label for="instructions">Instructions</label><br />
-        <textarea :disabled="isActive" rows="9" cols="50"> </textarea>
+        <textarea
+          :disabled="isActive"
+          rows="9"
+          cols="50"
+          v-model="appInfo.instructions"
+        >
+        </textarea>
         <div>
           <span>
             <label for="files" class="btn">Select question</label>
@@ -50,7 +59,9 @@
         </div>
         <br />
         <div class="button-container">
-          <button class="submit" :disabled="isActive">Submit</button>
+          <button @submit="submit" class="submit" :disabled="isActive">
+            Submit
+          </button>
         </div>
       </form>
     </div>
@@ -60,9 +71,16 @@
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import ScrollBar from "@/components/ScrollBar.vue";
+import axios from "axios";
 export default {
   data: () => ({
     isActive: false,
+    appInfo: {
+      selectedFile: "",
+      batch_id: null,
+      date: null,
+      instructions: "",
+    },
   }),
   methods: {
     createApplication() {
@@ -70,6 +88,18 @@ export default {
     },
     noConfirm() {
       this.isActive = false;
+    },
+    async submit() {
+      this.isActive = false;
+      try {
+        const response = await axios.post(
+          `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
+          this.appInfo
+        );
+        console.log(response);
+      } catch (error) {
+        console.log(error);
+      }
     },
   },
   name: "CreateApplication",

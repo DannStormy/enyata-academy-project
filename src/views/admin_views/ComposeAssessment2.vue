@@ -11,14 +11,18 @@
             </div>
             <div class="main">
                 <div class="assessment-1">
-                    <p>0/30</p>
-                    <div class="choose_file">
-                        <span>+</span><span>Choose file</span>
+                    <p>{{questionIndex}}/30</p>
+                    <div class="choose_file" :class="{'no-img': !image }">
+                        <input type="file" name="assessment-file" id="assessment-file" accept="image/*" @change="previewImage" class="upload"> 
+                        <img v-show="image" :src="preview" class="img-fluid" />
+                        <div v-show="!image" class="no-img">
+                            <span>+ Choose file</span>
+                        </div>
                     </div>
                 </div>
                 <form>
                     <p><label for="question">Questions</label></p>
-                    <textarea id="question" name="question"></textarea>
+                    <textarea id="question" name="question" ></textarea>
                     <div class="options">
                        <div>
                             <p><label for="A">Option A</label></p>
@@ -40,11 +44,11 @@
                 </form>
                 <div class="navigate">
                     <div class="buttons">
-                        <button class="previous">Previous</button>
-                        <button class="next">Next</button>
+                        <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button>
+                        <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
                     </div>
                     <router-link to="/successful">
-                        <button class="finish">Save</button>
+                        <button class="finish" :disabled="checkFinish">Save</button>
                     </router-link>
                 </div>
 
@@ -57,6 +61,7 @@
 </template>
 
 <script>
+import quiz from '@/quiz'
 import AdminSideMenu from '@/components/AdminSideMenu.vue'
 import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
 
@@ -64,15 +69,50 @@ export default {
     name: 'ComposeAssessment2',
     data: () => ({
         isActive: false,
-            }),
+        preview: null,
+        image: null,
+        preview_list: [],
+        image_list: [],
+        questionIndex: 1,
+        questions: quiz.questions[{}]
+    }),
     methods: {
         createApplication() {
             this.isActive = true;
+        },
+        noConfirm() {
+            this.isActive = false;
+        },
+        previewImage: function(event) {
+            var input = event.target;
+            if (input.files) {
+                var reader = new FileReader();
+                reader.onload = (e) => {
+                    this.preview = e.target.result;
+                }
+                this.image=input.files[0];
+                reader.readAsDataURL(input.files[0]);
+            }
+        },
+        next: function() {
+            this.questionIndex++;
+        },
+        prev: function() {
+            this.questionIndex--;
+        },
     },
-    noConfirm() {
-      this.isActive = false;
+    computed: {
+        checkPrev: function(){
+            return this.questionIndex > 1 ? false : true; 
+        },
+        checkNext: function(){
+            // quiz.questions.length - 1 
+            return this.questionIndex < 30 ? false : true; 
+        },
+        checkFinish: function(){
+            return this.questionIndex == 30 ? false : true; 
+        }
     },
-  },
     components: {
         AdminSideMenu,
         TimeBarAdmin
@@ -148,15 +188,40 @@ export default {
     justify-content: center;
     align-items: center;
     gap: 13px;
-    width: 456px;
     cursor:pointer;
-    height: 108px;
+    height: 170px;
     border: 1.55172px dashed #2B3C4E;
     border-radius: 6.2069px;
     margin-bottom: 25px;
+    overflow: hidden;
+    position: relative;
 }
-    
-
+.choose_file input.upload {
+  position: absolute;
+  top: 0;
+  right: 0;
+  margin: 0;
+  padding: 0;
+  font-size: 20px;
+  cursor: pointer;
+  opacity: 0;
+  filter: alpha(opacity=0);
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+}
+.choose_file img{
+    width: 100%;
+    height: 100%;
+    /* object-fit: cover; */
+}
+.no-img{
+    width: 456px;
+    height: 108px;
+    align-items: center;
+    display: flex;
+    justify-content: center;
+}
 form{
     display: flex;
     flex-direction: column;
@@ -223,20 +288,21 @@ label {
     flex-direction: row;
     align-items: center;
     margin-bottom: 50px;
+    gap: 529px;
 }
 
-.previous {
+.previous,.next,.finish {
     border: 1px solid #00000040;
     width: 125px;
     height: 41px;
-    margin-right: 529px;
+    /* margin-right: 529px; */
     background-color: #211F26;
     border-radius: 4px;
     color:white;
     cursor:pointer;
 }
 
-.next {
+/* .next {
     width: 125px;
     height: 41px;
     background-color: #7557D3;
@@ -244,17 +310,27 @@ label {
     border-radius: 4px;
     cursor: pointer;
     border: none;
+} */
+
+
+.previous:disabled, .next:disabled {
+    /* width: 205px;
+    height: 41px; */
+    background-color: #CECECE;
+    color: white;
+    border: none;
+    border-radius: 4px;
+    cursor: not-allowed;
+    /* margin-bottom: 206px; */
 }
-
-
-.finish {
+.finish:disabled {
     width: 205px;
     height: 41px;
     background-color: #CECECE;
     color: white;
     border: none;
     border-radius: 4px;
-    cursor: pointer;
+    cursor: not-allowed;
     margin-bottom: 206px;
 }
 </style>

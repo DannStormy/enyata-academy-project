@@ -130,7 +130,7 @@ export default {
   mounted() {
     this.getEntries();
   },
-};
+}
 </script>
 
 <style scoped>
@@ -140,6 +140,7 @@ export default {
 }
 .wrapper {
   display: flex;
+  height:100vh;
 }
 .container {
   margin: 111px 20px 0px 323px;
@@ -217,7 +218,7 @@ select::-ms-expand {
   right: 0;
   cursor: pointer;
   pointer-events: none;
-  transition: 0.25s all ease;
+  transition: 0.15s all ease;
 }
 
 .header-title {
@@ -255,7 +256,7 @@ th {
 td {
   padding: 15px 4px;
   margin-right: 35px;
-  text-align: center;
+  /* text-align: start; */
   /* width: 10px; */
   width: fit-content;
   background: inherit;
@@ -276,25 +277,12 @@ table button {
 }
 
 .table-data {
-  padding: 22px 18px;
+  padding: 14px 12px;
   margin-top: 32px;
   /* background: #ffffff; */
   background: inherit;
   /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
-}
-
-.table-data:hover {
-  box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  border-radius: 8px 0px 0px 8px;
-  border-left: 7px solid #7557d3;
-  transition: 0.2s;
-}
-
-.scores > button > img {
-  margin-left: 16px;
-  /* width: 100%; */
-  height: 100%;
 }
 </style>

@@ -75,7 +75,7 @@ export default {
             try {
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
                 commit('UPDATE_PROFILE', response.data.data[0])
-                console.log('State: ', state.profile)
+                // console.log('State: ', state.profile)
             } catch (error) {
                 console.log(error)
             }
