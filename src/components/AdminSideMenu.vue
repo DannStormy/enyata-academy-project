@@ -7,8 +7,8 @@
           alt="admin profile picture"
         />
       </div>
-      <p class="user-name">Jane Doe</p>
-      <p class="user-email">doe@enyata.com</p>
+      <p class="user-name">{{ admin?.name }}</p>
+      <p class="user-email">{{ admin?.email }}</p>
     </div>
     <div class="nav-buttons">
       <router-link to="/admin-dashboard">
@@ -60,20 +60,36 @@
           class="nav-button-img"
         />Settings
       </router-link>
-      <router-link to="/logout" class="logout-button">
+      <div @click="logout" class="logout-button">
         <img
           src="../assets/svgs/logout-logo.svg"
           alt="logout icon"
           class="nav-button-img"
         />Log Out
-      </router-link>
+      </div>
     </div>
   </div>
   <router-view />
 </template>
 
 <script>
+import router from "@/router";
+import { mapActions, mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState({ admin: (state) => state.admin.adminDetails }),
+  },
+  methods: {
+    ...mapActions(["adminDetails", "adminAuth"]),
+    logout() {
+      localStorage.removeItem("admin");
+      router.push("/admin-login");
+    },
+  },
+  mounted() {
+    this.adminAuth();
+    this.adminDetails();
+  },
   name: "AdminSideMenu",
 };
 </script>
