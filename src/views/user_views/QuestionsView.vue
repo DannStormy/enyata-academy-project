@@ -8,7 +8,8 @@
                     <p class="description">Click the button below to start assessment, you have limited time for this
                         test</p>
                 </div>
-                <TimerBar />
+                <TimerBar :displayMinutes="displayMinutes"       
+                          :displaySeconds="displaySeconds"/>
             </div>
             <div class="main" v-for="(question, index) in quiz.questions" :key="question.numb" v-show="index === questionIndex">
                 <div class="question">
@@ -31,7 +32,7 @@
                             <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
                         </div>
                         <router-link to="/success" >
-                            <button class="finish" :disabled="checkFinish">Finish</button>
+                            <button class="finish" :disabled="checkFinish" @click="stop">Finish</button>
                         </router-link>
                         <p>Total score: {{ score() }} / {{ quiz.questions.length }}</p>
                     </div>
@@ -51,39 +52,76 @@ import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
     export default{
         name: 'QuestionsView',
-        data() {
-            return{
-                isActive:false,
-                quiz: quiz,
-                questionIndex: 0,
-                userResponses: Array(quiz.questions.length).fill(false)
-            }
-        }, 
-        components:{
-            SideMenu,
-            TimerBar
-        },
+        data: () => ({
+            isActive:false,
+            isRunning: true,
+            timerInstance: null,
+            totalSeconds: 60 * 60,
+            currentTimer: 0,
+            quiz: quiz,
+            questionIndex: 0,
+            userResponses: Array(quiz.questions.length).fill(false)
+        }),
+
         methods: {
-            next: function() {
+            formatTime(time) {
+                if (time < 10) {
+                    return '0' + time
+                }
+                return time.toString()
+            },
+            start() {
+                this.isRunning = true;
+            },
+            stop() {
+                this.isRunning = false;
+                clearInterval(this.timerInstance)
+            },
+            next: function () {
                 this.questionIndex++;
             },
-            prev: function() {
+            prev: function () {
                 this.questionIndex--;
             },
-            score: function() {
-                return this.userResponses.filter(function(val) { return val }).length;
+            score: function () {
+                return this.userResponses.filter(function (val) { return val }).length;
             }
         },
         computed: {
-            checkPrev: function(){
-                return this.questionIndex > 0 ? false : true; 
+            displayMinutes() {
+                const minutes = Math.floor(this.totalSeconds / 60);
+                return this.formatTime(minutes);
             },
-            checkNext: function(){
-                return this.questionIndex < quiz.questions.length - 1 ? false : true; 
+            displaySeconds() {
+                const seconds = this.totalSeconds % 60;
+                return this.formatTime(seconds)
+
             },
-            checkFinish: function(){
-                return this.questionIndex == quiz.questions.length - 1 ? false : true; 
+             checkPrev: function () {
+                return this.questionIndex > 0 ? false : true;
+            },
+            checkNext: function () {
+                return this.questionIndex < quiz.questions.length - 1 ? false : true;
+            },
+            checkFinish: function () {
+                return this.questionIndex == quiz.questions.length - 1 ? false : true;
             }
+        },
+        watch:{
+            
+        },
+        mounted() {
+            this.timerInstance = setInterval(() => {
+                if (this.totalSeconds <= 0) {
+                    this.stop()
+                    return
+                }
+                this.totalSeconds -= 1
+            }, 1000)
+            },
+        components:{
+            SideMenu,
+            TimerBar
         }
     }
 </script>
@@ -106,8 +144,6 @@ import TimerBar from '@/components/TimerBar.vue'
 .container {
     margin: 111px 0 8px 292px;
     width: 100%;
-    
-
 }
 
 .header {

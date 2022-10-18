@@ -1,4 +1,5 @@
 <template>
+    <ScrollBar/>
     <div class="wrapper">
         <SideMenu />
         <div class="container">
@@ -7,7 +8,9 @@
                     <h1 class="title">Take Assessment</h1>
                     <p class="description">Thank you</p>
                 </div>
-                <TimerBar />
+                <TimerBar
+                :displayMinutes="displayMinutes"       
+                :displaySeconds="displaySeconds"/>
             </div>
             <div class="main">
                 <div class="logo">
@@ -29,14 +32,54 @@
 <script>
 import SideMenu from '@/components/SideMenu.vue'
 import TimerBar from '@/components/TimerBar.vue'
+import ScrollBar from "@/components/ScrollBar.vue";
 export default {
     name: 'SuccessfulView',
-    data() {
-       
+    data:()=>({
+        isRunning: true,
+        timerInstance: null,
+        totalSeconds: 60 * 60,
+        currentTimer: 0,
+    }),
+    methods: {
+        formatTime(time) {
+            if (time < 10) {
+                return '0' + time
+            }
+            return time.toString()
+        },
+        start() {
+            this.isRunning = true;
+        },
+        stop() {
+            this.isRunning = false;
+            clearInterval(this.timerInstance)
+        },
+    },
+    computed: {
+        displayMinutes() {
+            const minutes = Math.floor(this.totalSeconds / 60);
+            return this.formatTime(minutes);
+        },
+        displaySeconds() {
+            const seconds = this.totalSeconds % 60;
+            return this.formatTime(seconds)
+
+        }
+    },
+    mounted() {
+        this.timerInstance = setInterval(() => {
+            if (this.totalSeconds <= 0) {
+                this.stop()
+                return
+            }
+            this.totalSeconds -= 1
+        }, 1000)
     },
     components: {
         SideMenu,
-        TimerBar
+        TimerBar,
+        ScrollBar
     }
 }
 </script>
