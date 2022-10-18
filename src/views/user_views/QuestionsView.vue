@@ -8,7 +8,8 @@
                     <p class="description">Click the button below to start assessment, you have limited time for this
                         test</p>
                 </div>
-                <TimerBar :displayMinutes="displayMinutes"       :displaySeconds="displaySeconds"/>
+                <TimerBar :displayMinutes="displayMinutes"       
+                          :displaySeconds="displaySeconds"/>
             </div>
             <div class="main">
                 <div class="question">
@@ -115,8 +116,6 @@ import TimerBar from '@/components/TimerBar.vue'
 .container {
     margin: 111px 0 8px 292px;
     width: 100%;
-    
-
 }
 
 .header {
