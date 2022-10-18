@@ -62,8 +62,13 @@ export default {
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
+                console.log('Resonse', response.data.message)
+                if (response.data.message === 'Logged In Successfully') {
+                    router.push('/dashboard')
+                } else {
+                    router.push('/applicationform')
+                }
                 commit('AUTH', true)
-                router.push('/dashboard')
 
             } catch (error) {
                 localStorage.removeItem("user");
