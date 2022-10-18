@@ -140,6 +140,7 @@ export default {
 }
 .wrapper {
   display: flex;
+  height:100vh;
 }
 .container {
   margin: 111px 20px 0px 323px;
@@ -217,7 +218,7 @@ select::-ms-expand {
   right: 0;
   cursor: pointer;
   pointer-events: none;
-  transition: 0.25s all ease;
+  transition: 0.15s all ease;
 }
 
 .header-title {
@@ -255,7 +256,7 @@ th {
 td {
   padding: 15px 4px;
   margin-right: 35px;
-  text-align: center;
+  /* text-align: start; */
   /* width: 10px; */
   width: fit-content;
   background: inherit;
