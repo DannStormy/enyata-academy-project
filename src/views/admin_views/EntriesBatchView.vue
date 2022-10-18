@@ -1,5 +1,19 @@
 <template>
-  <div class="wrapper">
+  <SideBarEntry
+    :name="applicantData?.firstname + ' ' + applicantData?.lastname"
+    :email="applicantData?.email"
+    :address="applicantData?.dob"
+    :university="applicantData?.university"
+    :course="applicantData?.cgpa"
+    :dob="applicantData?.address"
+    :cgpa="applicantData?.course"
+    :pdf="applicantData?.cv"
+    :image="applicantData?.profilepic"
+    @sendConfirm="confirmation"
+    v-if="isActive"
+  />
+
+  <div :class="['wrapper', { active: isActive }]">
     <AdminSideMenu />
     <div class="container">
       <div class="dashboard">
@@ -35,9 +49,13 @@
               </th>
             </tr>
             <tr
-              class="table-data"
+              :class="['table-data', { active: isActive }]"
               v-for="applicant in applicants"
               :key="applicant.id"
+              @click="
+                getUser(applicant);
+                switchActive();
+              "
             >
               <td>
                 <input type="checkbox" id="username1" name="username" value= />
@@ -49,7 +67,7 @@
               <td>{{ applicant.address }} - {{ getAge(applicant.address) }}</td>
               <td>{{ applicant.dob }}</td>
               <td>{{ applicant.university }}</td>
-              <td>{{ applicant.cgpa }}</td>
+              <td>{{ applicant.course }}</td>
               <td class="scores">
                 <span>15 </span
                 ><button>
@@ -68,13 +86,22 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import SideBarEntry from "@/components/SideBarEntry.vue";
+import { mapActions, mapState } from "vuex";
+
 export default {
   data: () => ({
-    applicants: null,
+    applicantData: null,
+    isActive: false,
+    confirm: false,
   }),
+  computed: {
+    ...mapState({ applicants: (state) => state.admin.applicants }),
+  },
   methods: {
+    ...mapActions(["getEntries"]),
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -85,18 +112,23 @@ export default {
       }
       return age;
     },
+    getUser(applicant) {
+      this.applicantData = applicant;
+    },
+    switchActive() {
+      this.isActive = true;
+    },
+    confirmation(value) {
+      this.isActive = value;
+      console.log(value);
+    },
   },
   components: {
     AdminSideMenu,
+    SideBarEntry,
   },
   mounted() {
-    axios
-      .get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
-      .then((response) => {
-        this.applicants = response.data.data;
-        console.log(response.data.data);
-      })
-      .catch((error) => console.log(error));
+    this.getEntries();
   },
 };
 </script>
@@ -110,9 +142,16 @@ export default {
   display: flex;
 }
 .container {
-  margin: 111px 93px 0px 323px;
+  margin: 111px 20px 0px 323px;
   width: 100%;
+  /* height: 900px; */
 }
+.active {
+  background: rgb(25, 13, 74, 0.2);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
 .dashboard {
   margin-bottom: 35px;
 }
@@ -191,7 +230,7 @@ select::-ms-expand {
 
 .table {
   border-collapse: collapse;
-  min-width: 1042px;
+  width: 100%;
   padding: 0 15px;
   border: none;
 }
@@ -209,6 +248,7 @@ select::-ms-expand {
 }
 
 th {
+  /* width: 10px; */
   padding: 15px 4px;
 }
 
@@ -216,7 +256,9 @@ td {
   padding: 15px 4px;
   margin-right: 35px;
   text-align: center;
+  /* width: 10px; */
   width: fit-content;
+  background: inherit;
 }
 
 th img {
@@ -228,7 +270,7 @@ input {
 }
 
 table button {
-  background-color: #ffffff;
+  background-color: inherit;
   border: none;
   outline: none;
 }
@@ -236,8 +278,9 @@ table button {
 .table-data {
   padding: 22px 18px;
   margin-top: 32px;
-  background: #ffffff;
-  border-left: 7px solid #ffffff;
+  /* background: #ffffff; */
+  background: inherit;
+  /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
 }

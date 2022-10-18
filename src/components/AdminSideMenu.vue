@@ -88,7 +88,7 @@ export default {
   min-width: 290px;
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: 100vh;
+  min-height: 100vh;
   position: fixed;
 }
 .user-details {
@@ -135,7 +135,7 @@ a.router-link-exact-active {
   font-weight: 700;
 }
 a.router-link-exact-active.results {
-  border-left: 4px solid #31D283;
+  border-left: 4px solid #31d283;
 }
 a {
   text-decoration: none;
