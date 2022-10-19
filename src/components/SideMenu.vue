@@ -57,7 +57,6 @@ export default {
     ...mapState({ profile: (state) => state.user_dashboard.profile }),
   },
   mounted() {
-    console.log("current user", this.currentUser);
     this.fetchUser();
     this.dashboardPic();
   },

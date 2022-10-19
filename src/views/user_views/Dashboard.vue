@@ -19,9 +19,15 @@
           <hr />
           <p class="comments">{{ formatDateString() }}</p>
         </div>
-        <div class="status">
+        <div
+          :class="[
+            'status',
+            { denied: activeColor == 'red' },
+            { approved: activeColor == 'green' },
+          ]"
+        >
           <p class="titles">Application Status</p>
-          <p v-if="profile?.applied" class="data">Pending</p>
+          <p class="data">{{ setStatus() }}</p>
           <hr />
           <p class="comments">We will get back to you</p>
         </div>
@@ -58,6 +64,9 @@ import SideMenu from "@/components/SideMenu.vue";
 
 import { mapActions, mapState } from "vuex";
 export default {
+  data: () => ({
+    activeColor: "yellow",
+  }),
   name: "DashBoard",
   methods: {
     ...mapActions(["dashboardPic"]),
@@ -79,12 +88,29 @@ export default {
       };
       return days(date_1, date_2) + " day(s) since applied";
     },
+    setStatus() {
+      if (this.status === null) {
+        this.activeColor = "yellow";
+        return "Pending";
+      } else if (this.status === false) {
+        this.activeColor = "red";
+        return "Denied";
+      } else if (this.status === true) {
+        this.activeColor = "green";
+        return "Approved";
+      }
+    },
   },
   computed: {
-    ...mapState({ profile: (state) => state.user_dashboard.profile }),
+    ...mapState({
+      status: (state) => state.user_dashboard.status,
+      profile: (state) => state.user_dashboard.profile,
+    }),
   },
   mounted() {
+    // this.setStatus();
     // this.dashboardPic();
+    // console.log("Dashboard statys", this.status);
   },
   components: {
     SideMenu,
@@ -139,6 +165,12 @@ hr {
 }
 .status > hr {
   border: 4px solid #f09000;
+}
+.denied > hr {
+  border: 4px solid rgb(241, 44, 44);
+}
+.approved > hr {
+  border: 4px solid #12c52f;
 }
 .comments {
   font-size: 12px;
