@@ -1,5 +1,19 @@
 <template>
-  <div class="wrapper">
+  <SideBarEntry
+    :name="applicantData?.firstname + ' ' + applicantData?.lastname"
+    :email="applicantData?.email"
+    :address="applicantData?.address"
+    :university="applicantData?.university"
+    :course="applicantData?.course"
+    :dob="applicantData?.dob"
+    :cgpa="applicantData?.cgpa"
+    :pdf="applicantData?.cv"
+    :image="applicantData?.profilepic"
+    @sendConfirm="confirmation"
+    v-if="isActive"
+  />
+
+  <div :class="['wrapper', { active: isActive }]">
     <AdminSideMenu />
     <div class="container">
       <div class="dashboard">
@@ -35,9 +49,13 @@
               </th>
             </tr>
             <tr
-              class="table-data"
+              :class="['table-data', { active: isActive }]"
               v-for="applicant in applicants"
               :key="applicant.id"
+              @click="
+                getUser(applicant);
+                switchActive();
+              "
             >
               <td>
                 <input type="checkbox" id="username1" name="username" value= />
@@ -46,8 +64,8 @@
                 ><br />
               </td>
               <td>{{ applicant.email }}</td>
-              <td>{{ applicant.address }} - {{ getAge(applicant.address) }}</td>
-              <td>{{ applicant.dob }}</td>
+              <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+              <td>{{ applicant.address }}</td>
               <td>{{ applicant.university }}</td>
               <td>{{ applicant.cgpa }}</td>
               <td class="scores">
@@ -68,13 +86,22 @@
 </template>
 
 <script>
-import axios from "axios";
+// import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import SideBarEntry from "@/components/SideBarEntry.vue";
+import { mapActions, mapState } from "vuex";
+
 export default {
   data: () => ({
-    applicants: null,
+    applicantData: null,
+    isActive: false,
+    confirm: false,
   }),
+  computed: {
+    ...mapState({ applicants: (state) => state.admin.applicants }),
+  },
   methods: {
+    ...mapActions(["getEntries"]),
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -85,19 +112,25 @@ export default {
       }
       return age;
     },
+    getUser(applicant) {
+      this.applicantData = applicant;
+    },
+    switchActive() {
+      this.isActive = true;
+    },
+    confirmation(value) {
+      this.isActive = value;
+      console.log(value);
+    },
   },
   components: {
     AdminSideMenu,
+    SideBarEntry,
   },
   mounted() {
-    axios
-      .get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
-      .then((response) => {
-        this.applicants = response.data.data;
-        console.log(response.data.data);
-      })
-      .catch((error) => console.log(error));
+    this.getEntries();
   },
+  name: "EntriesBatchView",
 };
 </script>
 
@@ -108,11 +141,19 @@ export default {
 }
 .wrapper {
   display: flex;
+  height: 100vh;
 }
 .container {
-  margin: 111px 93px 0px 323px;
+  margin: 111px 20px 0px 323px;
   width: 100%;
+  /* height: 900px; */
 }
+.active {
+  background: rgb(25, 13, 74, 0.2);
+  filter: blur(2px);
+  pointer-events: none;
+}
+
 .dashboard {
   margin-bottom: 35px;
 }
@@ -178,7 +219,7 @@ select::-ms-expand {
   right: 0;
   cursor: pointer;
   pointer-events: none;
-  transition: 0.25s all ease;
+  transition: 0.15s all ease;
 }
 
 .header-title {
@@ -191,7 +232,7 @@ select::-ms-expand {
 
 .table {
   border-collapse: collapse;
-  min-width: 1042px;
+  width: 100%;
   padding: 0 15px;
   border: none;
 }
@@ -209,14 +250,17 @@ select::-ms-expand {
 }
 
 th {
+  /* width: 10px; */
   padding: 15px 4px;
 }
 
 td {
   padding: 15px 4px;
   margin-right: 35px;
-  text-align: center;
+  /* text-align: start; */
+  /* width: 10px; */
   width: fit-content;
+  background: inherit;
 }
 
 th img {
@@ -228,30 +272,18 @@ input {
 }
 
 table button {
-  background-color: #ffffff;
+  background-color: inherit;
   border: none;
   outline: none;
 }
 
 .table-data {
-  padding: 22px 18px;
+  padding: 14px 12px;
   margin-top: 32px;
-  background: #ffffff;
-  border-left: 7px solid #ffffff;
+  /* background: #ffffff; */
+  background: inherit;
+  /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
-}
-
-.table-data:hover {
-  box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  border-radius: 8px 0px 0px 8px;
-  border-left: 7px solid #7557d3;
-  transition: 0.2s;
-}
-
-.scores > button > img {
-  margin-left: 16px;
-  /* width: 100%; */
-  height: 100%;
 }
 </style>

@@ -18,12 +18,7 @@
       <div class="form-top">
         <div>
           <label for="name">Name</label><br />
-          <input
-            type="text"
-            id="name"
-            name="name"
-            value="Cameron Williamson"
-          /><br />
+          <input type="text" id="name" name="name" :value="admin?.name" /><br />
         </div>
         <div>
           <label for="email">Email</label><br />
@@ -31,7 +26,7 @@
             type="email"
             id="email"
             name="email"
-            value="debra.holt@example.com"
+            :value="admin?.email"
           /><br />
         </div>
         <div>
@@ -40,7 +35,7 @@
             type="tel"
             id="phone"
             name="phone"
-            value="(303) 555-0105"
+            :value="admin?.phone"
           /><br />
         </div>
       </div>
@@ -51,7 +46,7 @@
             type="text"
             id="country"
             name="country"
-            value="Afghanistan"
+            :value="admin?.country"
           /><br />
         </div>
         <div>
@@ -60,7 +55,7 @@
             type="text"
             id="address"
             name="address"
-            value="3891 Ranchview Dr. Richardson, California 62639"
+            :value="admin?.address"
           /><br />
         </div>
       </div>
@@ -70,7 +65,17 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState({ admin: (state) => state.admin.adminDetails }),
+  },
+  methods: {
+    ...mapActions(["adminDetails", "adminAuth"]),
+  },
+  mounted() {
+    this.adminDetails();
+  },
   name: "ProfileComp",
 };
 </script>

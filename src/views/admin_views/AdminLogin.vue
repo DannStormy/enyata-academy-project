@@ -5,11 +5,21 @@
         <img src="@/assets/svgs/enyata-white.svg" alt="company-logo" />
         <p class="title">Admin Log In</p>
       </div>
-      <form action="">
+      <form action="" @submit.prevent="adminLogin">
         <label for="lname">Email Address</label><br />
-        <input type="email" id="email" name="email" /><br />
+        <input
+          type="email"
+          id="email"
+          name="email"
+          v-model="details.email"
+        /><br />
         <label for="password">Password</label><br />
-        <input type="password" id="password" name="password" /><br />
+        <input
+          type="password"
+          id="password"
+          name="password"
+          v-model="details.password"
+        /><br />
         <button class="login">Sign In</button>
       </form>
     </div>
@@ -17,7 +27,33 @@
 </template>
 
 <script>
+import axios from "axios";
+import router from "@/router";
 export default {
+  data: () => ({
+    details: { email: "", password: "" },
+  }),
+  methods: {
+    async adminLogin() {
+      try {
+        const response = await axios.post(
+          `${process.env.VUE_APP_SERVER_URL}/admin/login`,
+          this.details
+        );
+        let token = response.data.data.token;
+        let email = response.data.data.admin[0].email;
+        const adminAuth = {
+          accessToken: token,
+          email: email,
+        };
+        localStorage.setItem("admin", JSON.stringify(adminAuth));
+        router.push("/admin-dashboard");
+      } catch (error) {
+        console.log(error);
+        return error;
+      }
+    },
+  },
   name: "AdminLogin",
 };
 </script>

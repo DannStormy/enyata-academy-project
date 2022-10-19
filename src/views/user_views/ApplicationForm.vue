@@ -108,6 +108,7 @@
                 id="address"
                 name="address"
                 v-model="userData.address"
+                maxlength="20"
               />
               <div
                 v-if="submitted && !v$.userData.address.$model"
@@ -197,6 +198,7 @@
                   'is-invalid': submitted && v$.userData.cgpa.$error,
                 }"
                 type="number"
+                step=".01"
                 id="cgpa"
                 name="cgpa"
                 v-model="userData.cgpa"

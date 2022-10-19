@@ -7,8 +7,8 @@
           alt="admin profile picture"
         />
       </div>
-      <p class="user-name">Jane Doe</p>
-      <p class="user-email">doe@enyata.com</p>
+      <p class="user-name">{{ admin?.name }}</p>
+      <p class="user-email">{{ admin?.email }}</p>
     </div>
     <div class="nav-buttons">
       <router-link to="/admin-dashboard">
@@ -60,20 +60,36 @@
           class="nav-button-img"
         />Settings
       </router-link>
-      <router-link to="/logout" class="logout-button">
+      <div @click="logout" class="logout-button">
         <img
           src="../assets/svgs/logout-logo.svg"
           alt="logout icon"
           class="nav-button-img"
         />Log Out
-      </router-link>
+      </div>
     </div>
   </div>
   <router-view />
 </template>
 
 <script>
+import router from "@/router";
+import { mapActions, mapState } from "vuex";
 export default {
+  computed: {
+    ...mapState({ admin: (state) => state.admin.adminDetails }),
+  },
+  methods: {
+    ...mapActions(["adminDetails", "adminAuth"]),
+    logout() {
+      localStorage.removeItem("admin");
+      router.push("/admin-login");
+    },
+  },
+  mounted() {
+    this.adminAuth();
+    this.adminDetails();
+  },
   name: "AdminSideMenu",
 };
 </script>
@@ -88,7 +104,7 @@ export default {
   min-width: 290px;
   max-width: 292px;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  height: 100vh;
+  min-height: 100vh;
   position: fixed;
 }
 .user-details {
@@ -135,7 +151,7 @@ a.router-link-exact-active {
   font-weight: 700;
 }
 a.router-link-exact-active.results {
-  border-left: 4px solid #31D283;
+  border-left: 4px solid #31d283;
 }
 a {
   text-decoration: none;
