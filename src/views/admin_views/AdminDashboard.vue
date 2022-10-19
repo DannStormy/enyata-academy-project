@@ -6,19 +6,19 @@
       <div class="dashboard-status">
         <div class="current-applciation">
           <p class="titles">Current Applications</p>
-          <p class="data">233</p>
+          <p class="data">{{ currentApplications }}</p>
           <hr />
-          <p class="comments">Academy 2.0</p>
+          <p class="comments">Academy {{ currentBatch }}</p>
         </div>
         <div class="total-application">
           <p class="titles">Total Applications</p>
-          <p class="data">4253</p>
+          <p class="data">{{ totalApplications }}</p>
           <hr />
-          <p class="comments">All entries do far</p>
+          <p class="comments">All entries so far</p>
         </div>
         <div class="batch">
           <p class="titles">Academys</p>
-          <p class="data">4.0</p>
+          <p class="data">{{ currentBatch }}</p>
           <hr />
           <p class="comments">So far</p>
         </div>
@@ -26,9 +26,18 @@
       <div class="further-info">
         <div class="history">
           <p class="finfo">History</p>
-          <p class="finfo-description">Last Update 18:24, 22/02/19</p>
+          <p class="finfo-description">Last Update {{ history }}</p>
           <ul>
             <li>
+              <p class="history-title">
+                Academy Batch {{ updates?.batch_id?.split(" ")[2] }}
+              </p>
+              <p class="candidates">{{ approved }} candidates</p>
+              <p class="history-date">
+                started {{ updates?.date?.replaceAll("-", "/") }}
+              </p>
+            </li>
+            <!-- <li>
               <p class="history-title">Academy Batch 1.0</p>
               <p class="candidates">15 candidates</p>
               <p class="history-date">started 11/09/15</p>
@@ -37,12 +46,7 @@
               <p class="history-title">Academy Batch 1.0</p>
               <p class="candidates">15 candidates</p>
               <p class="history-date">started 11/09/15</p>
-            </li>
-            <li>
-              <p class="history-title">Academy Batch 1.0</p>
-              <p class="candidates">15 candidates</p>
-              <p class="history-date">started 11/09/15</p>
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="assessments">
@@ -63,7 +67,46 @@
   
   <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import axios from "axios";
 export default {
+  data: () => ({
+    totalApplications: "",
+    currentApplications: "",
+    currentBatch: "",
+    updates: null,
+    history: null,
+    approved: 0,
+  }),
+  methods: {
+    async getDetails() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`
+      );
+      this.currentApplications =
+        response.data.allDetails.currentBatchCount[0].count;
+      this.totalApplications = response.data.allDetails.allBatchCount[0].count;
+      const cb = response.data.allDetails.currentBatch[0].max;
+      this.currentBatch = cb.split(" ")[2];
+      this.updates = response.data.allDetails.updates[0];
+      this.approved = response.data.allDetails.approved[0].count;
+      var currentdate = new Date();
+      this.history =
+        currentdate.getDate() +
+        "/" +
+        (currentdate.getMonth() + 1) +
+        "/" +
+        currentdate.getFullYear() +
+        "  " +
+        currentdate.getHours() +
+        ":" +
+        currentdate.getMinutes() +
+        ":" +
+        currentdate.getSeconds();
+    },
+  },
+  mounted() {
+    this.getDetails();
+  },
   name: "AdminDashboard",
   components: {
     AdminSideMenu,
@@ -155,6 +198,7 @@ li {
   border-left: 7px solid #ffffff;
   display: flex;
   justify-content: space-between;
+  font-size: 15px;
 }
 li:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
@@ -171,7 +215,7 @@ li:hover {
   margin: 70px 0 80px;
 }
 .assessment-button {
-  background-color: hsl(0, 0%, 69%);
+  background-color: #12c52f;
   color: white;
   cursor: pointer;
   border: none;
