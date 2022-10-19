@@ -8,7 +8,7 @@ export default {
         currentUser: [],
         accessToken: null,
         message: '',
-        isAuthenticated: false,
+        status: null,
         profile: []
     }),
     mutations: {
@@ -21,8 +21,8 @@ export default {
         UPDATE_USER: (state, user) => {
             state.currentUser = user
         },
-        AUTH: (state, isAuthenticated) => {
-            state.isAuthenticated = isAuthenticated
+        UPDATE_STATUS: (state, status) => {
+            state.status = status
         },
         UPDATE_PROFILE: (state, profile) => {
             state.profile = profile
@@ -62,8 +62,13 @@ export default {
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
+                console.log('Resonse', response.data.message)
+                if (response.data.message === 'Logged In Successfully') {
+                    router.push('/dashboard')
+                } else {
+                    router.push('/applicationform')
+                }
                 commit('AUTH', true)
-                router.push('/dashboard')
 
             } catch (error) {
                 localStorage.removeItem("user");
@@ -74,7 +79,9 @@ export default {
         async dashboardPic({ state, commit }) {
             try {
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
-                commit('UPDATE_PROFILE', response.data.data[0])
+                commit('UPDATE_PROFILE', response.data.data[0]);
+                commit('UPDATE_STATUS', response.data.applicantStatus[0].status)
+                // console.log('St', response.data.applicantStatus[0].status)
                 // console.log('State: ', state.profile)
             } catch (error) {
                 console.log(error)

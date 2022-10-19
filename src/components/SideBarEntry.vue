@@ -2,12 +2,12 @@
   <!-- <ScrollBar /> -->
   <div class="confirmation-container" v-if="isActive">
     <div class="confirmation-box">
-      <form class="question-box" @submit.prevent>
+      <form class="question-box" @submit.prevent="yesConfirm()">
         <div class="que">
           {{ question }}
         </div>
         <div class="buttons">
-          <button @click="yesConfirm()">Yes</button>
+          <button>Yes</button>
           <button @click="noConfirm()">No</button>
         </div>
       </form>
@@ -85,11 +85,14 @@
 </template>
 
 <script>
+import axios from "axios";
+
 // import ScrollBar from "@/components/ScrollBar.vue";
 export default {
   data: () => ({
     isActive: false,
     question: "",
+    status: "",
   }),
   props: {
     name: String,
@@ -106,13 +109,19 @@ export default {
     approveApplication() {
       this.question = "Are you sure you want to approve this application";
       this.isActive = true;
+      this.status = true;
     },
     declineApplication() {
       this.question = "Are you sure you want to decline this application";
       this.isActive = true;
+      this.status = false;
     },
     yesConfirm() {
       this.$emit("sendConfirm", false);
+      axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/status`, {
+        status: this.status,
+        applicant_id: this.email,
+      });
     },
     noConfirm() {
       this.isActive = false;

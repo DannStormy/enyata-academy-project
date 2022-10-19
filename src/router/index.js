@@ -6,7 +6,17 @@ const ifNotAuthenticated = (to, from, next) => {
     next()
     return
   }
+  alert('Access Denied')
   next('/login')
+}
+
+const adminAuthenticated = (to, from, next) => {
+  store.dispatch('adminAuth');
+  if (store.state.admin.adminAuth) {
+    next()
+    return
+  }
+  next('/admin-login')
 }
 
 const routes = [
@@ -39,7 +49,7 @@ const routes = [
     path: '/applicationform',
     name: 'ApplicationForm',
     component: () => import('../views/user_views/ApplicationForm.vue'),
-    beforeEnter: ifNotAuthenticated
+    // beforeEnter: ifNotAuthenticated
   },
   {
     path: '/dashboard',
@@ -54,28 +64,31 @@ const routes = [
   },
   {
     path: '/compose-assessment',
-    name: 'ComposeAssessment2',
-    component: () => import('../views/admin_views/ComposeAssessment2.vue')
-  },
-  {
-    path: '/application-entries',
-    name: 'EntriesBatch',
-    component: () => import('../views/admin_views/EntriesBatchView.vue')
+    name: 'ComposeAssessment',
+    component: () => import('../views/admin_views/ComposeAssessment2.vue'),
+    beforeEnter: adminAuthenticated
+
   },
   {
     path: '/create-application',
     name: 'CreateApplication',
-    component: () => import('../views/admin_views/CreateApplication.vue')
+    component: () => import('../views/admin_views/CreateApplication.vue'),
+    beforeEnter: adminAuthenticated
+
   },
   {
     path: '/assessment-history',
     name: 'AssessmentHistory',
-    component: () => import('../views/admin_views/AssessmentHistory.vue')
+    component: () => import('../views/admin_views/AssessmentHistory.vue'),
+    beforeEnter: adminAuthenticated
+
   },
   {
     path: '/settings',
     name: 'Profile-Settings',
-    component: () => import('../views/admin_views/Profile-Settings.vue')
+    component: () => import('../views/admin_views/Profile-Settings.vue'),
+    beforeEnter: adminAuthenticated
+
   },
   {
     path: '/questions',
@@ -88,19 +101,24 @@ const routes = [
     component: () => import('../views/user_views/SuccessfulView.vue')
   },
   {
-    path: '/dash',
-    name: 'SideBarEntry',
-    component: () => import('../components/SideBarEntry.vue')
-  },
-  {
     path: '/admin-dashboard',
     name: 'AdminsDashboard',
-    component: () => import('../views/admin_views/AdminDashboard.vue')
+    component: () => import('../views/admin_views/AdminDashboard.vue'),
+    beforeEnter: adminAuthenticated
   },
   {
     path: '/results',
     name: 'ResultsView',
-    component: () => import('../views/admin_views/ResultsView.vue')
+    component: () => import('../views/admin_views/ResultsView.vue'),
+    beforeEnter: adminAuthenticated
+
+  },
+  {
+    path: '/application-entries',
+    name: 'EntriesBatchView',
+    component: () => import('../views/admin_views/EntriesBatchView.vue'),
+    beforeEnter: adminAuthenticated
+
   }
 ]
 
@@ -110,23 +128,4 @@ const router = createRouter({
   routes
 })
 
-
-// router.beforeEach((to, from, next) => {
-//   store.dispatch('fetchAccessToken')
-//   if (to.fullPath === '/dashboard') {
-//     if (!store.state.user_dashboard.accessToken) {
-//       next({ name: 'Login' })
-//       return
-//     }
-//   }
-//   next();
-//   return
-// });
-
-
-// export default {
-//   computed: {
-//     ...mapState(['userToken'])
-//   }
-// }
 export default router
