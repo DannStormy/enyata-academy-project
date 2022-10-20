@@ -93,13 +93,6 @@ export default {
   methods: {
     ...mapActions(["getDetails"]),
     async details() {
-      // this.currentApplications = await this.dashboardDetails
-      //   ?.currentBatchCount[0].count;
-      // this.totalApplications = this.dashboardDetails?.allBatchCount[0].count;
-      // const cb = this.dashboardDetails?.currentBatch[0].max;
-      // this.currentBatch = cb?.split(" ")[2];
-      // this.updates = this.dashboardDetails?.updates[0];
-      // this.approved = this.dashboardDetails?.approved[0].count;
       var currentdate = new Date();
       this.history =
         currentdate.getDate() +
@@ -178,17 +171,19 @@ hr {
   margin-bottom: 97px;
 }
 .further-info {
-  display: grid;
+  display: flex;
+
+  /* display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 100%;
-  gap: 74px;
+  gap: 74px; */
 }
 .history,
 .assessments {
   border: 1px solid #ececf9;
   border-radius: 4px;
-  padding: 25px 35px;
-  width: 482px;
+  padding: 25px 25px;
+  width: 435px;
 }
 .history {
   border: none;
@@ -205,7 +200,7 @@ hr {
 li {
   list-style: none;
   max-width: 412.5px;
-  padding: 22px 18px;
+  padding: 22px 10px;
   margin-top: 32px;
   background: #ffffff;
   border-left: 7px solid #ffffff;
