@@ -30,11 +30,11 @@
           >
               <input
                 type="radio"
-                :id="option[index]"
+                :id="option.text"
                 :name="question.question"
-                :value="option[index]"
+                :value="option.text"
                 v-model="userResponses[index]"
-              /> <label :for="option[index]">{{ option.text }}</label>
+              /> <label :for="option.text">{{ option.text }}</label>
             
             <!-- <input type="radio" id="B" name="question" value="B" />
                         <label for="B">B. To speed up 3D rendering performance.</label><br>
