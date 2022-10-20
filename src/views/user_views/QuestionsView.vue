@@ -53,7 +53,7 @@
               </button>
             </div>
             <!-- <p>{{ countdown() }}</p> -->
-            <button @click="countdown">Start</button>
+            <!-- <button @click="countdown">Start</button> -->
             <router-link to="/success">
               <button class="finish" :disabled="checkFinish" @click="stop">
                 Finish
