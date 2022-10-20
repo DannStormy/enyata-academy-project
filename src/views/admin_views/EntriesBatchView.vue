@@ -20,7 +20,7 @@
         <h1>Entries - Batch 2</h1>
         <p>Comprises of all that applied for batch 2</p>
       </div>
-      <form action="">
+      <form action="" @submit.prevent>
         <table class="table">
           <tbody>
             <tr class="header-row">
@@ -70,7 +70,7 @@
               <td>{{ applicant.cgpa }}</td>
               <td class="scores">
                 <span>15 </span
-                ><button>
+                ><button class="send_email">
                   <img
                     src="../../assets/svgs/three-dots.svg"
                     alt="send bulk email"
@@ -285,5 +285,8 @@ table button {
   /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
+}
+.send_email {
+  background-color: red;
 }
 </style>
