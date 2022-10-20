@@ -6,19 +6,28 @@
       <div class="dashboard-status">
         <div class="current-applciation">
           <p class="titles">Current Applications</p>
-          <p class="data">{{ currentApplications }}</p>
+          <p class="data">
+            {{ dashboardDetails?.currentBatchCount[0].count }}
+          </p>
           <hr />
-          <p class="comments">Academy {{ currentBatch }}</p>
+          <p class="comments">
+            Academy
+            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+          </p>
         </div>
         <div class="total-application">
           <p class="titles">Total Applications</p>
-          <p class="data">{{ totalApplications }}</p>
+          <p class="data">
+            {{ dashboardDetails?.allBatchCount[0].count }}
+          </p>
           <hr />
           <p class="comments">All entries so far</p>
         </div>
         <div class="batch">
           <p class="titles">Academys</p>
-          <p class="data">{{ currentBatch }}</p>
+          <p class="data">
+            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+          </p>
           <hr />
           <p class="comments">So far</p>
         </div>
@@ -30,11 +39,15 @@
           <ul>
             <li>
               <p class="history-title">
-                Academy Batch {{ updates?.batch_id?.split(" ")[2] }}
+                Academy Batch
+                {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
               </p>
-              <p class="candidates">{{ approved }} candidates</p>
+              <p class="candidates">
+                {{ dashboardDetails?.approved[0].count }} candidates
+              </p>
               <p class="history-date">
-                started {{ updates?.date?.replaceAll("-", "/") }}
+                started
+                {{ dashboardDetails?.updates[0]?.date?.replaceAll("-", "/") }}
               </p>
             </li>
             <!-- <li>
@@ -67,7 +80,7 @@
   
   <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
-import axios from "axios";
+import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     totalApplications: "",
@@ -78,17 +91,15 @@ export default {
     approved: 0,
   }),
   methods: {
-    async getDetails() {
-      const response = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`
-      );
-      this.currentApplications =
-        response.data.allDetails.currentBatchCount[0].count;
-      this.totalApplications = response.data.allDetails.allBatchCount[0].count;
-      const cb = response.data.allDetails.currentBatch[0].max;
-      this.currentBatch = cb.split(" ")[2];
-      this.updates = response.data.allDetails.updates[0];
-      this.approved = response.data.allDetails.approved[0].count;
+    ...mapActions(["getDetails"]),
+    async details() {
+      this.currentApplications = await this.dashboardDetails
+        ?.currentBatchCount[0].count;
+      this.totalApplications = this.dashboardDetails?.allBatchCount[0].count;
+      const cb = this.dashboardDetails?.currentBatch[0].max;
+      this.currentBatch = cb?.split(" ")[2];
+      this.updates = this.dashboardDetails?.updates[0];
+      this.approved = this.dashboardDetails?.approved[0].count;
       var currentdate = new Date();
       this.history =
         currentdate.getDate() +
@@ -104,7 +115,11 @@ export default {
         currentdate.getSeconds();
     },
   },
+  computed: {
+    ...mapState({ dashboardDetails: (state) => state.admin.dashboardDetails }),
+  },
   mounted() {
+    this.details();
     this.getDetails();
   },
   name: "AdminDashboard",
