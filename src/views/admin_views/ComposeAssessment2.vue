@@ -22,29 +22,30 @@
                 </div>
                 <form>
                     <p><label for="question">Questions</label></p>
-                    <textarea id="question" name="question" ></textarea>
+                    <textarea id="question" name="question" v-model="questions[0].question"></textarea>
                     <div class="options">
                        <div>
                             <p><label for="A">Option A</label></p>
-                            <input type="text" id="A" name="A">
+                            <input type="text" id="A" name="A" v-model="questions[0].options[0].text">
                        </div>
                        <div>
                             <p><label for="B">Option B</label></p>
-                            <input type="text" id="B" name="B">
+                            <input type="text" id="B" name="B" v-model="questions[0].options[1].text" >
                         </div>
                         <div>
                             <p><label for="C">Option C</label></p>
-                            <input type="text" id="C" name="C">
+                            <input type="text" id="C" name="C" v-model="questions[0].options[2].text">
                         </div>
                         <div>
                             <p><label for="D">Option D</label></p>
-                            <input type="text" id="D" name="D">
+                            <input type="text" id="D" name="D" v-model="questions[0].options[3].text">
                         </div>
                     </div>
                 </form>
+                {{ questions }}
                 <div class="navigate">
                     <div class="buttons">
-                        <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button>
+                        <button class="previous" v-on:click="prev()" :disabled="checkPrev">Previous</button>
                         <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
                     </div>
                     <router-link to="/successful">
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import quiz from '@/quiz'
+// import quiz from '@/quiz'
 import AdminSideMenu from '@/components/AdminSideMenu.vue'
 import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
 
@@ -74,7 +75,17 @@ export default {
         preview_list: [],
         image_list: [],
         questionIndex: 1,
-        questions: quiz.questions[{}]
+        questions: [{
+                numb: 1,
+                question: "",
+                options: [
+                        {text: ""},
+                        {text: ""},
+                        {text: ""},
+                        {text: ""}
+                ]
+        }],
+        index: 0
     }),
     methods: {
         createApplication() {
@@ -96,10 +107,32 @@ export default {
         },
         next: function() {
             this.questionIndex++;
+            // this.questions.push;
+            this.questions[0].question = "";
+            this.questions[0].options[0].text = "";
+            this.questions[0].options[1].text = "";
+            this.questions[0].options[2].text = "";
+            this.questions[0].options[3].text = "";
+            // localStorage.setItem("numb", this.questions[0].numb++)
+            this.questions[0].numb++;
+            console.log(this.questions);
         },
         prev: function() {
             this.questionIndex--;
+            // this.questionValue = this.questions[this.index-1].question;
+            // this.questions[this.index].question = this.questions[this.index-1].question;
+            // this.questions[this.index].options[0].text = this.questions[this.index-1].options[0].text;
+            // this.questions[this.index].options[1].text = this.questions[this.index-1].options[1].text;
+            // this.questions[this.index].options[2].text = this.questions[this.index-1].options[2].text;
+            // this.questions[this.index].options[3].text = this.questions[this.index-1].options[3].text;
+            // this.questions[this.index].numb--;
+            console.log(this.questionValue);
         },
+        retrieve: function() {
+            var questionValue = document.getElementById('question').value;
+            this.questions[this.index-1].question = questionValue
+            console.log(questionValue);
+        }
     },
     computed: {
         checkPrev: function(){
