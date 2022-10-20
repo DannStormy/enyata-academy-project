@@ -93,13 +93,13 @@ export default {
   methods: {
     ...mapActions(["getDetails"]),
     async details() {
-      this.currentApplications = await this.dashboardDetails
-        ?.currentBatchCount[0].count;
-      this.totalApplications = this.dashboardDetails?.allBatchCount[0].count;
-      const cb = this.dashboardDetails?.currentBatch[0].max;
-      this.currentBatch = cb?.split(" ")[2];
-      this.updates = this.dashboardDetails?.updates[0];
-      this.approved = this.dashboardDetails?.approved[0].count;
+      // this.currentApplications = await this.dashboardDetails
+      //   ?.currentBatchCount[0].count;
+      // this.totalApplications = this.dashboardDetails?.allBatchCount[0].count;
+      // const cb = this.dashboardDetails?.currentBatch[0].max;
+      // this.currentBatch = cb?.split(" ")[2];
+      // this.updates = this.dashboardDetails?.updates[0];
+      // this.approved = this.dashboardDetails?.approved[0].count;
       var currentdate = new Date();
       this.history =
         currentdate.getDate() +
@@ -110,9 +110,7 @@ export default {
         "  " +
         currentdate.getHours() +
         ":" +
-        currentdate.getMinutes() +
-        ":" +
-        currentdate.getSeconds();
+        currentdate.getMinutes();
     },
   },
   computed: {

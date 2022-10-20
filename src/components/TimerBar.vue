@@ -19,7 +19,7 @@ export default {
             if (time < 10) {
                 return '0' + time
             }
-            return localStorage.getItem('countTimer', time.toString()) 
+            return localStorage.getItem('timer', time.toString()) 
         },
     },
     
