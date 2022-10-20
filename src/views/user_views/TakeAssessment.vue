@@ -38,23 +38,35 @@ import TimerBar from '@/components/TimerBar.vue'
         }),
 
         created(){
-            if (localStorage.getItem('timer') != null){
-                localStorage.getItem('timer')
+            if (localStorage.getItem('timer')){
+                localStorage.getItem('minutes');
+                
             }
+            // else{
+            //     formatTime(time) {
+
+            //         if (time < 10) {
+            //             return '0' + time
+            //         }
+            //         return time.toString();
+            //     }
+            // }
         },
 
         methods: {
-            formatTime(time){
-            if (localStorage.getItem('timer',time) < 10) {
-                return '0' + localStorage.getItem('timer')
+            formatTime(time) {
+
+                if (time < 10) {
+                    return '0' + time
                 }
-                return localStorage.getItem('timer', time).toString()
+                return time.toString();
             },
+          
             start() {
                 this.stop()
                 this.isRunning = true;
                 this.timerInstance = setInterval(() => {
-                   
+                    localStorage.setItem('minutes')
                     if (localStorage.setItem('timer', this.totalSeconds) <= 0) {
                         this.stop()
                         return
@@ -73,12 +85,14 @@ import TimerBar from '@/components/TimerBar.vue'
            
         computed: {
             displayMinutes() {
+                localStorage.getItem('minutes', minutes)
                 const minutes = Math.floor(this.totalSeconds / 60);
-                return localStorage.getItem('timer', this.formatTime(minutes)); 
+                return this.formatTime(minutes); 
             },
             displaySeconds() {
+                localStorage.getItem('seconds', seconds)
                 const seconds = this.totalSeconds % 60;
-                return localStorage.getItem('timer', this.formatTime(seconds));
+                return this.formatTime(seconds);
             }
         },
         components:{
