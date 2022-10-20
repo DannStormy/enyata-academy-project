@@ -11,7 +11,7 @@
             </div>
             <div class="main">
                 <div class="assessment-1">
-                    <p>{{questionIndex}}/30</p>
+                    <p>{{questionIndex+1}}/30</p>
                     <div class="choose_file" :class="{'no-img': !image }">
                         <input type="file" name="assessment-file" id="assessment-file" accept="image/*" @change="previewImage" class="upload"> 
                         <img v-show="image" :src="preview" class="img-fluid" />
@@ -22,30 +22,31 @@
                 </div>
                 <form>
                     <p><label for="question">Questions</label></p>
-                    <textarea id="question" name="question" ></textarea>
+                    <textarea id="question" name="question" v-model="questions[questionIndex].question"></textarea>
                     <div class="options">
                        <div>
                             <p><label for="A">Option A</label></p>
-                            <input type="text" id="A" name="A">
+                            <input type="text" id="A" name="A" v-model="questions[questionIndex].options[0].text">
                        </div>
                        <div>
                             <p><label for="B">Option B</label></p>
-                            <input type="text" id="B" name="B">
+                            <input type="text" id="B" name="B" v-model="questions[questionIndex].options[1].text">
                         </div>
                         <div>
                             <p><label for="C">Option C</label></p>
-                            <input type="text" id="C" name="C">
+                            <input type="text" id="C" name="C" v-model="questions[questionIndex].options[2].text">
                         </div>
                         <div>
                             <p><label for="D">Option D</label></p>
-                            <input type="text" id="D" name="D">
+                            <input type="text" id="D" name="D" v-model="questions[questionIndex].options[3].text">
                         </div>
                     </div>
                 </form>
+                {{questions}}
                 <div class="navigate">
                     <div class="buttons">
                         <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button>
-                        <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
+                        <button class="next" v-on:click="next" :disabled="checkNext" >Next</button>
                     </div>
                     <router-link to="/successful">
                         <button class="finish" :disabled="checkFinish">Save</button>
@@ -61,7 +62,7 @@
 </template>
 
 <script>
-import quiz from '@/quiz'
+// import quiz from '@/quiz'
 import AdminSideMenu from '@/components/AdminSideMenu.vue'
 import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
 
@@ -73,8 +74,19 @@ export default {
         image: null,
         preview_list: [],
         image_list: [],
-        questionIndex: 1,
-        questions: quiz.questions[{}]
+        questionIndex: 0,
+        questions: [
+            {
+                question: "",
+                img: "",
+                options: [
+                        {text: "", correct: false},
+                        {text: "", correct: false},
+                        {text: "", correct: false},
+                        {text: "", correct: false}
+                    ]
+            }
+        ],
     }),
     methods: {
         createApplication() {
@@ -92,21 +104,33 @@ export default {
                 }
                 this.image=input.files[0];
                 reader.readAsDataURL(input.files[0]);
+                this.questions[this.questionIndex].img = this.image
             }
         },
         next: function() {
+            if(this.questions.length-1 === this.questionIndex){
+                    this.questions.push({
+                    question: "",
+                    img: this.questions[this.questionIndex].img,
+                    options: [
+                            {text: "", correct: false},
+                            {text: "", correct: false},
+                            {text: "", correct: false},
+                            {text: "", correct: false}
+                ]});
+            }
             this.questionIndex++;
+            console.log(this.questions[this.questionIndex].img)
         },
         prev: function() {
             this.questionIndex--;
-        },
-    },
+            this.questions[0].numb--;
+        }},
     computed: {
         checkPrev: function(){
-            return this.questionIndex > 1 ? false : true; 
+            return !(this.questionIndex > 0)
         },
         checkNext: function(){
-            // quiz.questions.length - 1 
             return this.questionIndex < 30 ? false : true; 
         },
         checkFinish: function(){
