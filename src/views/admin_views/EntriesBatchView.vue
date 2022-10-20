@@ -2,11 +2,11 @@
   <SideBarEntry
     :name="applicantData?.firstname + ' ' + applicantData?.lastname"
     :email="applicantData?.email"
-    :address="applicantData?.dob"
+    :address="applicantData?.address"
     :university="applicantData?.university"
-    :course="applicantData?.cgpa"
-    :dob="applicantData?.address"
-    :cgpa="applicantData?.course"
+    :course="applicantData?.course"
+    :dob="applicantData?.dob"
+    :cgpa="applicantData?.cgpa"
     :pdf="applicantData?.cv"
     :image="applicantData?.profilepic"
     @sendConfirm="confirmation"
@@ -64,10 +64,10 @@
                 ><br />
               </td>
               <td>{{ applicant.email }}</td>
-              <td>{{ applicant.address }} - {{ getAge(applicant.address) }}</td>
-              <td>{{ applicant.dob }}</td>
+              <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+              <td>{{ applicant.address }}</td>
               <td>{{ applicant.university }}</td>
-              <td>{{ applicant.course }}</td>
+              <td>{{ applicant.cgpa }}</td>
               <td class="scores">
                 <span>15 </span
                 ><button>
@@ -130,7 +130,8 @@ export default {
   mounted() {
     this.getEntries();
   },
-}
+  name: "EntriesBatchView",
+};
 </script>
 
 <style scoped>
@@ -140,7 +141,7 @@ export default {
 }
 .wrapper {
   display: flex;
-  height:100vh;
+  height: 100vh;
 }
 .container {
   margin: 111px 20px 0px 323px;
