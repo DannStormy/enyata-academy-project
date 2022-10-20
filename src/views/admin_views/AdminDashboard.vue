@@ -6,19 +6,28 @@
       <div class="dashboard-status">
         <div class="current-applciation">
           <p class="titles">Current Applications</p>
-          <p class="data">233</p>
+          <p class="data">
+            {{ dashboardDetails?.currentBatchCount[0].count }}
+          </p>
           <hr />
-          <p class="comments">Academy 2.0</p>
+          <p class="comments">
+            Academy
+            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+          </p>
         </div>
         <div class="total-application">
           <p class="titles">Total Applications</p>
-          <p class="data">4253</p>
+          <p class="data">
+            {{ dashboardDetails?.allBatchCount[0].count }}
+          </p>
           <hr />
-          <p class="comments">All entries do far</p>
+          <p class="comments">All entries so far</p>
         </div>
         <div class="batch">
           <p class="titles">Academys</p>
-          <p class="data">4.0</p>
+          <p class="data">
+            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+          </p>
           <hr />
           <p class="comments">So far</p>
         </div>
@@ -26,9 +35,22 @@
       <div class="further-info">
         <div class="history">
           <p class="finfo">History</p>
-          <p class="finfo-description">Last Update 18:24, 22/02/19</p>
+          <p class="finfo-description">Last Update {{ history }}</p>
           <ul>
             <li>
+              <p class="history-title">
+                Academy Batch
+                {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
+              </p>
+              <p class="candidates">
+                {{ dashboardDetails?.approved[0].count }} candidates
+              </p>
+              <p class="history-date">
+                started
+                {{ dashboardDetails?.updates[0]?.date?.replaceAll("-", "/") }}
+              </p>
+            </li>
+            <!-- <li>
               <p class="history-title">Academy Batch 1.0</p>
               <p class="candidates">15 candidates</p>
               <p class="history-date">started 11/09/15</p>
@@ -37,12 +59,7 @@
               <p class="history-title">Academy Batch 1.0</p>
               <p class="candidates">15 candidates</p>
               <p class="history-date">started 11/09/15</p>
-            </li>
-            <li>
-              <p class="history-title">Academy Batch 1.0</p>
-              <p class="candidates">15 candidates</p>
-              <p class="history-date">started 11/09/15</p>
-            </li>
+            </li> -->
           </ul>
         </div>
         <div class="assessments">
@@ -63,7 +80,39 @@
   
   <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import { mapActions, mapState } from "vuex";
 export default {
+  data: () => ({
+    totalApplications: "",
+    currentApplications: "",
+    currentBatch: "",
+    updates: null,
+    history: null,
+    approved: 0,
+  }),
+  methods: {
+    ...mapActions(["getDetails"]),
+    async details() {
+      var currentdate = new Date();
+      this.history =
+        currentdate.getDate() +
+        "/" +
+        (currentdate.getMonth() + 1) +
+        "/" +
+        currentdate.getFullYear() +
+        "  " +
+        currentdate.getHours() +
+        ":" +
+        currentdate.getMinutes();
+    },
+  },
+  computed: {
+    ...mapState({ dashboardDetails: (state) => state.admin.dashboardDetails }),
+  },
+  mounted() {
+    this.details();
+    this.getDetails();
+  },
   name: "AdminDashboard",
   components: {
     AdminSideMenu,
@@ -122,17 +171,19 @@ hr {
   margin-bottom: 97px;
 }
 .further-info {
-  display: grid;
+  display: flex;
+
+  /* display: grid;
   grid-template-columns: repeat(2, 50%);
   grid-template-rows: 100%;
-  gap: 74px;
+  gap: 74px; */
 }
 .history,
 .assessments {
   border: 1px solid #ececf9;
   border-radius: 4px;
-  padding: 25px 35px;
-  width: 482px;
+  padding: 25px 25px;
+  width: 435px;
 }
 .history {
   border: none;
@@ -149,12 +200,13 @@ hr {
 li {
   list-style: none;
   max-width: 412.5px;
-  padding: 22px 18px;
+  padding: 22px 10px;
   margin-top: 32px;
   background: #ffffff;
   border-left: 7px solid #ffffff;
   display: flex;
   justify-content: space-between;
+  font-size: 15px;
 }
 li:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
@@ -171,7 +223,7 @@ li:hover {
   margin: 70px 0 80px;
 }
 .assessment-button {
-  background-color: hsl(0, 0%, 69%);
+  background-color: #12c52f;
   color: white;
   cursor: pointer;
   border: none;
