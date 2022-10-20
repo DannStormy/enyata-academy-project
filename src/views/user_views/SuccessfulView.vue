@@ -36,7 +36,7 @@ import ScrollBar from "@/components/ScrollBar.vue";
 export default {
     name: 'SuccessfulView',
     data:()=>({
-        isRunning: true,
+        isRunning: false,
         timerInstance: null,
         totalSeconds: 60 * 60,
         currentTimer: 0,

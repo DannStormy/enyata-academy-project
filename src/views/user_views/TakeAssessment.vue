@@ -37,37 +37,48 @@ import TimerBar from '@/components/TimerBar.vue'
             currentTimer: 0,
         }),
 
+        created(){
+            if (localStorage.getItem('timer') != null){
+                localStorage.getItem('timer')
+            }
+        },
+
         methods: {
-            formatTime(time) {
-                if (time < 10) {
-                    return '0' + time
+            formatTime(time){
+            if (localStorage.getItem('timer',time) < 10) {
+                return '0' + localStorage.getItem('timer')
                 }
-                return time.toString()
+                return localStorage.getItem('timer', time).toString()
             },
             start() {
                 this.stop()
                 this.isRunning = true;
                 this.timerInstance = setInterval(() => {
-                    if (this.totalSeconds <= 0) {
+                   
+                    if (localStorage.setItem('timer', this.totalSeconds) <= 0) {
                         this.stop()
                         return
                     }
-                    this.totalSeconds -= 1
+                    localStorage.setItem('timer', this.totalSeconds) -1
                 }, 1000)
+               
             },
             stop() {
                 this.isRunning = false;
                 clearInterval(this.timerInstance)
-            },
+                
+            }
+            
         },
+           
         computed: {
             displayMinutes() {
                 const minutes = Math.floor(this.totalSeconds / 60);
-                return this.formatTime(minutes);
+                return localStorage.getItem('timer', this.formatTime(minutes)); 
             },
             displaySeconds() {
                 const seconds = this.totalSeconds % 60;
-                return this.formatTime(seconds)
+                return localStorage.getItem('timer', this.formatTime(seconds));
             }
         },
         components:{
@@ -75,6 +86,7 @@ import TimerBar from '@/components/TimerBar.vue'
             TimerBar
         }
     }
+
 </script>
 
 <style scoped>

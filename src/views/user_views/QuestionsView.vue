@@ -54,7 +54,7 @@ import TimerBar from '@/components/TimerBar.vue'
         name: 'QuestionsView',
         data: () => ({
             isActive:false,
-            isRunning: true,
+            isRunning: false,
             timerInstance: null,
             totalSeconds: 60 * 60,
             currentTimer: 0,
@@ -63,19 +63,37 @@ import TimerBar from '@/components/TimerBar.vue'
             userResponses: Array(quiz.questions.length).fill(false)
         }),
 
+        created() {
+            if (localStorage.getItem('timer') != null ){
+                localStorage.getItem('timer', this.totalSeconds)
+            }
+        },
+
         methods: {
             formatTime(time) {
+                localStorage.getItem('timer', this.time)
                 if (time < 10) {
                     return '0' + time
                 }
-                return time.toString()
+                return time.toString();
             },
             start() {
+                this.stop()
                 this.isRunning = true;
+                this.timerInstance = setInterval(() => {
+                    localStorage.setItem('timer', this.totalSeconds)
+                    if (this.totalSeconds <= 0) {
+                        this.stop()
+                        return
+                    }
+                    this.totalSeconds -= 1
+                }, 1000)
             },
+
             stop() {
                 this.isRunning = false;
-                clearInterval(this.timerInstance)
+                clearInterval(this.totalSeconds);
+
             },
             next: function () {
                 this.questionIndex++;
@@ -87,6 +105,7 @@ import TimerBar from '@/components/TimerBar.vue'
                 return this.userResponses.filter(function (val) { return val }).length;
             }
         },
+    
         computed: {
             displayMinutes() {
                 const minutes = Math.floor(this.totalSeconds / 60);
@@ -94,8 +113,8 @@ import TimerBar from '@/components/TimerBar.vue'
             },
             displaySeconds() {
                 const seconds = this.totalSeconds % 60;
-                return this.formatTime(seconds)
-
+                return  this.formatTime(seconds);
+                
             },
              checkPrev: function () {
                 return this.questionIndex > 0 ? false : true;
@@ -107,18 +126,7 @@ import TimerBar from '@/components/TimerBar.vue'
                 return this.questionIndex == quiz.questions.length - 1 ? false : true;
             }
         },
-        watch:{
-            
-        },
-        mounted() {
-            this.timerInstance = setInterval(() => {
-                if (this.totalSeconds <= 0) {
-                    this.stop()
-                    return
-                }
-                this.totalSeconds -= 1
-            }, 1000)
-            },
+
         components:{
             SideMenu,
             TimerBar

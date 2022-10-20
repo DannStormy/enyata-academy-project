@@ -13,12 +13,13 @@ export default {
     name: 'TimerBar',
     props:['displayMinutes', 'displaySeconds' ],
 
-    watch: {
+    computed: {
         formatTime(time) {
+
             if (time < 10) {
                 return '0' + time
             }
-            return time.toString()
+            return localStorage.getItem('countTimer', time.toString()) 
         },
     },
     
