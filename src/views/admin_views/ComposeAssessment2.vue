@@ -1,11 +1,10 @@
 <template>
-    
     <div class="wrapper">
         <AdminSideMenu />
         <div class="container">
             <div class="header">
                 <div class="assessment">
-                    <h1 class="title">Compose Assessment</h1>
+                    <h1 class="title" @dblclick="hey">Compose Assessment</h1>
                 </div>
                 <TimeBarAdmin/>
             </div>
@@ -22,49 +21,46 @@
                 </div>
                 <form>
                     <p><label for="question">Questions</label></p>
-                    <textarea id="question" name="question" v-model="questions[questionIndex].question"></textarea>
+                    <textarea id="question" name="question" v-model="questions[questionIndex].question" ></textarea>
                     <div class="options">
-                       <div>
-                            <p><label for="A">Option A</label></p>
-                            <input type="text" id="A" name="A" v-model="questions[questionIndex].options[0].text">
+                       <div  >
+                            <p ><label for="A">Option A</label></p>
+                            <input type="text" id="A" name="A" v-model="questions[questionIndex].options[0].text"> 
                        </div>
-                       <div>
+                       <div  v-on:dblclick="correctAnswer">
                             <p><label for="B">Option B</label></p>
                             <input type="text" id="B" name="B" v-model="questions[questionIndex].options[1].text">
                         </div>
-                        <div>
+                        <div  v-on:dblclick="correctAnswer">
                             <p><label for="C">Option C</label></p>
                             <input type="text" id="C" name="C" v-model="questions[questionIndex].options[2].text">
                         </div>
-                        <div>
+                        <div  v-on:dblclick="correctAnswer">
                             <p><label for="D">Option D</label></p>
                             <input type="text" id="D" name="D" v-model="questions[questionIndex].options[3].text">
                         </div>
                     </div>
                 </form>
-                {{questions}}
                 <div class="navigate">
                     <div class="buttons">
                         <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button>
                         <button class="next" v-on:click="next" :disabled="checkNext" >Next</button>
                     </div>
-                    <router-link to="/successful">
-                        <button class="finish" :disabled="checkFinish">Save</button>
-                    </router-link>
+                    <!-- <router-link to="/successful"> -->
+                        <button class="finish" @click="save" :disabled="checkFinish">Save</button>
+                    <!-- </router-link> -->
                 </div>
 
             </div>
         </div>
     </div>
-
-
-
 </template>
 
 <script>
 // import quiz from '@/quiz'
 import AdminSideMenu from '@/components/AdminSideMenu.vue'
 import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
+import axios from 'axios';
 
 export default {
     name: 'ComposeAssessment2',
@@ -77,17 +73,21 @@ export default {
         questionIndex: 0,
         questions: [
             {
-                question: "",
-                img: "",
-                options: [
-                        {text: "", correct: false},
-                        {text: "", correct: false},
-                        {text: "", correct: false},
-                        {text: "", correct: false}
+                'numb': 0,
+                'question': "",
+                // img: "",
+                'options': [
+                        {'text': ""},
+                        {'text': ""},
+                        {'text': ""},
+                        {'text': ""}
                     ]
             }
         ],
     }),
+    // mounted() {   
+    //     localStorage.setItem('questions', JSON.stringify(this.questions))
+    // },
     methods: {
         createApplication() {
             this.isActive = true;
@@ -104,28 +104,42 @@ export default {
                 }
                 this.image=input.files[0];
                 reader.readAsDataURL(input.files[0]);
-                this.questions[this.questionIndex].img = this.image
             }
         },
         next: function() {
             if(this.questions.length-1 === this.questionIndex){
                     this.questions.push({
-                    question: "",
-                    img: this.questions[this.questionIndex].img,
-                    options: [
-                            {text: "", correct: false},
-                            {text: "", correct: false},
-                            {text: "", correct: false},
-                            {text: "", correct: false}
-                ]});
+                        'numb': this.questionIndex + 1,
+                        'question': "",
+                        // 'img': "",
+                        'options': [
+                                {'text': "", 'correct': false},
+                                {'text': "", 'correct': false},
+                                {'text': "", 'correct': false},
+                                {'text': "", 'correct': false}
+                    ]});
             }
             this.questionIndex++;
-            console.log(this.questions[this.questionIndex].img)
+            localStorage.setItem('questions', JSON.stringify(this.questions))
+            console.log(this.questions)
         },
         prev: function() {
             this.questionIndex--;
-            this.questions[0].numb--;
+            // this.questions[0].numb--;
+        },
+        save: async function() {
+            // const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
+            // console.log(response)
+            console.log('save:', this.questions)
+        },  
+        correctAnswer: function() {
+            console.log("okay !")
+            // this.questions[questionIndex].options.correct = true;
+            // console.log(this.questions[questionIndex].options.correct)
         }},
+        hey() {
+        console.log("Hi");
+        },
     computed: {
         checkPrev: function(){
             return !(this.questionIndex > 0)
