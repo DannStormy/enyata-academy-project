@@ -19,9 +19,13 @@
             Join enyata academy today and bring your long awaiting dream to
             reality.
           </p>
-          <router-link to="/applicationform">
+          <router-link :class="{ isActive: !isActive }" to="/applicationform">
             <button class="register-button">Register Now</button>
           </router-link>
+          <div v-if="!isActive" class="error">
+            <img src="@/assets/svgs/error.svg" alt="error" />
+            <p>Registration not open</p>
+          </div>
         </div>
         <div class="right">
           <img
@@ -76,7 +80,33 @@
 </template>
 
 <script>
+import axios from "axios";
 export default {
+  data: () => ({
+    isActive: true,
+  }),
+  methods: {
+    async getClosure() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
+      );
+      console.log(response.data.closure[0].date);
+      console.log(
+        `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
+      );
+      if (
+        response.data.closure[0].date >
+        `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
+      ) {
+        this.isActive = true;
+      } else {
+        this.isActive = false;
+      }
+    },
+  },
+  mounted() {
+    this.getClosure();
+  },
   name: "LandingPageView",
 };
 </script>
@@ -88,6 +118,9 @@ export default {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
+}
+.isActive {
+  pointer-events: none;
 }
 .wrapper {
   background: white;
@@ -172,6 +205,17 @@ a {
   border-radius: 2px;
   border: none;
   cursor: pointer;
+}
+.error {
+  display: flex;
+  align-items: center;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 24px;
+  letter-spacing: 0.02em;
+  color: rgba(255, 0, 0, 0.71);
+  gap: 3px;
+  margin-top: 25px;
 }
 .services-heading {
   display: flex;
