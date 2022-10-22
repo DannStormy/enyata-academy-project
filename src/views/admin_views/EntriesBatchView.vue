@@ -286,7 +286,4 @@ table button {
   border-spacing: 30px;
   border-radius: 8px;
 }
-.send_email {
-  background-color: red;
-}
 </style>
