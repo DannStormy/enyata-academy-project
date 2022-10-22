@@ -42,13 +42,13 @@
                       alt="icon for sort"
                     />
                   </th>
-                  <th colspan="2">
+                  <!-- <th colspan="2">
                     Test Scores
                     <img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
                     />
-                  </th>
+                  </th> -->
                 </tr>
                 <tr
                   :class="['table-data', { active: isActive }]"
@@ -71,15 +71,6 @@
                   <td>{{ applicant.address }}</td>
                   <td>{{ applicant.university }}</td>
                   <td>{{ applicant.cgpa }}</td>
-                  <td class="scores">
-                    <span>15 </span
-                    ><button class="send_email">
-                      <img
-                        src="../../assets/svgs/three-dots.svg"
-                        alt="send bulk email"
-                      />
-                    </button>
-                  </td>
                 </tr>
               </tbody>
             </table>

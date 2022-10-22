@@ -224,9 +224,5 @@ li:hover {
   font-weight: 700;
   margin-top: 34px;
 }
-.assessment-button:hover {
-  background-color: hsl(0, 0%, 75%);
-  transition: 0.1s;
-}
 </style>
   

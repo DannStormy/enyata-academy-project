@@ -42,7 +42,6 @@ export default {
 
   methods: {
     start() {
-      console.log("Iheh");
       this.showQuestions = true;
     },
   },
