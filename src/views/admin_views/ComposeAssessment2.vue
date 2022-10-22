@@ -1,13 +1,12 @@
 <template>
-    <div class="wrapper">
-      <AdminSideMenu />
-      <div class="container">
-        <div class="header">
-          <div class="assessment">
-            <h1 class="title">Compose Assessment</h1>
-          </div>
-          <TimeBarAdmin />
+  <div class="wrapper">
+    <AdminSideMenu />
+    <div class="container">
+      <div class="header">
+        <div class="assessment">
+          <h1 class="title">Compose Assessment</h1>
         </div>
+        <!-- <TimeBarAdmin /> -->
         <div class="timer">
           <p>Set Time</p>
           <div class="time">
@@ -426,17 +425,17 @@ label {
   cursor: pointer;
 }
 
+.next {
+  width: 125px;
+  height: 41px;
+  /* margin-right: 529px; */
+  background-color: #211f26;
+  border-radius: 4px;
+  color: white;
+  cursor: pointer;
+}
+
 /* .next {
-    width: 125px;
-    height: 41px;
-    /* margin-right: 529px; */
-    background-color: #211f26;
-    border-radius: 4px;
-    color: white;
-    cursor: pointer;
-  }
-  
-  /* .next {
       width: 125px;
       height: 41px;
       background-color: #7557D3;
@@ -445,15 +444,15 @@ label {
       cursor: pointer;
       border: none;
   } */
-  
-  .previous:disabled,
-  .next:disabled {
-    /* width: 205px;
+
+.previous:disabled,
+.next:disabled {
+  /* width: 205px;
       height: 41px; */
-    background-color: #cecece;
-    color: white;
-    border: none;
-} */
+  background-color: #cecece;
+  color: white;
+  border: none;
+}
 
 .previous:disabled,
 .next:disabled {
