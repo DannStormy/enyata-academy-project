@@ -5,7 +5,8 @@ export default {
         applicants: null,
         adminDetails: null,
         adminAuth: null,
-        dashboardDetails: null
+        dashboardDetails: null,
+        assessments: null
     }),
     mutations: {
         UPDATE_APPLICANTS: (state, applicants) => {
@@ -19,6 +20,9 @@ export default {
         },
         UPDATE_DASHBOARD: (state, details) => {
             state.dashboardDetails = details
+        },
+        UPDATE_ASSESSMENTS: (state, assessments) => {
+            state.assessments = assessments
         }
 
     },
@@ -54,6 +58,17 @@ export default {
                 );
                 console.log('Response', response.data.allDetails.currentBatch)
                 await commit('UPDATE_DASHBOARD', response.data.allDetails)
+
+            } catch (error) {
+                console.log(error)
+            }
+        },
+        async getAssessments({ commit }) {
+            try {
+                const response = await axios.get(
+                    `${process.env.VUE_APP_SERVER_URL}/admin/get-assessments`
+                );
+                await commit('UPDATE_ASSESSMENTS', response.data.assessments)
 
             } catch (error) {
                 console.log(error)

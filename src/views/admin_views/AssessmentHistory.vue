@@ -14,22 +14,14 @@
             </tr>
           </thead>
           <tbody>
-            <tr class="table-row active">
-              <td class="active">Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
-              <td>30 minutes</td>
-            </tr>
-            <tr class="table-row">
-              <td>Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
-              <td>30 minutes</td>
-            </tr>
-            <tr class="table-row">
-              <td>Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
+            <tr
+              class="table-row active"
+              v-for="assessment in assessments"
+              :key="assessment.id"
+            >
+              <td class="active">Batch {{ assessment.id }}</td>
+              <td>{{ formatDate(assessment.created_at) }}</td>
+              <td>{{ assessment.docs.length }}</td>
               <td>30 minutes</td>
             </tr>
           </tbody>
@@ -41,8 +33,25 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import { mapActions, mapState } from "vuex";
 
 export default {
+  methods: {
+    ...mapActions(["getAssessments"]),
+    formatDate(created) {
+      let date = new Date(created);
+      let month = date.getUTCMonth() + 1;
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear()?.toString()?.slice(-2);
+      return day + "/" + month + "/" + year;
+    },
+  },
+  computed: {
+    ...mapState({ assessments: (state) => state.admin.assessments }),
+  },
+  mounted() {
+    this.getAssessments();
+  },
   name: "AssessmentHistory",
   components: { AdminSideMenu },
 };
@@ -90,7 +99,7 @@ tr {
   cursor: pointer;
 }
 
-tr.active {
+tr.active:hover {
   background: white;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   /* border-radius: 8px; */
