@@ -6,13 +6,29 @@
         <div class="assessment">
           <h1 class="title">Compose Assessment</h1>
         </div>
-        <TimeBarAdmin />
+        <div class="timer">
+          <p>Set Time</p>
+          <div class="time">
+            <div class="min">
+              <h3 ref="timer" contenteditable class="val">00</h3>
+              <sub style="margin-top: 44px">min</sub>
+            </div>
+            <div class="polygon">
+              <img src="@/assets/svgs/polygon-logo.svg" alt="polygon-logo" />
+            </div>
+            <span>000<sub>sec</sub></span>
+            <div class="polygon">
+              <img src="@/assets/svgs/polygon-logo.svg" alt="polygon" />
+            </div>
+          </div>
+        </div>
       </div>
       <div class="main">
         <div class="assessment-1">
           <p>{{ questionIndex + 1 }}/30</p>
           <div class="choose_file" :class="{ 'no-img': !image }">
             <input
+              ref="file"
               type="file"
               name="assessment-file"
               id="assessment-file"
@@ -98,9 +114,7 @@
 </template>
 
 <script>
-// import quiz from '@/quiz'
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
-import TimeBarAdmin from "@/components/TimeBarAdmin.vue";
 // import axios from 'axios';
 
 export default {
@@ -120,14 +134,11 @@ export default {
       {
         numb: 0,
         question: "",
-        // img: "",
+        img: "",
         options: [{ text: "" }, { text: "" }, { text: "" }, { text: "" }],
       },
     ],
   }),
-  // mounted() {
-  //     localStorage.setItem('questions', JSON.stringify(this.questions))
-  // },
   methods: {
     createApplication() {
       this.isActive = true;
@@ -148,10 +159,12 @@ export default {
     },
     next: function () {
       if (this.questions.length - 1 === this.questionIndex) {
+        this.questions[this.questionIndex].img = this.preview;
+        console.log(this.$refs.timer.innerText);
         this.questions.push({
           numb: this.questionIndex + 1,
           question: "",
-          // 'img': "",
+          img: null,
           options: [
             { text: "", correct: false },
             { text: "", correct: false },
@@ -160,6 +173,8 @@ export default {
           ],
         });
       }
+      this.image = null;
+
       this.questionIndex++;
       localStorage.setItem("questions", JSON.stringify(this.questions));
       console.log(this.questions);
@@ -168,6 +183,11 @@ export default {
       this.questionIndex--;
     },
     save: async function () {
+      if (this.$refs.timer.innerText == "00") {
+        alert("Set Timer");
+        return;
+      }
+      this.questions.time = this.$refs.timer.innerText;
       // const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
       // console.log(response)
       console.log("save:", this.questions);
@@ -209,7 +229,6 @@ export default {
   },
   components: {
     AdminSideMenu,
-    TimeBarAdmin,
   },
 };
 </script>
@@ -426,5 +445,91 @@ label {
   border-radius: 4px;
   cursor: not-allowed;
   margin-bottom: 206px;
+}
+.logo {
+  width: 124px;
+  height: 124px;
+  margin-bottom: 16px;
+}
+
+.logo img {
+  width: 100%;
+  height: 100%;
+}
+
+.timer {
+  display: flex;
+  flex-direction: column;
+}
+
+.timer p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 17px;
+  color: #2b4e2e;
+}
+
+/* .time {
+    display: flex;
+} */
+
+.timer {
+  display: flex;
+  flex-direction: column;
+}
+
+.timer p {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 14px;
+  color: #4f4f4f;
+  margin-bottom: 4px;
+}
+
+.time {
+  display: flex;
+  align-items: center;
+}
+
+.time span {
+  font-style: normal;
+  font-weight: 300;
+  font-size: 48px;
+  color: #2b3c4e;
+}
+
+.time sub {
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+  color: #4f4f4f;
+  margin-right: 5px;
+}
+
+.polygon {
+  width: 12px;
+  height: 12px;
+  margin-left: 12px;
+  margin-right: 25px;
+  cursor: pointer;
+}
+
+.polygon img {
+  width: 100%;
+  height: 100%;
+}
+.val {
+  font-weight: 300;
+  font-size: 48px;
+  line-height: 58px;
+  /* identical to box height */
+
+  text-align: center;
+
+  color: #2b4e2e;
+}
+.min {
+  display: flex;
 }
 </style>
