@@ -1,10 +1,12 @@
 <template>
-  <div class="wrapper">
-    <AdminSideMenu />
-    <div class="container">
-      <div class="header">
-        <div class="assessment">
-          <h1 class="title">Compose Assessment</h1>
+    <div class="wrapper">
+      <AdminSideMenu />
+      <div class="container">
+        <div class="header">
+          <div class="assessment">
+            <h1 class="title">Compose Assessment</h1>
+          </div>
+          <TimeBarAdmin />
         </div>
         <div class="timer">
           <p>Set Time</p>
@@ -41,72 +43,72 @@
               <span>+ Choose file</span>
             </div>
           </div>
-        </div>
-        <form>
-          <p><label for="question">Questions</label></p>
-          <textarea
-            id="question"
-            name="question"
-            v-model="questions[questionIndex].question"
-          ></textarea>
-          <div class="options">
-            <div @dblclick="answerA">
-              <p><label for="A">Option A</label></p>
-              <input
-                :class="{ correct: isCorrectA }"
-                type="text"
-                id="A"
-                name="A"
-                v-model="questions[questionIndex].options[0].text"
-              />
+          <form>
+            <p><label for="question">Questions</label></p>
+            <textarea
+              id="question"
+              name="question"
+              v-model="questions[questionIndex].question"
+            ></textarea>
+            <div class="options">
+              <div @dblclick="answerA">
+                <p><label for="A">Option A</label></p>
+                <input
+                  :class="{ correct: isCorrectA }"
+                  type="text"
+                  id="A"
+                  name="A"
+                  v-model="questions[questionIndex].options[0].text"
+                />
+              </div>
+              <div v-on:dblclick="answerB">
+                <p><label for="B">Option B</label></p>
+                <input
+                  :class="{ correct: isCorrectB }"
+                  type="text"
+                  id="B"
+                  name="B"
+                  v-model="questions[questionIndex].options[1].text"
+                />
+              </div>
+              <div v-on:dblclick="answerC">
+                <p><label for="C">Option C</label></p>
+                <input
+                  :class="{ correct: isCorrectC }"
+                  type="text"
+                  id="C"
+                  name="C"
+                  v-model="questions[questionIndex].options[2].text"
+                />
+              </div>
+              <div>
+                <p><label for="D">Option D</label></p>
+                <input
+                  :class="{ correct: isCorrectD }"
+                  v-on:dblclick="answerD"
+                  type="text"
+                  id="D"
+                  name="D"
+                  v-model="questions[questionIndex].options[3].text"
+                />
+              </div>
             </div>
-            <div v-on:dblclick="answerB">
-              <p><label for="B">Option B</label></p>
-              <input
-                :class="{ correct: isCorrectB }"
-                type="text"
-                id="B"
-                name="B"
-                v-model="questions[questionIndex].options[1].text"
-              />
+          </form>
+          <div class="navigate">
+            <div class="buttons">
+              <button class="previous" v-on:click="prev" :disabled="checkPrev">
+                Previous
+              </button>
+              <button class="next" v-on:click="next" :disabled="checkNext">
+                Next
+              </button>
             </div>
-            <div v-on:dblclick="answerC">
-              <p><label for="C">Option C</label></p>
-              <input
-                :class="{ correct: isCorrectC }"
-                type="text"
-                id="C"
-                name="C"
-                v-model="questions[questionIndex].options[2].text"
-              />
-            </div>
-            <div>
-              <p><label for="D">Option D</label></p>
-              <input
-                :class="{ correct: isCorrectD }"
-                v-on:dblclick="answerD"
-                type="text"
-                id="D"
-                name="D"
-                v-model="questions[questionIndex].options[3].text"
-              />
-            </div>
-          </div>
-        </form>
-        <div class="navigate">
-          <div class="buttons">
-            <button class="previous" v-on:click="prev" :disabled="checkPrev">
-              Previous
+            <!-- <router-link to="/successful"> -->
+            <button class="finish" @click="save" :disabled="checkFinish">
+              Save
             </button>
-            <button class="next" v-on:click="next" :disabled="checkNext">
-              Next
-            </button>
+            <!-- </router-link> -->
           </div>
-          <!-- <router-link to="/successful"> -->
-          <button class="finish" @click="save" :disabled="checkFinish">
-            Save
-          </button>
-          <!-- </router-link> -->
         </div>
       </div>
     </div>
@@ -179,8 +181,17 @@ export default {
       localStorage.setItem("questions", JSON.stringify(this.questions));
       console.log(this.questions);
     },
-    prev: function () {
-      this.questionIndex--;
+
+    computed: {
+      checkPrev: function () {
+        return !(this.questionIndex > 0);
+      },
+      checkNext: function () {
+        return this.questionIndex < 30 ? false : true;
+      },
+      checkFinish: function () {
+        return this.questionIndex == 30 ? false : true;
+      },
     },
     save: async function () {
       if (this.$refs.timer.innerText == "00") {
@@ -418,10 +429,29 @@ label {
 /* .next {
     width: 125px;
     height: 41px;
-    background-color: #7557D3;
-    color: white;
+    /* margin-right: 529px; */
+    background-color: #211f26;
     border-radius: 4px;
+    color: white;
     cursor: pointer;
+  }
+  
+  /* .next {
+      width: 125px;
+      height: 41px;
+      background-color: #7557D3;
+      color: white;
+      border-radius: 4px;
+      cursor: pointer;
+      border: none;
+  } */
+  
+  .previous:disabled,
+  .next:disabled {
+    /* width: 205px;
+      height: 41px; */
+    background-color: #cecece;
+    color: white;
     border: none;
 } */
 

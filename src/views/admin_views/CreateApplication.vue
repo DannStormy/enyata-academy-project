@@ -28,6 +28,7 @@
               name="date"
               placeholder="dd/mm/yyyy"
               v-model="appInfo.date"
+              :min="date"
             /><br />
           </div>
           <div>
@@ -91,6 +92,7 @@ export default {
     selectedFile: "",
     questions: null,
     isSelectActive: false,
+    date: new Date().toISOString().substr(0, 10)
   }),
   methods: {
     createApplication() {
@@ -131,8 +133,7 @@ export default {
       } catch (error) {
         console.log(error);
       }
-    },
-  },
+    }},
   mounted() {},
   name: "CreateApplication",
   components: { AdminSideMenu, ScrollBar },
