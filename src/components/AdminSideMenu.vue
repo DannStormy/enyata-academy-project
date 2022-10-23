@@ -130,7 +130,8 @@ export default {
 .nav-button-img {
   margin-right: 16.56px;
 }
-.nav-buttons a {
+.nav-buttons a,
+.logout-button {
   height: 40px;
   display: block;
   background-color: inherit;

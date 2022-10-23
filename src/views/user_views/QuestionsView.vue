@@ -28,14 +28,15 @@
             v-for="option in question.options"
             :key="option.correct"
           >
-              <input
-                type="radio"
-                :id="option.text"
-                :name="question.question"
-                :value="option.text"
-                v-model="userResponses[index]"
-              /> <label :for="option.text">{{ option.text }}</label>
-            
+            <input
+              type="radio"
+              :id="option.text"
+              :name="question.question"
+              :value="option.text"
+              v-model="userResponses[index]"
+            />
+            <label :for="option.text">{{ option.text }}</label>
+
             <!-- <input type="radio" id="B" name="question" value="B" />
                         <label for="B">B. To speed up 3D rendering performance.</label><br>
                         <input type="radio" id="C" name="question" value="C" />
@@ -133,6 +134,12 @@ export default {
     checkFinish: function () {
       return this.questionIndex == quiz.questions.length - 1 ? false : true;
     },
+  },
+  watch: {
+    // $route() {
+    //   if ()
+    //   return;
+    // },
   },
 
   components: {

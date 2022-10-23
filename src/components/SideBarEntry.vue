@@ -23,11 +23,23 @@
         <div class="options">
           <div>
             <p><label for="name">Name</label></p>
-            <input type="text" id="name" name="name" :placeholder="name" />
+            <input
+              type="text"
+              id="name"
+              name="name"
+              :placeholder="name"
+              readonly
+            />
           </div>
           <div>
             <p><label for="email">Email</label></p>
-            <input type="text" id="email" name="email" :placeholder="email" />
+            <input
+              type="text"
+              id="email"
+              name="email"
+              :placeholder="email"
+              readonly
+            />
           </div>
           <div>
             <p><label for="address">Address</label></p>
@@ -36,6 +48,7 @@
               id="address"
               name="address"
               :placeholder="address"
+              readonly
             />
           </div>
           <div>
@@ -45,6 +58,7 @@
               id="university"
               name="university"
               :placeholder="university"
+              readonly
             />
           </div>
           <div>
@@ -54,25 +68,35 @@
               id="course"
               name="course"
               :placeholder="course"
+              readonly
             />
           </div>
           <div>
             <p><label for="dob">Date of birth</label></p>
-            <input type="text" id="dob" name="dob" :placeholder="dob" />
+            <input
+              type="text"
+              id="dob"
+              name="dob"
+              :placeholder="dob"
+              readonly
+            />
           </div>
           <div>
             <p><label for="cgpa">CGPA</label></p>
-            <input type="text" id="cgpa" name="cgpa" :placeholder="cgpa" />
+            <input
+              type="text"
+              id="cgpa"
+              name="cgpa"
+              :placeholder="cgpa"
+              readonly
+            />
           </div>
           <div>
             <p><label for="cv">CV</label></p>
-            <!-- <a target="_blank"><iframe :src="pdf">Open</iframe></a> -->
             <div class="pdf-container">
               <img src="@/assets/images/pdf.svg" alt="pdf-image" />
               <a :href="pdf" download="file.pdf">Download</a>
             </div>
-            <!-- <object :data="pdf" type="application/pdf"></object> -->
-            <!-- <input type="text" id="cgpa" name="cgpa" placeholder="5.0"> -->
           </div>
         </div>
       </form>
