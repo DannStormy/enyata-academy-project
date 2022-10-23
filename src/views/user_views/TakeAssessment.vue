@@ -33,6 +33,7 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
+import { mapActions } from "vuex";
 export default {
   name: "TakeAssessment",
 
@@ -41,8 +42,9 @@ export default {
   }),
 
   methods: {
+    ...mapActions(["changeAssessmentStatus"]),
     start() {
-      console.log("Iheh");
+      this.changeAssessmentStatus();
       this.showQuestions = true;
     },
   },
@@ -129,5 +131,6 @@ button {
   color: white;
   border: none;
   border-radius: 4px;
+  cursor: pointer;
 }
 </style>

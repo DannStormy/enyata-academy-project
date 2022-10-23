@@ -17,70 +17,66 @@
     <AdminSideMenu />
     <div class="container">
       <div class="dashboard">
-        <h1>Entries - Batch 2</h1>
-        <p>Comprises of all that applied for batch 2</p>
+        <LoaderComp v-if="isLoading" />
+        <div v-else>
+          <h1>Entries - Batch 2</h1>
+          <p class="sub">Comprises of all that applied for batch 2</p>
+
+          <form action="" @submit.prevent>
+            <table class="table">
+              <tbody>
+                <tr class="header-row">
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>
+                    DOB - Age<img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th>
+                  <th>Address</th>
+                  <th>University</th>
+                  <th>
+                    CGPA<img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th>
+                  <!-- <th colspan="2">
+                    Test Scores
+                    <img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th> -->
+                </tr>
+                <tr
+                  :class="['table-data', { active: isActive }]"
+                  v-for="applicant in applicants"
+                  :key="applicant.id"
+                  @click="
+                    getUser(applicant);
+                    switchActive();
+                  "
+                >
+                  <td class="check">
+                    <input type="checkbox" id="username1" name="username" value=
+                    />
+                    <label for="username"
+                      >{{ applicant.firstname }} {{ applicant.lastname }}</label
+                    ><br />
+                  </td>
+                  <td>{{ applicant.email }}</td>
+                  <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+                  <td>{{ applicant.address }}</td>
+                  <td>{{ applicant.university }}</td>
+                  <td>{{ applicant.cgpa }}</td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
       </div>
-      <form action="" @submit.prevent>
-        <table class="table">
-          <tbody>
-            <tr class="header-row">
-              <th>Name</th>
-              <th>Email</th>
-              <th>
-                DOB - Age<img
-                  src="../../assets/svgs/sort-arrow.svg"
-                  alt="icon for sort"
-                />
-              </th>
-              <th>Address</th>
-              <th>University</th>
-              <th>
-                CGPA<img
-                  src="../../assets/svgs/sort-arrow.svg"
-                  alt="icon for sort"
-                />
-              </th>
-              <th colspan="2">
-                Test Scores
-                <img
-                  src="../../assets/svgs/sort-arrow.svg"
-                  alt="icon for sort"
-                />
-              </th>
-            </tr>
-            <tr
-              :class="['table-data', { active: isActive }]"
-              v-for="applicant in applicants"
-              :key="applicant.id"
-              @click="
-                getUser(applicant);
-                switchActive();
-              "
-            >
-              <td>
-                <input type="checkbox" id="username1" name="username" value= />
-                <label for="username"
-                  >{{ applicant.firstname }} {{ applicant.lastname }}</label
-                ><br />
-              </td>
-              <td>{{ applicant.email }}</td>
-              <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
-              <td>{{ applicant.address }}</td>
-              <td>{{ applicant.university }}</td>
-              <td>{{ applicant.cgpa }}</td>
-              <td class="scores">
-                <span>15 </span
-                ><button class="send_email">
-                  <img
-                    src="../../assets/svgs/three-dots.svg"
-                    alt="send bulk email"
-                  />
-                </button>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </form>
     </div>
   </div>
 </template>
@@ -89,6 +85,7 @@
 // import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SideBarEntry from "@/components/SideBarEntry.vue";
+import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 
 export default {
@@ -98,7 +95,10 @@ export default {
     confirm: false,
   }),
   computed: {
-    ...mapState({ applicants: (state) => state.admin.applicants }),
+    ...mapState({
+      applicants: (state) => state.admin.applicants,
+      isLoading: (state) => state.admin.isLoading,
+    }),
   },
   methods: {
     ...mapActions(["getEntries"]),
@@ -120,12 +120,12 @@ export default {
     },
     confirmation(value) {
       this.isActive = value;
-      console.log(value);
     },
   },
   components: {
     AdminSideMenu,
     SideBarEntry,
+    LoaderComp,
   },
   mounted() {
     this.getEntries();
@@ -174,6 +174,9 @@ export default {
   line-height: 16px;
   color: #4f4f4f;
 }
+.sub {
+  margin-bottom: 50px;
+}
 
 select > option {
   font-size: 16px;
@@ -201,7 +204,11 @@ select {
 select::-ms-expand {
   display: none;
 }
-
+.check {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
 .select {
   position: relative;
   display: inline-flex;

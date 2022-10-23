@@ -1,5 +1,6 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
+
 const ifNotAuthenticated = (to, from, next) => {
   store.dispatch('fetchAccessToken');
   if (store.state.user_dashboard.accessToken) {
@@ -8,6 +9,15 @@ const ifNotAuthenticated = (to, from, next) => {
   }
   alert('Access Denied')
   next('/login')
+}
+
+const checkAssessmentStatus = (to, from, next) => {
+  if (!store.state.user_dashboard.taken_assessment) {
+    next()
+    return
+  }
+  alert('Assessment already taken for this Batch')
+  next('/dashboard')
 }
 
 const adminAuthenticated = (to, from, next) => {
@@ -23,7 +33,8 @@ const routes = [
   {
     path: '/assessment',
     name: 'TakeAssessment',
-    component: () => import('../views/user_views/TakeAssessment.vue')
+    component: () => import('../views/user_views/TakeAssessment.vue'),
+    beforeEnter: checkAssessmentStatus
   },
   {
     path: '/',
@@ -93,7 +104,8 @@ const routes = [
   {
     path: '/questions',
     name: 'QuestionsView',
-    component: () => import('../views/user_views/QuestionsView.vue')
+    component: () => import('../views/user_views/QuestionsView.vue'),
+    beforeEnter: checkAssessmentStatus
   },
   {
     path: '/success',

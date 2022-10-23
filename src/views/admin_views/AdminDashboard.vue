@@ -2,75 +2,68 @@
   <div class="flex-container">
     <AdminSideMenu />
     <div class="container">
-      <h1>Dashboard</h1>
-      <div class="dashboard-status">
-        <div class="current-applciation">
-          <p class="titles">Current Applications</p>
-          <p class="data">
-            {{ dashboardDetails?.currentBatchCount[0].count }}
-          </p>
-          <hr />
-          <p class="comments">
-            Academy
-            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
-          </p>
+      <LoaderComp v-if="isLoading" />
+      <div v-else>
+        <h1>Dashboard</h1>
+        <div class="dashboard-status">
+          <div class="current-applciation">
+            <p class="titles">Current Applications</p>
+            <p class="data">
+              {{ dashboardDetails?.currentBatchCount[0].count }}
+            </p>
+            <hr />
+            <p class="comments">
+              Academy
+              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+            </p>
+          </div>
+          <div class="total-application">
+            <p class="titles">Total Applications</p>
+            <p class="data">
+              {{ dashboardDetails?.allBatchCount[0].count }}
+            </p>
+            <hr />
+            <p class="comments">All entries so far</p>
+          </div>
+          <div class="batch">
+            <p class="titles">Academys</p>
+            <p class="data">
+              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+            </p>
+            <hr />
+            <p class="comments">So far</p>
+          </div>
         </div>
-        <div class="total-application">
-          <p class="titles">Total Applications</p>
-          <p class="data">
-            {{ dashboardDetails?.allBatchCount[0].count }}
-          </p>
-          <hr />
-          <p class="comments">All entries so far</p>
-        </div>
-        <div class="batch">
-          <p class="titles">Academys</p>
-          <p class="data">
-            {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
-          </p>
-          <hr />
-          <p class="comments">So far</p>
-        </div>
-      </div>
-      <div class="further-info">
-        <div class="history">
-          <p class="finfo">History</p>
-          <p class="finfo-description">Last Update {{ history }}</p>
-          <ul>
-            <li>
-              <p class="history-title">
-                Academy Batch
-                {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
-              </p>
-              <p class="candidates">
-                {{ dashboardDetails?.approved[0].count }} candidates
-              </p>
-              <p class="history-date">
-                started
-                {{ dashboardDetails?.updates[0]?.date?.replaceAll("-", "/") }}
-              </p>
-            </li>
-            <!-- <li>
-              <p class="history-title">Academy Batch 1.0</p>
-              <p class="candidates">15 candidates</p>
-              <p class="history-date">started 11/09/15</p>
-            </li>
-            <li>
-              <p class="history-title">Academy Batch 1.0</p>
-              <p class="candidates">15 candidates</p>
-              <p class="history-date">started 11/09/15</p>
-            </li> -->
-          </ul>
-        </div>
-        <div class="assessments">
-          <p class="finfo">Create Assessment</p>
-          <div class="assessment-details">
-            <p>Create test question for an incoming academy <br />students</p>
-            <router-link to="/create-application"
-              ><button class="assessment-button">
-                Create Assessment
-              </button></router-link
-            >
+        <div class="further-info">
+          <div class="history">
+            <p class="finfo">History</p>
+            <p class="finfo-description">Last Update {{ history }}</p>
+            <ul>
+              <li>
+                <p class="history-title">
+                  Academy Batch
+                  {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
+                </p>
+                <p class="candidates">
+                  {{ dashboardDetails?.approved[0].count }} candidates
+                </p>
+                <p class="history-date">
+                  started
+                  {{ dashboardDetails?.updates[0]?.date?.replaceAll("-", "/") }}
+                </p>
+              </li>
+            </ul>
+          </div>
+          <div class="assessments">
+            <p class="finfo">Create Assessment</p>
+            <div class="assessment-details">
+              <p>Create test question for an incoming academy <br />students</p>
+              <router-link to="/create-application"
+                ><button class="assessment-button">
+                  Create Assessment
+                </button></router-link
+              >
+            </div>
           </div>
         </div>
       </div>
@@ -80,6 +73,7 @@
   
   <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
@@ -107,7 +101,10 @@ export default {
     },
   },
   computed: {
-    ...mapState({ dashboardDetails: (state) => state.admin.dashboardDetails }),
+    ...mapState({
+      dashboardDetails: (state) => state.admin.dashboardDetails,
+      isLoading: (state) => state.admin.isLoading,
+    }),
   },
   mounted() {
     this.details();
@@ -116,14 +113,13 @@ export default {
   name: "AdminDashboard",
   components: {
     AdminSideMenu,
+    LoaderComp,
   },
 };
 </script>
   
 <style scoped>
-@import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
 * {
-  font-family: "Lato", sans-serif;
   color: #2b3c4e;
 }
 .flex-container {
@@ -172,11 +168,6 @@ hr {
 }
 .further-info {
   display: flex;
-
-  /* display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: 100%;
-  gap: 74px; */
 }
 .history,
 .assessments {
@@ -232,10 +223,6 @@ li:hover {
   border-radius: 4px;
   font-weight: 700;
   margin-top: 34px;
-}
-.assessment-button:hover {
-  background-color: hsl(0, 0%, 75%);
-  transition: 0.1s;
 }
 </style>
   
