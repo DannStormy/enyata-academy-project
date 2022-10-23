@@ -179,17 +179,19 @@ hr {
   margin-bottom: 97px;
 }
 .further-info {
-  display: grid;
-  grid-template-columns: repeat(2, 50%);
-  grid-template-rows: 100%;
+  display: flex;
+  /* grid-template-columns: repeat(2, 50%);
+  grid-template-rows: 100%; */
   gap: 36px;
+  margin-bottom: 80px;
 }
 .updates,
 .assessments {
   border: 1px solid #ececf9;
   border-radius: 4px;
   padding: 25px 35px;
-  width: 450px;
+  width: 430px;
+  height: 390px;
 }
 .finfo {
   font-weight: 700;

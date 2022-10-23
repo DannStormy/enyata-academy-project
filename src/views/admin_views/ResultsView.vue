@@ -3,20 +3,17 @@
     <AdminSideMenu />
     <div class="container">
       <div class="header">
-        <LoaderComp v-if="isLoading" />
-        <div v-else>
-          <label for="cars">Results - </label>
-          <div class="select">
-            <select id="batch" name="batchlist" form="batchform">
-              <option value="batch1">Batch 1</option>
-              <option value="batch2" selected>Batch 2</option>
-              <option value="batch3">Batch 3</option>
-            </select>
-          </div>
-          <p class="header-title">Comprises of all that applied for batch 2</p>
+        <label for="cars">Results - </label>
+        <div class="select">
+          <select id="batch" name="batchlist" form="batchform">
+            <option value="batch1">Batch 1</option>
+            <option value="batch2" selected>Batch 2</option>
+            <option value="batch3">Batch 3</option>
+          </select>
         </div>
+        <p class="header-title">Comprises of all that applied for batch 2</p>
       </div>
-      <div v-if="!isLoading">
+      <div>
         <form action="" @submit.prevent>
           <table class="table" width="100px">
             <tbody>
@@ -62,7 +59,7 @@
                 <td>{{ applicant.university }}</td>
                 <td>{{ applicant.cgpa }}</td>
                 <td class="scores">
-                  <span>15 </span
+                  <span>{{ applicant.test_score || "N/A" }} </span
                   ><button @click="active">
                     <img
                       src="../../assets/svgs/three-dots.svg"
@@ -85,7 +82,6 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
-import LoaderComp from "@/components/LoaderComp.vue";
 import SendMail from "@/components/SendMail.vue";
 import { mapActions, mapState } from "vuex";
 export default {
@@ -120,7 +116,6 @@ export default {
   name: "ResultsView",
   components: {
     AdminSideMenu,
-    LoaderComp,
     SendMail,
   },
 };

@@ -17,7 +17,7 @@ export default {
 </script>
 
 <style>
-a {
+.button_container a {
   width: 111px;
   height: 37px;
   background: rgba(223, 224, 224, 0.5);

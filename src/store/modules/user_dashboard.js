@@ -9,7 +9,8 @@ export default {
         accessToken: null,
         message: '',
         status: null,
-        profile: []
+        profile: [],
+        taken_assessment: null
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -26,6 +27,9 @@ export default {
         },
         UPDATE_PROFILE: (state, profile) => {
             state.profile = profile
+        },
+        UPDATE_ASSESSMENT_STATUS: (state, taken_assessment) => {
+            state.taken_assessment = taken_assessment
         }
     },
     actions: {
@@ -81,10 +85,19 @@ export default {
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
                 commit('UPDATE_PROFILE', response.data.data[0]);
                 commit('UPDATE_STATUS', response.data.applicantStatus[0].status)
-                // console.log('St', response.data.applicantStatus[0].status)
+                commit('UPDATE_ASSESSMENT_STATUS', response.data.data[0].taken_assessment)
+                // console.log('St', response.data.data[0].taken_assessment)
                 // console.log('State: ', state.profile)
             } catch (error) {
                 console.log(error)
+            }
+        },
+        async changeAssessmentStatus({ state, commit }) {
+            try {
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email })
+                commit('UPDATE_ASSESSMENT_STATUS', response.data.taken_assessment[0].taken_assessment)
+            } catch (err) {
+                console.log(err)
             }
         }
     }
