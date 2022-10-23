@@ -43,16 +43,30 @@
               </div>
             </div>
             <div class="form__input">
-              <label for="password">Password</label><br />
-              <input
-                :class="{
+              <label for="password">Password</label>
+              <div class="input-container">
+                <input
+                  :class="{
+                    'is-invalid': submitted && v$.userData.password.$error,
+                  }"
+                  v-if="showPassword"
+                  type="text"
+                  id="password"
+                  name="password"
+                  v-model="userData.password"
+                />
+                <input :class="{
                   'is-invalid': submitted && v$.userData.password.$error,
-                }"
-                type="password"
-                id="password"
-                name="password"
-                v-model="userData.password"
-              /><br />
+                }" 
+                  v-else 
+                  type="password" 
+                  id="password" 
+                  name="password" v-model="userData.password" />
+                  <div @click="toggleShow" class="eye">
+                    <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon" />
+                    <iconify-icon v-if="showPassword"  icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+                  </div>
+              </div>
               <div
                 v-if="submitted && v$.userData.password.$error"
                 class="invalid-feedback"
@@ -136,16 +150,33 @@
               </div>
             </div>
             <div class="form__input">
-              <label for="confirm-password">Confirm Password</label><br />
+              <label for="confirm-password">Confirm Password</label>
+              <div class="input-container">
               <input
                 :class="{
                   'is-invalid': submitted && v$.userData.confirmPassword.$error,
                 }"
+                v-if="confirmPassword_show"
+                type="text"
+                id="confirm-password"
+                name="confirm-password"
+                v-model="userData.confirmPassword"
+              />
+               <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.confirmPassword.$error,
+                }"
+                v-else
                 type="password"
                 id="confirm-password"
                 name="confirm-password"
                 v-model="userData.confirmPassword"
-              /><br />
+              />
+               <div @click="toggleConfirmShow" class="eye">
+              <img v-if="!confirmPassword_show" src="@/assets/svgs/eye-icon.svg" alt="eye-icon"/>
+              <iconify-icon v-if="confirmPassword_show"  icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+                      </div>
+              </div>
               <div
                 v-if="submitted && v$.userData.confirmPassword.$error"
                 class="invalid-feedback"
@@ -180,6 +211,8 @@ export default {
     return { v$: useVuelidate() };
   },
   data: () => ({
+    showPassword: false,
+    confirmPassword_show: false,
     userData: {
       firstName: "",
       lastName: "",
@@ -219,6 +252,12 @@ export default {
     },
   },
   methods: {
+    toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
+    toggleConfirmShow() {
+      this.confirmPassword_show = !this.confirmPassword_show;
+    },
     signup() {
       this.submitted = true;
       // stop here if form is invalid
@@ -307,6 +346,34 @@ label {
   display: inline-block;
   margin-bottom: 5px;
   margin-top: 22px;
+}
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 365px;
+  height: 48px;
+}
+.eye {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 4px;
+  margin-left: 335px;
+  cursor: pointer;
+  z-index: 100;
+  position: absolute;
+}
+.eye i {
+  width: 100%;
+  height: 100%;
+}
+
+.input-container input{
+  width: 365px;
+  height: 48px;
+  border: 1.5px solid #bdbdbd;
+  border-radius: 4px;
+  padding: 15px;
+  position:relative;
 }
 input {
   width: 365px;
