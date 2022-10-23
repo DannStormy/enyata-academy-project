@@ -1,39 +1,40 @@
 <template>
   <div class="flex-container">
     <AdminSideMenu />
-    <div class="table-container">
-      <div class="title">Assessment Template</div>
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <th>Batch</th>
-              <th>Date Composed</th>
-              <th>No of Questions</th>
-              <th>Time Allocated</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr class="table-row active">
-              <td class="active">Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
-              <td>30 minutes</td>
-            </tr>
-            <tr class="table-row">
-              <td>Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
-              <td>30 minutes</td>
-            </tr>
-            <tr class="table-row">
-              <td>Batch 1</td>
-              <td>12/07/94</td>
-              <td>30</td>
-              <td>30 minutes</td>
-            </tr>
-          </tbody>
-        </table>
+    <PreviewQuestion
+      :docs="eachAssessment.docs"
+      @close="close"
+      v-if="isActive"
+    />
+    <div class="table-container" v-else>
+      <LoaderComp v-if="isLoading" />
+      <div v-else>
+        <div class="title">Assessment Template</div>
+        <div class="table">
+          <table>
+            <thead>
+              <tr>
+                <th>Batch</th>
+                <th>Date Composed</th>
+                <th>No of Questions</th>
+                <th>Time Allocated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr
+                class="table-row active"
+                v-for="assessment in assessments"
+                :key="assessment.id"
+                @click="getAssessment(assessment)"
+              >
+                <td class="active">Batch {{ assessment.id }}</td>
+                <td>{{ formatDate(assessment.created_at) }}</td>
+                <td>{{ assessment.docs.length }}</td>
+                <td>30 minutes</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
       </div>
     </div>
   </div>
@@ -41,10 +42,45 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import PreviewQuestion from "@/components/PreviewQuestion.vue";
+import LoaderComp from "@/components/LoaderComp.vue";
+
+import { mapActions, mapState } from "vuex";
 
 export default {
+  data: () => ({
+    isActive: false,
+    eachAssessment: null,
+  }),
+  methods: {
+    ...mapActions(["getAssessments"]),
+    formatDate(created) {
+      let date = new Date(created);
+      let month = date.getUTCMonth() + 1;
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear()?.toString()?.slice(-2);
+      return day + "/" + month + "/" + year;
+    },
+    getAssessment(assessment) {
+      this.isActive = true;
+      this.eachAssessment = assessment;
+      console.log(this.eachAssessment);
+    },
+    close(value) {
+      this.isActive = value;
+    },
+  },
+  computed: {
+    ...mapState({
+      assessments: (state) => state.admin.assessments,
+      isLoading: (state) => state.admin.isLoading,
+    }),
+  },
+  mounted() {
+    this.getAssessments();
+  },
   name: "AssessmentHistory",
-  components: { AdminSideMenu },
+  components: { AdminSideMenu, PreviewQuestion, LoaderComp },
 };
 </script>
 
@@ -90,7 +126,7 @@ tr {
   cursor: pointer;
 }
 
-tr.active {
+tr.active:hover {
   background: white;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   /* border-radius: 8px; */

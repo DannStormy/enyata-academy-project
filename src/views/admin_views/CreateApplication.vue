@@ -28,6 +28,7 @@
               name="date"
               placeholder="dd/mm/yyyy"
               v-model="appInfo.date"
+              :min="date"
             /><br />
           </div>
           <div>
@@ -56,12 +57,10 @@
             <div @click="getQuestions" class="select-questions">
               Select question
             </div>
-            <!-- <label for="select">Select Question</label> -->
-            <!-- <div @click="getQuestions" class="select__menu"> -->
             <select v-model="selectedFile" v-if="isSelectActive">
-              <!-- <option disabled value="">Filter by region</option> -->
+              <option disabled value="">Choose Assessment</option>
               <option v-for="question in questions" :key="question.id">
-                {{ question.id }}
+                Batch {{ question.id }}
               </option>
             </select>
             <!-- </div> -->
@@ -91,6 +90,7 @@ export default {
     selectedFile: "",
     questions: null,
     isSelectActive: false,
+    date: new Date().toISOString().substr(0, 10),
   }),
   methods: {
     createApplication() {

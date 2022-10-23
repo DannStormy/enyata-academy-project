@@ -9,6 +9,7 @@
         <p class="title">Log In</p>
       </div>
       <form action="" @submit.prevent="login">
+
         <label for="lname">Email Address</label><br />
         <input
           type="email"
@@ -16,14 +17,29 @@
           name="email"
           v-model="user.email"
         /><br />
-        <label for="password">Password</label><br />
+        <label for="password">Password</label>
+        <div class="input-container">
         <input
+          v-if="showPassword"
+          type="text"
+          id="password"
+          name="password"
+          v-model="user.password"
+        />
+        <input
+          v-else
           type="password"
           id="password"
           name="password"
           v-model="user.password"
-        /><br />
+        />
+        <div @click="toggleShow" class="eye">
+          <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon"/>
+          <iconify-icon v-if="showPassword" icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+        </div>
+        </div>
         <button class="login">Sign In</button>
+
       </form>
       <div class="footer">
         <p>
@@ -45,6 +61,7 @@ import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   data: () => ({
+    showPassword:false,
     user: {
       email: "",
       password: "",
@@ -67,6 +84,9 @@ export default {
 
       console.log("Message", this.message);
     },
+     toggleShow() {
+      this.showPassword = !this.showPassword;
+    }
   },
   computed: {
     ...mapState({ message: (state) => state.user_dashboard.message }),
@@ -122,12 +142,40 @@ label {
   margin-bottom: 5px;
   margin-top: 22px;
 }
-input {
+#email{
   width: 100%;
   height: 48px;
   border: 1.5px solid #bdbdbd;
   padding: 15px;
   border-radius: 4px;
+}
+.input-container{
+    display: flex;
+    align-items:center;
+    width: 100%;
+    height: 48px;
+}
+.eye{
+  width:15px;
+  height:15px;
+  margin-bottom: 4px;
+  margin-left:351px;
+  cursor:pointer;
+  z-index: 100;
+  position:absolute;
+}
+.eye i{
+  width:100%;
+  height:100%;
+}
+.input-container input{
+  width: 100%;
+  height: 48px;
+  border:none;
+  padding: 15px;
+  border-radius: 4px;
+  border: 1.5px solid #bdbdbd;
+  position:relative;
 }
 input:focus {
   outline: none !important;

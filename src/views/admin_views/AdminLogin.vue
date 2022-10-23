@@ -13,13 +13,26 @@
           name="email"
           v-model="details.email"
         /><br />
-        <label for="password">Password</label><br />
+        <label for="password">Password</label>
+        <div class="input-container">
         <input
-          type="password"
+          v-if="showPassword"
+          type="text"
           id="password"
           name="password"
           v-model="details.password"
-        /><br />
+        />
+        <input 
+          v-else 
+          type="password" 
+          id="password" 
+          name="password" 
+          v-model="details.password" />
+          <div @click="toggleShow" class="eye">
+            <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon" />
+            <iconify-icon v-if="showPassword" icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+          </div>
+      </div>
         <button class="login">Sign In</button>
       </form>
     </div>
@@ -31,9 +44,13 @@ import axios from "axios";
 import router from "@/router";
 export default {
   data: () => ({
+    showPassword: false,
     details: { email: "", password: "" },
   }),
   methods: {
+     toggleShow() {
+      this.showPassword = !this.showPassword;
+    },
     async adminLogin() {
       try {
         const response = await axios.post(
@@ -100,6 +117,12 @@ label {
   margin-bottom: 5px;
   margin-top: 22px;
 }
+.input-container {
+  display: flex;
+  width: 100%;
+  align-items:center;
+  height: 48px;
+}
 input {
   width: 100%;
   height: 48px;
@@ -108,6 +131,30 @@ input {
   padding: 15px;
   border-radius: 4px;
   color: white;
+}
+
+.input-container input{
+  width: 100%;
+    height: 48px;
+    border: 1.5px solid white;
+    background-color: #7557d3;
+    padding: 15px;
+    border-radius: 4px;
+    color: white;
+}
+.eye {
+  width: 15px;
+  height: 15px;
+  margin-bottom: 4px;
+  margin-left: 351px;
+  cursor: pointer;
+  z-index: 100;
+  position: absolute;
+}
+
+.eye i {
+  width: 100%;
+  height: 100%;
 }
 input:focus {
   outline: none !important;
