@@ -2,7 +2,7 @@
   <ScrollBar />
   <div class="confirmation-container" v-if="isActive">
     <div class="confirmation-box">
-      <form class="question-box" @submit.prevent>
+      <form class="question-box" @submit.prevent="submit">
         <div class="que">Are you sure you want to submit this application?</div>
         <div class="buttons">
           <button @click="submit">Yes</button>
@@ -53,15 +53,23 @@
         </textarea>
         <div>
           <span>
-            <label for="files" class="btn">Select question</label>
-            <input id="files" style="display: none" type="file" />
+            <div @click="getQuestions" class="select-questions">
+              Select question
+            </div>
+            <!-- <label for="select">Select Question</label> -->
+            <!-- <div @click="getQuestions" class="select__menu"> -->
+            <select v-model="selectedFile" v-if="isSelectActive">
+              <!-- <option disabled value="">Filter by region</option> -->
+              <option v-for="question in questions" :key="question.id">
+                {{ question.id }}
+              </option>
+            </select>
+            <!-- </div> -->
           </span>
         </div>
         <br />
         <div class="button-container">
-          <button @submit="submit" class="submit" :disabled="isActive">
-            Submit
-          </button>
+          <button class="submit" :disabled="isActive">Submit</button>
         </div>
       </form>
     </div>
@@ -76,11 +84,13 @@ export default {
   data: () => ({
     isActive: false,
     appInfo: {
-      selectedFile: "",
       batch_id: null,
       date: null,
       instructions: "",
     },
+    selectedFile: "",
+    questions: null,
+    isSelectActive: false,
   }),
   methods: {
     createApplication() {
@@ -89,8 +99,29 @@ export default {
     noConfirm() {
       this.isActive = false;
     },
+    async getQuestions() {
+      try {
+        let response = await axios.get(
+          `${process.env.VUE_APP_SERVER_URL}/admin/create-application`
+        );
+        console.log(response.data.questions);
+        this.questions = response.data.questions;
+        this.isSelectActive = true;
+      } catch (error) {
+        console.log(error);
+      }
+    },
     async submit() {
       this.isActive = false;
+      this.isSelectActive = false;
+      const selectedQuestion = this.questions;
+      let que;
+      for (let i = 0; i < selectedQuestion.length; i++) {
+        if (selectedQuestion[i].id == this.selectedFile) {
+          que = selectedQuestion[i].docs;
+        }
+      }
+      this.appInfo.question = JSON.stringify(que);
       try {
         const response = await axios.post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
@@ -102,6 +133,7 @@ export default {
       }
     },
   },
+  mounted() {},
   name: "CreateApplication",
   components: { AdminSideMenu, ScrollBar },
 };
@@ -220,7 +252,7 @@ textarea {
   border: 1.5px solid #2b3c4e;
   background-color: inherit;
 }
-span {
+.select-questions {
   font-style: italic;
   font-weight: 400;
   font-size: 14px;
@@ -229,12 +261,21 @@ span {
   border-radius: 10px;
   width: 145px;
   height: 36px;
-  padding: 8px 16px;
+  padding: 8px;
+  color: white;
+  cursor: pointer;
+  text-align: center;
 }
 label[for="files"] {
   color: white;
   cursor: pointer;
 }
+/* .select-questions {
+  background: red;
+  width: 80px;
+  height: 40px;
+  cursor: pointer;
+} */
 .submit {
   width: 379px;
   height: 50px;

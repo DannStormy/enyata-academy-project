@@ -4,7 +4,8 @@ export default {
     state: () => ({
         applicants: null,
         adminDetails: null,
-        adminAuth: null
+        adminAuth: null,
+        dashboardDetails: null
     }),
     mutations: {
         UPDATE_APPLICANTS: (state, applicants) => {
@@ -15,6 +16,9 @@ export default {
         },
         UPDATE_ADMINAUTH: (state, adminAuth) => {
             state.adminAuth = adminAuth
+        },
+        UPDATE_DASHBOARD: (state, details) => {
+            state.dashboardDetails = details
         }
 
     },
@@ -43,5 +47,18 @@ export default {
                 return error
             }
         },
+        async getDetails({ commit }) {
+            try {
+                const response = await axios.get(
+                    `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`
+                );
+                console.log('Response', response.data.allDetails.currentBatch)
+                await commit('UPDATE_DASHBOARD', response.data.allDetails)
+
+            } catch (error) {
+                console.log(error)
+            }
+        },
+
     }
 };

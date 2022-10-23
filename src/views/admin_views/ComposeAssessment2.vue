@@ -11,7 +11,7 @@
             </div>
             <div class="main">
                 <div class="assessment-1">
-                    <p>{{questionIndex}}/30</p>
+                    <p>{{questionIndex+1}}/30</p>
                     <div class="choose_file" :class="{'no-img': !image }">
                         <input type="file" name="assessment-file" id="assessment-file" accept="image/*" @change="previewImage" class="upload"> 
                         <img v-show="image" :src="preview" class="img-fluid" />
@@ -22,35 +22,37 @@
                 </div>
                 <form>
                     <p><label for="question">Questions</label></p>
-                    <textarea id="question" name="question" v-model="questions[0].question"></textarea>
+                    <textarea id="question" name="question" v-model="questions[questionIndex].question"></textarea>
                     <div class="options">
                        <div>
                             <p><label for="A">Option A</label></p>
-                            <input type="text" id="A" name="A" v-model="questions[0].options[0].text">
+                            <input type="text" id="A" name="A" v-model="questions[questionIndex].options[0].text">
                        </div>
                        <div>
                             <p><label for="B">Option B</label></p>
-                            <input type="text" id="B" name="B" v-model="questions[0].options[1].text" >
+                            <input type="text" id="B" name="B" v-model="questions[questionIndex].options[1].text">
                         </div>
                         <div>
                             <p><label for="C">Option C</label></p>
-                            <input type="text" id="C" name="C" v-model="questions[0].options[2].text">
+                            <input type="text" id="C" name="C" v-model="questions[questionIndex].options[2].text">
                         </div>
                         <div>
                             <p><label for="D">Option D</label></p>
-                            <input type="text" id="D" name="D" v-model="questions[0].options[3].text">
+                            <input type="text" id="D" name="D" v-model="questions[questionIndex].options[3].text">
                         </div>
                     </div>
                 </form>
-                {{ questions }}
+                {{questions}}<br>
+                <p>the quiz array:</p>{{quiz}}
                 <div class="navigate">
                     <div class="buttons">
-                        <button class="previous" v-on:click="prev()" :disabled="checkPrev">Previous</button>
-                        <button class="next" v-on:click="next" :disabled="checkNext">Next</button>
+                        <button class="previous" v-on:click="prev" :disabled="checkPrev">Previous</button>
+                        <button class="next" v-on:click="next" :disabled="checkNext" >Next</button>
                     </div>
-                    <router-link to="/successful">
-                        <button class="finish" :disabled="checkFinish">Save</button>
-                    </router-link>
+                    <!-- <router-link to="/successful"> -->
+                        <button class="finish" >Save</button>
+                        <!-- :disabled="checkFinish" -->
+                    <!-- </router-link> -->
                 </div>
 
             </div>
@@ -65,7 +67,6 @@
 // import quiz from '@/quiz'
 import AdminSideMenu from '@/components/AdminSideMenu.vue'
 import TimeBarAdmin from '@/components/TimeBarAdmin.vue'
-
 export default {
     name: 'ComposeAssessment2',
     data: () => ({
@@ -74,18 +75,20 @@ export default {
         image: null,
         preview_list: [],
         image_list: [],
-        questionIndex: 1,
-        questions: [{
-                numb: 1,
+        questionIndex: 0,
+        questions: [
+            {
                 question: "",
+                img: "",
                 options: [
-                        {text: ""},
-                        {text: ""},
-                        {text: ""},
-                        {text: ""}
-                ]
-        }],
-        index: 0
+                        {text: "", correct: false},
+                        {text: "", correct: false},
+                        {text: "", correct: false},
+                        {text: "", correct: false}
+                    ]
+            }
+        ],
+        quiz: []
     }),
     methods: {
         createApplication() {
@@ -103,43 +106,36 @@ export default {
                 }
                 this.image=input.files[0];
                 reader.readAsDataURL(input.files[0]);
+                this.questions[this.questionIndex].img = this.image
             }
         },
         next: function() {
+            if(this.questions.length-1 === this.questionIndex){
+                    this.questions.push({
+                    question: "",
+                    img: this.questions[this.questionIndex].img,
+                    options: [
+                            {text: "", correct: false},
+                            {text: "", correct: false},
+                            {text: "", correct: false},
+                            {text: "", correct: false}
+                ]});
+            }
             this.questionIndex++;
-            // this.questions.push;
-            this.questions[0].question = "";
-            this.questions[0].options[0].text = "";
-            this.questions[0].options[1].text = "";
-            this.questions[0].options[2].text = "";
-            this.questions[0].options[3].text = "";
-            // localStorage.setItem("numb", this.questions[0].numb++)
-            this.questions[0].numb++;
-            console.log(this.questions);
+            console.log(this.questions[this.questionIndex].img)
         },
         prev: function() {
             this.questionIndex--;
-            // this.questionValue = this.questions[this.index-1].question;
-            // this.questions[this.index].question = this.questions[this.index-1].question;
-            // this.questions[this.index].options[0].text = this.questions[this.index-1].options[0].text;
-            // this.questions[this.index].options[1].text = this.questions[this.index-1].options[1].text;
-            // this.questions[this.index].options[2].text = this.questions[this.index-1].options[2].text;
-            // this.questions[this.index].options[3].text = this.questions[this.index-1].options[3].text;
-            // this.questions[this.index].numb--;
-            console.log(this.questionValue);
-        },
-        retrieve: function() {
-            var questionValue = document.getElementById('question').value;
-            this.questions[this.index-1].question = questionValue
-            console.log(questionValue);
-        }
-    },
+            this.questions[0].numb--;
+        }},
+        save: function(){
+            this.quiz.push(this.questions)
+        },  
     computed: {
         checkPrev: function(){
-            return this.questionIndex > 1 ? false : true; 
+            return !(this.questionIndex > 0)
         },
         checkNext: function(){
-            // quiz.questions.length - 1 
             return this.questionIndex < 30 ? false : true; 
         },
         checkFinish: function(){
@@ -155,25 +151,19 @@ export default {
 
 <style scoped>
 @import url("https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,100;0,300;0,400;0,700;0,900;1,100;1,300;1,400;1,700;1,900&display=swap");
-
 * {
     font-family: 'Lato', sans-serif;
     color: #2B3C4E;
     margin: 0;
     padding: 0;
-
 }
-
 .wrapper {
     display: flex;
 }
-
 .container {
     margin: 111px 93px 0px 292px;
     width: 876px;
-
 }
-
 .header {
     display: flex;
     justify-content: space-between;
@@ -181,11 +171,9 @@ export default {
     margin-left: 47px;
     margin-bottom: 64px;
 }
-
 .assessment {
     align-items: center;
 }
-
 .title {
     font-style: normal;
     font-weight: 300;
@@ -194,8 +182,6 @@ export default {
     letter-spacing: -0.02em;
     margin-bottom: 14px;
 }
-
-
 .main {
     display: flex;
     flex-direction: column;
@@ -205,7 +191,6 @@ export default {
 .assessment-1{
     margin-top: 62px;
 }
-
 .assessment-1 p {
     font-family: 'Lato';
     font-style: normal;
@@ -214,7 +199,6 @@ export default {
     line-height: 19px;
     color: #2B3C4E;
 }
-
 .choose_file {
     margin-top: 21px;
     display: flex;
@@ -260,7 +244,6 @@ form{
     flex-direction: column;
     padding:0;
 }
-
 .options{
     display:grid;
     grid-template-columns: auto auto;
@@ -275,7 +258,6 @@ textarea{
     margin-bottom:47px;
     padding: 15px;
 }
-
 .options input{
     border: 1.5px solid #2B3C4E;
     margin-bottom:47px;
@@ -284,14 +266,11 @@ textarea{
     width: 406px;
     padding: 15px;
 }
-
 input:focus,
     textarea:focus {
         outline: none !important;
         border: 1px solid #7557d3;
     }
-
-
 label {
     font-family: 'Lato';
     font-style: normal;
@@ -300,13 +279,11 @@ label {
     line-height: 17px;
     margin-bottom:5px;
 }
-
 .active {
     width: 355.08px;
     height: 33px;
     background: #31D283;
 }
-
 .navigate {
     display: flex;
     flex-direction: column;
@@ -315,7 +292,6 @@ label {
     justify-content: center;
     align-items: center;
 }
-
 .buttons {
     display: flex;
     flex-direction: row;
@@ -323,7 +299,6 @@ label {
     margin-bottom: 50px;
     gap: 529px;
 }
-
 .previous,.next,.finish {
     border: 1px solid #00000040;
     width: 125px;
@@ -334,7 +309,6 @@ label {
     color:white;
     cursor:pointer;
 }
-
 /* .next {
     width: 125px;
     height: 41px;
@@ -344,8 +318,6 @@ label {
     cursor: pointer;
     border: none;
 } */
-
-
 .previous:disabled, .next:disabled {
     /* width: 205px;
     height: 41px; */
