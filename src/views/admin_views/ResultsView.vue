@@ -48,7 +48,12 @@
                 :key="applicant.id"
               >
                 <td class="check">
-                  <input type="checkbox" id="username1" name="username" />
+                  <input
+                    type="checkbox"
+                    id="username1"
+                    name="username"
+                    :checked="applicant.status"
+                  />
                   <label for="username"
                     >{{ applicant.firstname }} {{ applicant.lastname }}</label
                   ><br />

@@ -36,7 +36,7 @@
                   </th>
                   <th>Address</th>
                   <th>University</th>
-                  <th>
+                  <th @click="sortCgpa">
                     CGPA<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
@@ -60,7 +60,12 @@
                   "
                 >
                   <td class="check">
-                    <input type="checkbox" id="username1" name="username" value=
+                    <input
+                      type="checkbox"
+                      id="username1"
+                      name="username"
+                      :checked="applicant.status"
+                      readonly
                     />
                     <label for="username"
                       >{{ applicant.firstname }} {{ applicant.lastname }}</label

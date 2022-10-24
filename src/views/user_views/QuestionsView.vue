@@ -70,6 +70,7 @@
 
 <script>
 import quiz from "@/quiz";
+import axios from 'axios'
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
 export default {
@@ -123,6 +124,9 @@ export default {
         return val;
       }).length;
     },
+    async getQuestions(){
+      const response = axios.get(`${process.env.VUE_APP_SERVER_URL}/admin/get-assessment`)
+      console.log(response)
   },
   computed: {
     checkPrev: function () {
@@ -146,7 +150,7 @@ export default {
     SideMenu,
     TimerBar,
   },
-};
+}}
 </script>
 
 <style scoped>
