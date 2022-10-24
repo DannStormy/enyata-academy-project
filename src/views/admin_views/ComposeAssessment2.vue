@@ -116,7 +116,7 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
-// import axios from 'axios';
+import axios from 'axios';
 
 export default {
   name: "ComposeAssessment2",
@@ -186,10 +186,10 @@ export default {
         return !(this.questionIndex > 0);
       },
       checkNext: function () {
-        return this.questionIndex < 30 ? false : true;
+        return this.questionIndex < 4 ? false : true;
       },
       checkFinish: function () {
-        return this.questionIndex == 30 ? false : true;
+        return this.questionIndex == 4 ? false : true;
       },
     },
     save: async function () {
@@ -198,8 +198,8 @@ export default {
         return;
       }
       this.questions.time = this.$refs.timer.innerText;
-      // const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
-      // console.log(response)
+      const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
+      console.log(response)
       console.log("save:", this.questions);
     },
     answerA: function () {
