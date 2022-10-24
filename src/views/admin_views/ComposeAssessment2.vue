@@ -180,17 +180,9 @@ export default {
       localStorage.setItem("questions", JSON.stringify(this.questions));
       console.log(this.questions);
     },
-
-    computed: {
-      checkPrev: function () {
-        return !(this.questionIndex > 0);
-      },
-      checkNext: function () {
-        return this.questionIndex < 30 ? false : true;
-      },
-      checkFinish: function () {
-        return this.questionIndex == 30 ? false : true;
-      },
+    prev() {
+      this.questionIndex--;
+      console.log(this.questions);
     },
     save: async function () {
       if (this.$refs.timer.innerText == "00") {
@@ -199,6 +191,7 @@ export default {
       }
       this.questions.time = this.$refs.timer.innerText;
       // const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
+      alert("Assessment Saved");
       // console.log(response)
       console.log("save:", this.questions);
     },
@@ -225,7 +218,6 @@ export default {
       this.isCorrectD = this.questions[this.questionIndex].options[3].correct;
     },
   },
-
   computed: {
     checkPrev: function () {
       return !(this.questionIndex > 0);
@@ -237,6 +229,18 @@ export default {
       return this.questionIndex == 30 ? false : true;
     },
   },
+
+  // computed: {
+  //   checkPrev: function () {
+  //     return !(this.questionIndex > 0);
+  //   },
+  //   checkNext: function () {
+  //     return this.questionIndex < 30 ? false : true;
+  //   },
+  //   checkFinish: function () {
+  //     return this.questionIndex == 30 ? false : true;
+  //   },
+  // },
   components: {
     AdminSideMenu,
   },
