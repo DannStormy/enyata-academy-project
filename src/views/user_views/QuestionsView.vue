@@ -16,12 +16,12 @@
       </div>
       <div
         class="main"
-        v-for="(question, index) in quiz.questions"
+        v-for="(question, index) in quiz"
         :key="question.numb"
         v-show="index === questionIndex"
       >
         <div class="question">
-          <p>Question {{ question.numb }}</p>
+          <p>Question {{ question.numb + 1 }}</p>
           <span>{{ question.question }}</span>
           <div
             :class="{ active: isActive }"
@@ -33,16 +33,12 @@
               :id="option.text"
               :name="question.question"
               :value="option.text"
-              v-model="userResponses[index]"
+              v-model="isCorrect"
+              @click="score"
             />
+            
+            <!-- v-model="userResponses[index]" -->
             <label :for="option.text">{{ option.text }}</label>
-
-            <!-- <input type="radio" id="B" name="question" value="B" />
-                        <label for="B">B. To speed up 3D rendering performance.</label><br>
-                        <input type="radio" id="C" name="question" value="C" />
-                        <label for="C">C. To support higher video resolutions.</label><br>
-                        <input type="radio" id="D" name="question" value="D" />
-                        <label for="D">D. To display more colors in images and videos</label> -->
           </div>
           <div class="navigate">
             <div class="buttons">
@@ -53,14 +49,12 @@
                 Next
               </button>
             </div>
-            <!-- <p>{{ countdown() }}</p> -->
-            <!-- <button @click="countdown">Start</button> -->
             <router-link to="/success">
               <button class="finish" :disabled="checkFinish" @click="stop">
                 Finish
               </button>
             </router-link>
-            <p>Total score: {{ score() }} / {{ quiz.questions.length }}</p>
+            <p>Total score: {{ count }} / {{ quiz?.length }}</p>
           </div>
         </div>
       </div>
@@ -69,8 +63,7 @@
 </template>
 
 <script>
-import quiz from "@/quiz";
-import axios from 'axios'
+import axios from "axios";
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
 export default {
@@ -78,16 +71,20 @@ export default {
   data: () => ({
     isActive: false,
     currentTimer: 0,
-    quiz: quiz,
+    quiz: null,
     questionIndex: 0,
-    userResponses: Array(quiz.questions.length).fill(false),
+    userResponses: null,
     minutes: 0,
     seconds: 0,
     disable: false,
+    isCorrect: '',
+    count: 0
   }),
 
   mounted() {
     this.startInterval();
+    this.getQuestions();
+    // this.userResponse();
   },
 
   methods: {
@@ -113,44 +110,53 @@ export default {
         this.seconds = remSec;
       }, 1000);
     },
+    // userResponse() {
+    //   this.userResponses = Array(this.quiz?.length).fill(false);
+    // },
     next: function () {
       this.questionIndex++;
+      for(var i=0; i<this.quiz.length; i++) {
+        // console.log(this.quiz[i].options);
+        
+        // console.log(this.quiz[i].selected)
+      }
     },
     prev: function () {
       this.questionIndex--;
     },
     score: function () {
-      return this.userResponses.filter(function (val) {
-        return val;
-      }).length;
+      // return this.userResponses.filter(function (val) {
+      //   return val;
+      // }).length;
+      // if (this.value === true & this.isCorrect === true){
+      //   this.count++
+      // }
+      console.log(this.isCorrect)
     },
-    async getQuestions(){
-      const response = axios.get(`${process.env.VUE_APP_SERVER_URL}/admin/get-assessment`)
-      console.log(response)
+    async getQuestions() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
+      );
+      console.log(JSON.parse(response.data.quiz[0].questions));
+      this.quiz = JSON.parse(response.data.quiz[0].questions);
+    },
   },
   computed: {
     checkPrev: function () {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < quiz.questions.length - 1 ? false : true;
+      return this.questionIndex < this.quiz?.length - 1 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == quiz.questions.length - 1 ? false : true;
+      return this.questionIndex == this.quiz?.length - 1 ? false : true;
     },
   },
-  watch: {
-    // $route() {
-    //   if ()
-    //   return;
-    // },
-  },
-
   components: {
     SideMenu,
     TimerBar,
   },
-}}
+};
 </script>
 
 <style scoped>
