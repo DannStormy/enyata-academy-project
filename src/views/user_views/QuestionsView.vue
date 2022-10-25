@@ -48,11 +48,15 @@
                 Next
               </button>
             </div>
-            <router-link to="/success">
-              <button class="finish" :disabled="checkFinish" @click="stop">
-                Finish
-              </button>
-            </router-link>
+            <!-- <router-link to="/success"> -->
+            <button
+              class="finish"
+              :disabled="checkFinish"
+              @click="finishAssessment"
+            >
+              Finish
+            </button>
+            <!-- </router-link> -->
             <p>Total score: {{ score() }} / {{ quiz?.length }}</p>
           </div>
         </div>
@@ -65,6 +69,8 @@
 import axios from "axios";
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
+import router from "@/router";
+import { mapState } from "vuex";
 
 export default {
   name: "QuestionsView",
@@ -78,6 +84,7 @@ export default {
     seconds: 0,
     disable: false,
     isGlow: false,
+    finish: false,
   }),
 
   mounted() {
@@ -103,6 +110,10 @@ export default {
           sec = sec - 1;
         } else {
           clearInterval(count);
+        }
+        if (this.finish) {
+          clearInterval(count);
+          sec = 0;
         }
         localStorage.setItem("timer", sec);
         this.minutes = min;
@@ -130,6 +141,20 @@ export default {
       }
       return score;
     },
+    async finishAssessment() {
+      this.finish = true;
+      const userScore = this.score();
+      const response = await axios.post(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
+        {
+          result: userScore,
+          user: this.currentUser.email,
+        }
+      );
+      if (response) {
+        router.push("/success");
+      }
+    },
     glow() {
       this.isGlow = true;
     },
@@ -137,7 +162,7 @@ export default {
       const response = await axios.get(
         `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
       );
-      console.log(JSON.parse(response.data.quiz[0].questions));
+      console.log(response.data.quiz);
       this.quiz = JSON.parse(response.data.quiz[0].questions);
     },
   },
@@ -151,6 +176,9 @@ export default {
     checkFinish: function () {
       return this.questionIndex == this.quiz?.length - 1 ? false : true;
     },
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+    }),
   },
   components: {
     SideMenu,
@@ -228,7 +256,7 @@ export default {
 }
 .main span {
   display: inline-block;
-  width: 406px;
+  width: 100%;
   height: 29px;
   font-style: italic;
   font-weight: 500;
