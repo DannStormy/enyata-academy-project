@@ -1,4 +1,5 @@
 <template>
+  <ScrollBar />
   <div class="container">
     <p class="title">Forgot Password</p>
     <p class="select">Please select option to send link to reset password</p>
