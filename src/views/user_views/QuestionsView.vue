@@ -31,9 +31,10 @@
             <input
               type="radio"
               :id="option.text"
-              :name="question.question"
+              :name="option"
               :value="option.text"
-              v-model="userResponses[index]"
+              v-model='userAnswer'
+             
             />
             <label :for="option.text">{{ option.text }}</label>
 
@@ -60,7 +61,7 @@
                 Finish
               </button>
             </router-link>
-            <p>Total score: {{ score() }} / {{ quiz.questions.length }}</p>
+            <p>Total score: {{checkAnswer() }} / {{ quiz.questions.length }}</p>
           </div>
         </div>
       </div>
@@ -79,8 +80,9 @@ export default {
     currentTimer: 0,
     quiz: quiz,
     questionIndex: 0,
-    userResponses: Array(quiz.questions.length).fill(false),
+    // userResponses: Array(quiz.questions.length).fill(false),
     minutes: 0,
+    userScore: 0,
     seconds: 0,
     disable: false,
   }),
@@ -112,17 +114,23 @@ export default {
         this.seconds = remSec;
       }, 1000);
     },
+    checkAnswer: function () {
+      if (this.userAnswer == this.option.correct) {
+        this.userScore++;
+      }
+    },
+    
     next: function () {
       this.questionIndex++;
     },
     prev: function () {
       this.questionIndex--;
     },
-    score: function () {
-      return this.userResponses.filter(function (val) {
-        return val;
-      }).length;
-    },
+    // score: function () {
+    //   return this.userResponses.filter(function (val) {
+    //     return val;
+    //   }).length;
+    // },
   },
   computed: {
     checkPrev: function () {
