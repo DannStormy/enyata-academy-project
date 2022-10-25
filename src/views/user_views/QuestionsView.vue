@@ -23,17 +23,19 @@
         <div class="question">
           <p>Question {{ question.numb + 1 }}</p>
           <span>{{ question.question }}</span>
+          <img :src="question.img" alt="" />
           <div
             :class="{ active: isActive }"
-            v-for="option in question.options"
-            :key="option.correct"
+            v-for="(option, i) in question.options"
+            :key="i"
           >
             <input
               type="radio"
               :id="option.text"
-              :name="question.question"
-              :value="option.text"
+              :name="index"
+              :value="i"
               v-model="userResponses[index]"
+              @click="glow"
             />
             <label :for="option.text">{{ option.text }}</label>
           </div>
@@ -63,6 +65,7 @@
 import axios from "axios";
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
+
 export default {
   name: "QuestionsView",
   data: () => ({
@@ -74,6 +77,7 @@ export default {
     minutes: 0,
     seconds: 0,
     disable: false,
+    isGlow: false,
   }),
 
   mounted() {
@@ -115,9 +119,19 @@ export default {
       this.questionIndex--;
     },
     score: function () {
-      return this.userResponses.filter(function (val) {
-        return val;
-      }).length;
+      let score = 0;
+      for (let i = 0; i < this.userResponses.length; i++) {
+        if (
+          typeof this.quiz[i].options[this.userResponses[i]] !== "undefined" &&
+          this.quiz[i].options[this.userResponses[i]].correct
+        ) {
+          score++;
+        }
+      }
+      return score;
+    },
+    glow() {
+      this.isGlow = true;
     },
     async getQuestions() {
       const response = await axios.get(
@@ -157,6 +171,9 @@ export default {
   padding: 0;
 }
 
+.glow {
+  background: red;
+}
 .wrapper {
   display: flex;
 }
