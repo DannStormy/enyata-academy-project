@@ -191,6 +191,7 @@ hr {
   border-radius: 4px;
   padding: 25px 35px;
   width: 430px;
+  height: 390px;
 }
 .finfo {
   font-weight: 700;

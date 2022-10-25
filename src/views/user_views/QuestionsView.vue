@@ -16,34 +16,28 @@
       </div>
       <div
         class="main"
-        v-for="(question, index) in quiz.questions"
+        v-for="(question, index) in quiz"
         :key="question.numb"
         v-show="index === questionIndex"
       >
         <div class="question">
-          <p>Question {{ question.numb }}</p>
+          <p>Question {{ question.numb + 1 }}</p>
           <span>{{ question.question }}</span>
+          <img :src="question.img" alt="" />
           <div
             :class="{ active: isActive }"
-            v-for="option in question.options"
-            :key="option.correct"
+            v-for="(option, i) in question.options"
+            :key="i"
           >
             <input
               type="radio"
               :id="option.text"
-              :name="option"
-              :value="option.text"
-              v-model='userAnswer'
-             
+              :name="index"
+              :value="i"
+              v-model="userResponses[index]"
+              @click="glow"
             />
             <label :for="option.text">{{ option.text }}</label>
-
-            <!-- <input type="radio" id="B" name="question" value="B" />
-                        <label for="B">B. To speed up 3D rendering performance.</label><br>
-                        <input type="radio" id="C" name="question" value="C" />
-                        <label for="C">C. To support higher video resolutions.</label><br>
-                        <input type="radio" id="D" name="question" value="D" />
-                        <label for="D">D. To display more colors in images and videos</label> -->
           </div>
           <div class="navigate">
             <div class="buttons">
@@ -54,14 +48,16 @@
                 Next
               </button>
             </div>
-            <!-- <p>{{ countdown() }}</p> -->
-            <!-- <button @click="countdown">Start</button> -->
-            <router-link to="/success">
-              <button class="finish" :disabled="checkFinish" @click="stop">
-                Finish
-              </button>
-            </router-link>
-            <p>Total score: {{checkAnswer() }} / {{ quiz.questions.length }}</p>
+            <!-- <router-link to="/success"> -->
+            <button
+              class="finish"
+              :disabled="checkFinish"
+              @click="finishAssessment"
+            >
+              Finish
+            </button>
+            <!-- </router-link> -->
+            <p>Total score: {{ score() }} / {{ quiz?.length }}</p>
           </div>
         </div>
       </div>
@@ -70,25 +66,32 @@
 </template>
 
 <script>
-import quiz from "@/quiz";
+import axios from "axios";
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
+import router from "@/router";
+import { mapState } from "vuex";
+
 export default {
   name: "QuestionsView",
   data: () => ({
     isActive: false,
     currentTimer: 0,
-    quiz: quiz,
+    quiz: null,
     questionIndex: 0,
-    // userResponses: Array(quiz.questions.length).fill(false),
+    userResponses: null,
     minutes: 0,
     userScore: 0,
     seconds: 0,
     disable: false,
+    isGlow: false,
+    finish: false,
   }),
 
   mounted() {
     this.startInterval();
+    this.getQuestions();
+    this.userResponse();
   },
 
   methods: {
@@ -109,47 +112,75 @@ export default {
         } else {
           clearInterval(count);
         }
+        if (this.finish) {
+          clearInterval(count);
+          sec = 0;
+        }
         localStorage.setItem("timer", sec);
         this.minutes = min;
         this.seconds = remSec;
       }, 1000);
     },
-    checkAnswer: function () {
-      if (this.userAnswer == this.option.correct) {
-        this.userScore++;
-      }
+    userResponse() {
+      this.userResponses = Array(this.quiz?.length).fill(false);
     },
-    
     next: function () {
       this.questionIndex++;
     },
     prev: function () {
       this.questionIndex--;
     },
-    // score: function () {
-    //   return this.userResponses.filter(function (val) {
-    //     return val;
-    //   }).length;
-    // },
+    score: function () {
+      let score = 0;
+      for (let i = 0; i < this.userResponses.length; i++) {
+        if (
+          typeof this.quiz[i].options[this.userResponses[i]] !== "undefined" &&
+          this.quiz[i].options[this.userResponses[i]].correct
+        ) {
+          score++;
+        }
+      }
+      return score;
+    },
+    async finishAssessment() {
+      this.finish = true;
+      const userScore = this.score();
+      const response = await axios.post(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
+        {
+          result: userScore,
+          user: this.currentUser.email,
+        }
+      );
+      if (response) {
+        router.push("/success");
+      }
+    },
+    glow() {
+      this.isGlow = true;
+    },
+    async getQuestions() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
+      );
+      console.log(response.data.quiz);
+      this.quiz = JSON.parse(response.data.quiz[0].questions);
+    },
   },
   computed: {
     checkPrev: function () {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < quiz.questions.length - 1 ? false : true;
+      return this.questionIndex < this.quiz?.length - 1 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == quiz.questions.length - 1 ? false : true;
+      return this.questionIndex == this.quiz?.length - 1 ? false : true;
     },
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+    }),
   },
-  watch: {
-    // $route() {
-    //   if ()
-    //   return;
-    // },
-  },
-
   components: {
     SideMenu,
     TimerBar,
@@ -169,6 +200,9 @@ export default {
   padding: 0;
 }
 
+.glow {
+  background: red;
+}
 .wrapper {
   display: flex;
 }
@@ -223,7 +257,7 @@ export default {
 }
 .main span {
   display: inline-block;
-  width: 406px;
+  width: 100%;
   height: 29px;
   font-style: italic;
   font-weight: 500;
