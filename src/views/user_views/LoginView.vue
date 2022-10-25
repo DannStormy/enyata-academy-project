@@ -195,6 +195,9 @@ input:focus {
   font-weight: 600;
   font-size: 16px;
 }
+.login:active{
+  opacity:0.8;
+}
 .footer {
   width: 380px;
   margin: 0 auto;

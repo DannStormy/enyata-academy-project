@@ -55,14 +55,14 @@ export default {
 }
 
 .container {
-  margin: 111px 0 86px 292px;
+  margin: 111px 0 8px 292px;
   width: 100%;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  margin-bottom: 110px;
+  margin-bottom: 68px;
   margin-left: 47px;
 }
 
@@ -124,6 +124,6 @@ button {
   color: white;
   border: none;
   border-radius: 4px;
-  margin-bottom: 412px;
+  margin-bottom: 112px;
 }
 </style>

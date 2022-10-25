@@ -1,5 +1,6 @@
 <template>
   <!-- <QuestionsView v-if="showQuestions" /> -->
+  <ScrollBar />
   <div class="wrapper">
     <SideMenu />
     <div class="container">
@@ -33,6 +34,7 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
+import ScrollBar from "@/components/ScrollBar.vue";
 import { mapActions } from "vuex";
 export default {
   name: "TakeAssessment",
@@ -50,6 +52,7 @@ export default {
   },
   components: {
     SideMenu,
+    ScrollBar
   },
   mounted() {
     localStorage.setItem("timer", 3600);
@@ -132,5 +135,11 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+button:hover{
+  background-color:#7557d3;
+}
+button:active{
+  opacity:0.7;
 }
 </style>
