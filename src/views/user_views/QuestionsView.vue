@@ -57,7 +57,7 @@
               Finish
             </button>
             <!-- </router-link> -->
-            <p>Total score: {{ score() }} / {{ quiz?.length }}</p>
+            <p>Total score: {{ score() }} / {{ quiz?.length - 1 }}</p>
           </div>
         </div>
       </div>
@@ -171,10 +171,10 @@ export default {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < this.quiz?.length - 1 ? false : true;
+      return this.questionIndex < this.quiz?.length - 2 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == this.quiz?.length - 1 ? false : true;
+      return this.questionIndex == this.quiz?.length - 2 ? false : true;
     },
     ...mapState({
       currentUser: (state) => state.user_dashboard.currentUser,

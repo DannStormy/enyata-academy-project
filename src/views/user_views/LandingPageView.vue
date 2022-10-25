@@ -95,7 +95,7 @@ export default {
         `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
       );
       if (
-        response.data.closure[0].date >
+        response.data.closure[0].date <
         `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
       ) {
         this.isActive = true;
