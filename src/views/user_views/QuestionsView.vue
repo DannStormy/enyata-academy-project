@@ -83,6 +83,7 @@ export default {
     questionIndex: 0,
     userResponses: null,
     minutes: 0,
+    userScore: 0,
     seconds: 0,
     disable: false,
     isGlow: false,
