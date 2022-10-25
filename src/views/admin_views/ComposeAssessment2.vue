@@ -26,7 +26,7 @@
       </div>
       <div class="main">
         <div class="assessment-1">
-          <p>{{ questionIndex + 1 }}/5</p>
+          <p>{{ questionIndex + 1 }}/30</p>
           <div class="choose_file" :class="{ 'no-img': !image }">
             <input
               ref="file"
@@ -102,11 +102,9 @@
                 Next
               </button>
             </div>
-            <!-- <router-link to="/successful"> -->
             <button class="finish" @click="save" :disabled="checkFinish">
               Save
             </button>
-            <!-- </router-link> -->
           </div>
         </div>
       </div>
@@ -161,9 +159,6 @@ export default {
     next: function () {
       if (this.questions.length - 1 === this.questionIndex) {
         this.questions[this.questionIndex].img = this.preview;
-
-        // console.log("Preview", this.preview);
-        // console.log(this.$refs.timer.innerText);
         this.questions.push({
           numb: this.questionIndex + 1,
           question: "",
@@ -179,25 +174,20 @@ export default {
         this.preview = null;
         console.log("Questions", this.questions);
       }
-      // this.image = null;
-
       this.questionIndex++;
       this.$refs.file.value = null;
       localStorage.setItem("questions", JSON.stringify(this.questions));
-      // console.log(this.questions);
     },
     prev() {
       this.questionIndex--;
-      // this.preview = this.questions[this.questionIndex].img;
-      // console.log("Questions", this.$refs.img.src);
-      console.log(this.questions);
     },
     save: async function () {
       if (this.$refs.timer.innerText == "00") {
         alert("Set Timer");
         return;
       }
-      this.questions.time = this.$refs.timer.innerText;
+      this.questions.push({ timer: this.$refs.timer.innerText });
+      console.log("Timer", this.questions.time);
       const response = await axios.post(
         `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
         { questions: this.questions }
@@ -234,24 +224,12 @@ export default {
       return !(this.questionIndex > 0);
     },
     checkNext: function () {
-      return this.questionIndex < 4 ? false : true;
+      return this.questionIndex < 29 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == 4 ? false : true;
+      return this.questionIndex == 29 ? false : true;
     },
   },
-
-  // computed: {
-  //   checkPrev: function () {
-  //     return !(this.questionIndex > 0);
-  //   },
-  //   checkNext: function () {
-  //     return this.questionIndex < 30 ? false : true;
-  //   },
-  //   checkFinish: function () {
-  //     return this.questionIndex == 30 ? false : true;
-  //   },
-  // },
   components: {
     AdminSideMenu,
   },
@@ -269,23 +247,28 @@ export default {
   margin: 0;
   padding: 0;
 }
+
 .wrapper {
   display: flex;
 }
+
 .container {
   margin: 111px 93px 0px 292px;
   width: 876px;
 }
+
 .header {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 64px;
 }
+
 .assessment {
   align-items: center;
 }
+
 .title {
   font-style: normal;
   font-weight: 300;
@@ -294,6 +277,7 @@ export default {
   letter-spacing: -0.02em;
   margin-bottom: 14px;
 }
+
 .main {
   display: flex;
   flex-direction: column;
@@ -303,6 +287,7 @@ export default {
 .assessment-1 {
   margin-top: 62px;
 }
+
 .assessment-1 p {
   font-family: "Lato";
   font-style: normal;
@@ -311,6 +296,7 @@ export default {
   line-height: 19px;
   color: #2b3c4e;
 }
+
 .choose_file {
   margin-top: 21px;
   display: flex;
@@ -380,6 +366,7 @@ textarea {
   width: 406px;
   padding: 15px;
 }
+
 input:focus,
 textarea:focus {
   outline: none !important;
@@ -394,11 +381,13 @@ label {
   line-height: 17px;
   margin-bottom: 5px;
 }
+
 .active {
   width: 355.08px;
   height: 33px;
   background: #31d283;
 }
+
 .navigate {
   display: flex;
   flex-direction: column;
@@ -407,6 +396,7 @@ label {
   justify-content: center;
   align-items: center;
 }
+
 .buttons {
   display: flex;
   flex-direction: row;
@@ -437,6 +427,7 @@ label {
   color: white;
   cursor: pointer;
 }
+
 /* .next {
       width: 125px;
       height: 41px;
