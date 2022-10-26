@@ -400,6 +400,9 @@ input:focus {
   font-weight: 600;
   font-size: 16px;
 }
+.sign-up:active{
+  opacity: 0.8;
+}
 .sign-up:disabled {
   opacity: 0.6;
 }

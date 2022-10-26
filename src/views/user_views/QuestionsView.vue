@@ -4,7 +4,8 @@
       <SideMenu />
     </div>
     <div class="container">
-      <div class="header">
+      <div class="container-body">
+        <div class="header">
         <div class="assessment">
           <h1 class="title">Take Assessment</h1>
           <p class="description">
@@ -16,33 +17,28 @@
       </div>
       <div
         class="main"
-        v-for="(question, index) in quiz.questions"
+        v-for="(question, index) in quiz"
         :key="question.numb"
         v-show="index === questionIndex"
       >
         <div class="question">
-          <p>Question {{ question.numb }}</p>
+          <p>Question {{ question.numb + 1 }}</p>
           <span>{{ question.question }}</span>
+          <img :src="question.img" alt="" />
           <div
             :class="{ active: isActive }"
-            v-for="option in question.options"
-            :key="option.correct"
+            v-for="(option, i) in question.options"
+            :key="i"
           >
             <input
               type="radio"
               :id="option.text"
-              :name="question.question"
-              :value="option.text"
+              :name="index"
+              :value="i"
               v-model="userResponses[index]"
+              @click="glow"
             />
             <label :for="option.text">{{ option.text }}</label>
-
-            <!-- <input type="radio" id="B" name="question" value="B" />
-                        <label for="B">B. To speed up 3D rendering performance.</label><br>
-                        <input type="radio" id="C" name="question" value="C" />
-                        <label for="C">C. To support higher video resolutions.</label><br>
-                        <input type="radio" id="D" name="question" value="D" />
-                        <label for="D">D. To display more colors in images and videos</label> -->
           </div>
           <div class="navigate">
             <div class="buttons">
@@ -53,40 +49,51 @@
                 Next
               </button>
             </div>
-            <!-- <p>{{ countdown() }}</p> -->
-            <!-- <button @click="countdown">Start</button> -->
-            <router-link to="/success">
-              <button class="finish" :disabled="checkFinish" @click="stop">
-                Finish
-              </button>
-            </router-link>
-            <p>Total score: {{ score() }} / {{ quiz.questions.length }}</p>
+            <!-- <router-link to="/success"> -->
+            <button
+              class="finish"
+              :disabled="checkFinish"
+              @click="finishAssessment"
+            >
+              Finish
+            </button>
+            <!-- </router-link> -->
+            <p>Total score: {{ score() }} / {{ quiz?.length }}</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
 </template>
 
 <script>
-import quiz from "@/quiz";
+import axios from "axios";
 import SideMenu from "@/components/SideMenu.vue";
 import TimerBar from "@/components/TimerBar.vue";
+import router from "@/router";
+import { mapState } from "vuex";
+
 export default {
   name: "QuestionsView",
   data: () => ({
     isActive: false,
     currentTimer: 0,
-    quiz: quiz,
+    quiz: null,
     questionIndex: 0,
-    userResponses: Array(quiz.questions.length).fill(false),
+    userResponses: null,
     minutes: 0,
+    userScore: 0,
     seconds: 0,
     disable: false,
+    isGlow: false,
+    finish: false,
   }),
 
   mounted() {
     this.startInterval();
+    this.getQuestions();
+    this.userResponse();
   },
 
   methods: {
@@ -107,10 +114,17 @@ export default {
         } else {
           clearInterval(count);
         }
+        if (this.finish) {
+          clearInterval(count);
+          sec = 0;
+        }
         localStorage.setItem("timer", sec);
         this.minutes = min;
         this.seconds = remSec;
       }, 1000);
+    },
+    userResponse() {
+      this.userResponses = Array(this.quiz?.length).fill(false);
     },
     next: function () {
       this.questionIndex++;
@@ -119,9 +133,40 @@ export default {
       this.questionIndex--;
     },
     score: function () {
-      return this.userResponses.filter(function (val) {
-        return val;
-      }).length;
+      let score = 0;
+      for (let i = 0; i < this.userResponses.length; i++) {
+        if (
+          typeof this.quiz[i].options[this.userResponses[i]] !== "undefined" &&
+          this.quiz[i].options[this.userResponses[i]].correct
+        ) {
+          score++;
+        }
+      }
+      return score;
+    },
+    async finishAssessment() {
+      this.finish = true;
+      const userScore = this.score();
+      const response = await axios.post(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
+        {
+          result: userScore,
+          user: this.currentUser.email,
+        }
+      );
+      if (response) {
+        router.push("/success");
+      }
+    },
+    glow() {
+      this.isGlow = true;
+    },
+    async getQuestions() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
+      );
+      console.log(response.data.quiz);
+      this.quiz = JSON.parse(response.data.quiz[0].questions);
     },
   },
   computed: {
@@ -129,19 +174,15 @@ export default {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < quiz.questions.length - 1 ? false : true;
+      return this.questionIndex < this.quiz?.length - 1 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == quiz.questions.length - 1 ? false : true;
+      return this.questionIndex == this.quiz?.length - 1 ? false : true;
     },
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+    }),
   },
-  watch: {
-    // $route() {
-    //   if ()
-    //   return;
-    // },
-  },
-
   components: {
     SideMenu,
     TimerBar,
@@ -161,19 +202,22 @@ export default {
   padding: 0;
 }
 
+.glow {
+  background: red;
+}
 .wrapper {
   display: flex;
 }
 
 .container {
-  margin: 111px 0 8px 292px;
+  margin: 90px 0 8px 292px;
   width: 100%;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 64px;
 }
 
@@ -201,7 +245,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 299px;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 206px;
 }
 .main p {
@@ -209,19 +253,21 @@ export default {
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  width: 65px;
-  height: 17px;
+  /* width: 65px;
+  height: 17px; */
   margin-bottom: 14px;
 }
 .main span {
   display: inline-block;
-  width: 406px;
-  height: 29px;
+  width: 100%;
+  /* height: 29px; */
   font-style: italic;
   font-weight: 500;
   font-size: 24px;
   line-height: 29px;
   margin-bottom: 48px;
+  /* word-break: break-all; */
+  white-space: normal;
 }
 
 input {
@@ -237,7 +283,7 @@ label {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  width: 252px;
+  /* width: 252px; */
   height: 20px;
   color: #2b3c4e;
 }
@@ -250,8 +296,8 @@ label {
 .navigate {
   display: flex;
   flex-direction: column;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  margin-bottom: 50px;
+  margin-top: 50px;
   justify-content: center;
   align-items: center;
 }
@@ -305,5 +351,8 @@ button:hover {
   border: none;
   border-radius: 4px;
   cursor: not-allowed;
+}
+.container-body{
+  margin: 0 47px;
 }
 </style>

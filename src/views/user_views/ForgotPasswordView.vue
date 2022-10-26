@@ -1,4 +1,5 @@
 <template>
+  <ScrollBar />
   <div class="container">
     <p class="title">Forgot Password</p>
     <p class="select">Please select option to send link to reset password</p>
@@ -36,8 +37,12 @@
 </template>
 
 <script>
+import ScrollBar from "@/components/ScrollBar.vue";
 export default {
   name: "ForgotPasswordView",
+  components:{
+    ScrollBar
+  }
 };
 </script>
 
@@ -140,6 +145,9 @@ export default {
   margin-top: 12px;
   margin-bottom: 28px;
   cursor: pointer;
+}
+.send-link:active{
+  opacity:0.8;
 }
 .resend {
   font-weight: 400;

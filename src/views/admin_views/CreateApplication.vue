@@ -116,9 +116,11 @@ export default {
       this.isSelectActive = false;
       const selectedQuestion = this.questions;
       let que;
+      console.log("Selected", this.selectedFile);
       for (let i = 0; i < selectedQuestion.length; i++) {
-        if (selectedQuestion[i].id == this.selectedFile) {
+        if (selectedQuestion[i].id == this.selectedFile.split(" ")[1]) {
           que = selectedQuestion[i].docs;
+          console.log("Question", que);
         }
       }
       this.appInfo.question = JSON.stringify(que);
