@@ -257,7 +257,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 64px;
 }
 

@@ -4,7 +4,8 @@
       <SideMenu />
     </div>
     <div class="container">
-      <div class="header">
+      <div class="container-body">
+        <div class="header">
         <div class="assessment">
           <h1 class="title">Take Assessment</h1>
           <p class="description">
@@ -60,6 +61,7 @@
             <p>Total score: {{ score() }} / {{ quiz?.length - 1 }}</p>
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>
@@ -207,14 +209,14 @@ export default {
 }
 
 .container {
-  margin: 111px 0 8px 292px;
+  margin: 90px 0 8px 292px;
   width: 100%;
 }
 
 .header {
   display: flex;
   justify-content: space-between;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 64px;
 }
 
@@ -242,7 +244,7 @@ export default {
   display: flex;
   flex-direction: column;
   height: 299px;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 206px;
 }
 .main p {
@@ -250,19 +252,21 @@ export default {
   font-weight: 500;
   font-size: 14px;
   line-height: 17px;
-  width: 65px;
-  height: 17px;
+  /* width: 65px;
+  height: 17px; */
   margin-bottom: 14px;
 }
 .main span {
   display: inline-block;
   width: 100%;
-  height: 29px;
+  /* height: 29px; */
   font-style: italic;
   font-weight: 500;
   font-size: 24px;
   line-height: 29px;
   margin-bottom: 48px;
+  /* word-break: break-all; */
+  white-space: normal;
 }
 
 input {
@@ -278,7 +282,7 @@ label {
   font-weight: 500;
   font-size: 16px;
   line-height: 19px;
-  width: 252px;
+  /* width: 252px; */
   height: 20px;
   color: #2b3c4e;
 }
@@ -291,8 +295,8 @@ label {
 .navigate {
   display: flex;
   flex-direction: column;
-  margin-bottom: 80px;
-  margin-top: 80px;
+  margin-bottom: 50px;
+  margin-top: 50px;
   justify-content: center;
   align-items: center;
 }
@@ -346,5 +350,8 @@ button:hover {
   border: none;
   border-radius: 4px;
   cursor: not-allowed;
+}
+.container-body{
+  margin: 0 47px;
 }
 </style>
