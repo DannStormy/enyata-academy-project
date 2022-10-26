@@ -89,8 +89,8 @@ export default {
   }),
 
   mounted() {
-    this.startInterval();
     this.getQuestions();
+    this.startInterval();
     this.userResponse();
   },
 
@@ -163,7 +163,6 @@ export default {
       const response = await axios.get(
         `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
       );
-      console.log(response.data.quiz);
       this.quiz = JSON.parse(response.data.quiz[0].questions);
     },
   },

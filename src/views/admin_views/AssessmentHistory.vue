@@ -64,7 +64,6 @@ export default {
     getAssessment(assessment) {
       this.isActive = true;
       this.eachAssessment = assessment;
-      console.log(this.eachAssessment);
     },
     close(value) {
       this.isActive = value;
@@ -91,7 +90,7 @@ export default {
   font-size: 13px;
 }
 .table-container {
-  margin-top: 111px;
+  margin-top: 60px;
   margin-left: 334px;
   width: 800px;
 }
@@ -106,6 +105,7 @@ export default {
 .table {
   width: 100%;
   height: 476px;
+  overflow-y: scroll;
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px;
