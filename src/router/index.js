@@ -37,6 +37,12 @@ const routes = [
     // beforeEnter: checkAssessmentStatus
   },
   {
+    path: '/test-result',
+    name: 'TestResults',
+    component: () => import('../views/admin_views/TestResults.vue'),
+    // beforeEnter: checkAssessmentStatus
+  },
+  {
     path: '/',
     name: 'landingPage',
     component: () => import('../views/user_views/LandingPageView.vue')
