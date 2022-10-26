@@ -15,7 +15,9 @@
     "axios": "^1.1.2",
     "bootstrap": "^5.2.2",
     "core-js": "^3.8.3",
+    "datatables.net-dt": "^1.12.1",
     "date-fns": "^2.29.3",
+    "jquery": "^3.6.1",
     "vue-router": "^4.0.3",
     "vuelidate": "^0.7.7",
     "vuex": "^4.1.0"

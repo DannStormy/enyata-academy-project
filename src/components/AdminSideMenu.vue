@@ -109,7 +109,7 @@ export default {
 }
 .user-details {
   background-color: #7557d3;
-  padding: 57px 0;
+  padding: 45px 0;
   text-align: center;
   color: #ffffff;
   letter-spacing: -0.02em;

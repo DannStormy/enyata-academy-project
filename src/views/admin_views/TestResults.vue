@@ -1,0 +1,278 @@
+<template>
+    <div class="flex-container">
+    <AdminSideMenu />
+    <div class="container">
+        <div class="header">
+        <label for="cars">Results - </label>
+        <div class="select">
+          <select id="batch" name="batchlist" form="batchform">
+            <option value="batch1">Batch 1</option>
+            <option value="batch2" selected>Batch 2</option>
+            <option value="batch3">Batch 3</option>
+          </select>
+        </div>
+        <p class="header-title">Comprises of all that applied for batch 2</p>
+      </div>
+    <table id="example" class="table-striped" style="width:100%">
+        <thead>
+            <tr class="header-row">
+                <th>Name</th>
+                <th>Email</th>
+                <th class='span-width'>
+                  DOB - Age<img
+                    src="../../assets/svgs/sort-arrow.svg"
+                    alt="icon for sort"
+                  />
+                </th>
+                <th>Address</th>
+                <th>University</th>
+                <th class='span-width'>
+                  CGPA<img
+                    src="../../assets/svgs/sort-arrow.svg"
+                    alt="icon for sort"
+                  />
+                </th>
+                <th class='span-width'>
+                  Test Scores
+                  <img
+                    src="../../assets/svgs/sort-arrow.svg"
+                    alt="icon for sort"
+                  />
+                </th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-data"
+                v-for="applicant in applicants"
+                :key="applicant.id">
+                <td class="check">
+                  <input
+                    type="checkbox"
+                    id="username1"
+                    name="username"
+                    :checked="applicant.status"
+                  />
+                  <label for="username"
+                    >{{ applicant.firstname }} {{ applicant.lastname }}</label
+                  ><br />
+                </td>
+                <td>{{ applicant.email }}</td>
+                <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+                <td>{{ applicant.address }}</td>
+                <td>{{ applicant.university }}</td>
+                <td>{{ applicant.cgpa }}</td>
+                <td class="scores">
+                  <span>{{ applicant.test_score || "N/A" }} </span
+                  ><button @click="active">
+                    <img
+                      src="../../assets/svgs/three-dots.svg"
+                      alt="send bulk email"
+                    />
+                  </button>
+                  <SendMail
+                    :mail="`mailto:${applicant.email}`"
+                    v-if="isActive"
+                  />
+                </td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div>
+  </template>
+  <script scoped>
+    // import 'bootstrap/dist/css/bootstrap.min.css';
+    import 'jquery/dist/jquery.min.js';
+    //Datatable Modules
+    import "datatables.net-dt/js/dataTables.dataTables"
+    // import "datatables.net-dt/css/jquery.dataTables.min.css"
+    import $ from 'jquery'; 
+    import AdminSideMenu from "@/components/AdminSideMenu.vue";
+    import SendMail from "@/components/SendMail.vue";
+    import { mapActions, mapState } from "vuex";
+
+    export default {
+      data() {
+        return {
+            isActive: false,
+        }
+      },
+      methods: {
+    ...mapActions(["getEntries"]),
+    getAge(dateString) {
+      var today = new Date();
+      var birthDate = new Date(dateString);
+      var age = today.getFullYear() - birthDate.getFullYear();
+      var m = today.getMonth() - birthDate.getMonth();
+      if (m < 0 || (m === 0 && today.getDate() < birthDate.getDate())) {
+        age--;
+      }
+      return age;
+    },
+    active() {
+      this.isActive = true;
+    },
+  },
+  computed: {
+    ...mapState({
+      applicants: (state) => state.admin.applicants,
+      isLoading: (state) => state.admin.isLoading,
+    }),
+  },
+      name: "TestResults",
+      mounted() {
+        this.getEntries();
+        $('#example').DataTable({
+            'sDom': 't'
+        });
+        
+    },
+    components: {
+        AdminSideMenu,
+        SendMail
+    }
+    }
+  </script>
+  <style scoped>
+  /* @import url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css);
+  @import url(https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css); */
+  * {
+  color: #2b3c4e;
+  box-sizing: border-box;
+}
+.flex-container {
+  display: flex;
+}
+.container {
+  margin: 107px 0 86px 290px;
+  /* padding: 0 0 0 40px;
+  width: 100%; */
+
+  /* margin: 107px 93px 86px 290px; */
+  padding: 0 30px;
+}
+.check {
+  display: flex;
+  align-items: center;
+  margin-top: 10px;
+}
+.header,
+select {
+  font-weight: 300;
+  font-size: 36px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+}
+select > option {
+  font-size: 16px;
+}
+select {
+  border: none;
+  outline: none;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #ffffff;
+  background-image: none;
+  flex: 1;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: inline-flex;
+  width: 5em;
+  overflow: hidden;
+}
+.select::after {
+  content: "\25BC";
+  position: absolute;
+  left: 120px;
+  cursor: pointer;
+  pointer-events: none;
+  transition: 0.25s all ease;
+}
+.header-title {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 38px;
+}
+.table {
+  border-collapse: collapse;
+  width: 100%;
+  padding: 0 15px;
+  border: none;
+}
+.header-row {
+  background-color: #2b3c4e;
+  border: none;
+  outline: none;
+}
+.header-row > th {
+  font-size: 14px;
+  line-height: 17px;
+  color: #ffffff;
+}
+th {
+  padding: 15px 4px;
+  text-align: center;
+}
+td {
+  padding: 15px 4px;
+  /* margin-right: 40px; */
+  /* text-align: center; */
+
+  /* width: fit-content; */
+}
+th img {
+  margin-left: 7px;
+}
+input {
+  margin-right: 4px;
+}
+table button {
+  background-color: #ffffff;
+  border: none;
+  outline: none;
+}
+/* tr{
+    border-collapse:collapse;
+    border-spacing:0 15px;
+  } */
+.table-data {
+  padding: 22px 18px;
+  margin-top: 32px;
+  background: #ffffff;
+  border-left: 7px solid #ffffff;
+  border-spacing: 30px;
+  border-radius: 8px;
+}
+.table-data:hover {
+  box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+  border-top-left-radius: 8px;
+  border-left: 7px solid #7557d3;
+  transition: 0.2s;
+}
+
+.scores > button > img {
+  margin-left: 16px;
+  /* width: 100%; */
+  height: 100%;
+}
+table{
+  table-layout: auto;
+  word-wrap: break-word;
+  width: 100%;
+}
+
+</style>
