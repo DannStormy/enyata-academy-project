@@ -210,9 +210,9 @@ select::-ms-expand {
   display: none;
 }
 .check {
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 .select {
   position: relative;
@@ -297,5 +297,11 @@ table button {
   /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
+}
+table{
+  table-layout: auto;
+  word-wrap: break-word;
+  width: 100%;
+  
 }
 </style>

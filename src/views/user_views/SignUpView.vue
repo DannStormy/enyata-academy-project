@@ -55,29 +55,17 @@
                   name="password"
                   v-model="userData.password"
                 />
-                <input
-                  :class="{
-                    'is-invalid': submitted && v$.userData.password.$error,
-                  }"
-                  v-else
-                  type="password"
-                  id="password"
-                  name="password"
-                  v-model="userData.password"
-                />
-                <div @click="toggleShow" class="eye">
-                  <img
-                    v-if="!showPassword"
-                    src="@/assets/svgs/eye-icon.svg"
-                    alt="eye-icon"
-                  />
-                  <iconify-icon
-                    v-if="showPassword"
-                    icon="ph:eye-slash-thin"
-                    width="15"
-                    height="15"
-                  ></iconify-icon>
-                </div>
+                <input :class="{
+                  'is-invalid': submitted && v$.userData.password.$error,
+                }" 
+                  v-else 
+                  type="password" 
+                  id="password" 
+                  name="password" v-model="userData.password" />
+                  <div @click="toggleShow" class="eye">
+                    <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon" />
+                    <iconify-icon v-if="showPassword"  icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+                  </div>
               </div>
               <div
                 v-if="submitted && v$.userData.password.$error"
@@ -164,41 +152,30 @@
             <div class="form__input">
               <label for="confirm-password">Confirm Password</label>
               <div class="input-container">
-                <input
-                  :class="{
-                    'is-invalid':
-                      submitted && v$.userData.confirmPassword.$error,
-                  }"
-                  v-if="confirmPassword_show"
-                  type="text"
-                  id="confirm-password"
-                  name="confirm-password"
-                  v-model="userData.confirmPassword"
-                />
-                <input
-                  :class="{
-                    'is-invalid':
-                      submitted && v$.userData.confirmPassword.$error,
-                  }"
-                  v-else
-                  type="password"
-                  id="confirm-password"
-                  name="confirm-password"
-                  v-model="userData.confirmPassword"
-                />
-                <div @click="toggleConfirmShow" class="eye">
-                  <img
-                    v-if="!confirmPassword_show"
-                    src="@/assets/svgs/eye-icon.svg"
-                    alt="eye-icon"
-                  />
-                  <iconify-icon
-                    v-if="confirmPassword_show"
-                    icon="ph:eye-slash-thin"
-                    width="15"
-                    height="15"
-                  ></iconify-icon>
-                </div>
+              <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.confirmPassword.$error,
+                }"
+                v-if="confirmPassword_show"
+                type="text"
+                id="confirm-password"
+                name="confirm-password"
+                v-model="userData.confirmPassword"
+              />
+               <input
+                :class="{
+                  'is-invalid': submitted && v$.userData.confirmPassword.$error,
+                }"
+                v-else
+                type="password"
+                id="confirm-password"
+                name="confirm-password"
+                v-model="userData.confirmPassword"
+              />
+               <div @click="toggleConfirmShow" class="eye">
+              <img v-if="!confirmPassword_show" src="@/assets/svgs/eye-icon.svg" alt="eye-icon"/>
+              <iconify-icon v-if="confirmPassword_show"  icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+                      </div>
               </div>
               <div
                 v-if="submitted && v$.userData.confirmPassword.$error"
@@ -293,8 +270,8 @@ export default {
           `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
           this.userData
         )
-        .then(function () {
-          alert(`Registered successfully`);
+        .then(function (response) {
+          alert(`Successfully Logged In, ${response.data.data}`);
           router.push("/login");
         })
         .catch(function (error) {
@@ -390,13 +367,13 @@ label {
   height: 100%;
 }
 
-.input-container input {
+.input-container input{
   width: 365px;
   height: 48px;
   border: 1.5px solid #bdbdbd;
   border-radius: 4px;
   padding: 15px;
-  position: relative;
+  position:relative;
 }
 input {
   width: 365px;
@@ -423,7 +400,7 @@ input:focus {
   font-weight: 600;
   font-size: 16px;
 }
-.sign-up:active {
+.sign-up:active{
   opacity: 0.8;
 }
 .sign-up:disabled {

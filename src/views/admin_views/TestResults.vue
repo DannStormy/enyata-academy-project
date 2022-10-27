@@ -1,9 +1,10 @@
 <template>
-  <div class="flex-container">
+  <span></span>
+    <!-- <div class="flex-container">
     <AdminSideMenu />
     <div class="container">
-      <div class="header">
-        <label for="batch">Results - </label>
+        <div class="header">
+        <label for="cars">Results - </label>
         <div class="select">
           <select id="batch" name="batchlist" form="batchform">
             <option value="batch1">Batch 1</option>
@@ -13,14 +14,12 @@
         </div>
         <p class="header-title">Comprises of all that applied for batch 2</p>
       </div>
-      <div>
-        <form action="" @submit.prevent>
-          <table class="table" style="width:100%">
-            <tbody>
-              <tr class="header-row">
+    <table id="example" class="table-striped" style="width:100%">
+        <thead>
+            <tr class="header-row">
                 <th>Name</th>
                 <th>Email</th>
-                <th>
+                <th class='span-width'>
                   DOB - Age<img
                     src="../../assets/svgs/sort-arrow.svg"
                     alt="icon for sort"
@@ -28,25 +27,25 @@
                 </th>
                 <th>Address</th>
                 <th>University</th>
-                <th>
+                <th class='span-width'>
                   CGPA<img
                     src="../../assets/svgs/sort-arrow.svg"
                     alt="icon for sort"
                   />
                 </th>
-                <th>
+                <th class='span-width'>
                   Test Scores
                   <img
                     src="../../assets/svgs/sort-arrow.svg"
                     alt="icon for sort"
                   />
                 </th>
-              </tr>
-              <tr
-                class="table-data"
+            </tr>
+        </thead>
+        <tbody>
+            <tr class="table-data"
                 v-for="applicant in applicants"
-                :key="applicant.id"
-              >
+                :key="applicant.id">
                 <td class="check">
                   <input
                     type="checkbox"
@@ -64,34 +63,42 @@
                 <td>{{ applicant.university }}</td>
                 <td>{{ applicant.cgpa }}</td>
                 <td class="scores">
-                  <div>{{ applicant.test_score || "N/A" }} </div>
-                  <div>
-                    <button @click="active">
-                      <img src="../../assets/svgs/three-dots.svg" alt="send bulk email"/>
-                   </button>
+                  <span>{{ applicant.test_score || "N/A" }} </span
+                  ><button @click="active">
+                    <img
+                      src="../../assets/svgs/three-dots.svg"
+                      alt="send bulk email"
+                    />
+                  </button>
                   <SendMail
                     :mail="`mailto:${applicant.email}`"
                     v-if="isActive"
-                  /></div>
+                  />
                 </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
-    </div>
-  </div>
-</template>
+            </tr>
+        </tbody>
+    </table>
+</div>
+    </div> -->
+  </template>
+  <!-- <script scoped>
+    // import 'bootstrap/dist/css/bootstrap.min.css';
+    import 'jquery/dist/jquery.min.js';
+    //Datatable Modules
+    import "datatables.net-dt/js/dataTables.dataTables"
+    // import "datatables.net-dt/css/jquery.dataTables.min.css"
+    import $ from 'jquery'; 
+    import AdminSideMenu from "@/components/AdminSideMenu.vue";
+    import SendMail from "@/components/SendMail.vue";
+    import { mapActions, mapState } from "vuex";
 
-<script>
-import AdminSideMenu from "@/components/AdminSideMenu.vue";
-import SendMail from "@/components/SendMail.vue";
-import { mapActions, mapState } from "vuex";
-export default {
-  data: () => ({
-    isActive: false,
-  }),
-  methods: {
+    export default {
+      data() {
+        return {
+            isActive: false,
+        }
+      },
+      methods: {
     ...mapActions(["getEntries"]),
     getAge(dateString) {
       var today = new Date();
@@ -104,7 +111,7 @@ export default {
       return age;
     },
     active() {
-      this.isActive = !this.isActive;
+      this.isActive = true;
     },
   },
   computed: {
@@ -113,19 +120,24 @@ export default {
       isLoading: (state) => state.admin.isLoading,
     }),
   },
-  mounted() {
-    this.getEntries();
-  },
-  name: "ResultsView",
-  components: {
-    AdminSideMenu,
-    SendMail,
-  },
-};
-</script>
-
-<style scoped>
-* {
+      name: "TestResults",
+      mounted() {
+        this.getEntries();
+        $('#example').DataTable({
+            'sDom': 't'
+        });
+        
+    },
+    components: {
+        AdminSideMenu,
+        SendMail
+    }
+    }
+  </script>
+  <style scoped>
+  /* @import url(https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.5.2/css/bootstrap.css);
+  @import url(https://cdn.datatables.net/1.12.1/css/dataTables.bootstrap4.min.css); */
+  * {
   color: #2b3c4e;
   box-sizing: border-box;
 }
@@ -141,9 +153,9 @@ export default {
   padding: 0 30px;
 }
 .check {
-  /* display: flex; */
+  display: flex;
   align-items: center;
-  /* margin-top: 10px; */
+  margin-top: 10px;
 }
 .header,
 select {
@@ -214,11 +226,13 @@ select::-ms-expand {
 }
 th {
   padding: 15px 4px;
+  text-align: center;
 }
 td {
   padding: 15px 4px;
-  margin-right: 40px;
+  /* margin-right: 40px; */
   /* text-align: center; */
+
   /* width: fit-content; */
 }
 th img {
@@ -236,38 +250,30 @@ table button {
     border-collapse:collapse;
     border-spacing:0 15px;
   } */
-  .table-data:hover {
+.table-data {
+  padding: 22px 18px;
+  margin-top: 32px;
+  background: #ffffff;
+  border-left: 7px solid #ffffff;
+  border-spacing: 30px;
+  border-radius: 8px;
+}
+.table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+  border-top-left-radius: 8px;
+  border-left: 7px solid #7557d3;
   transition: 0.2s;
-  
-  margin: 20px 0;
 }
-.table-data:hover td:first-of-type {
-  position: relative;
-}
-.table-data:hover td:first-of-type::before {
-  content: "";
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 5px;
-  height: 100%;
-  background: #7557D3;
-  border-top-left-radius: 4px;
-  border-bottom-left-radius: 4px;
-}
-td.scores{
-  display: flex;
-  justify-content: space-between;
-}
-/* .scores > button > img {
+
+.scores > button > img {
   margin-left: 16px;
-  width: 100%;
+  /* width: 100%; */
   height: 100%;
-} */
+}
 table{
   table-layout: auto;
   word-wrap: break-word;
   width: 100%;
 }
-</style>
+
+</style> -->

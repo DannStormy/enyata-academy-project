@@ -2,7 +2,7 @@
   <ScrollBar />
   <div class="confirmation-container" v-if="isActive">
     <div class="confirmation-box">
-      <form class="question-box">
+      <form class="question-box" @submit.prevent="submit">
         <div class="que">Are you sure you want to submit this application?</div>
         <div class="buttons">
           <button @click="submit">Yes</button>
@@ -54,10 +54,7 @@
         </textarea>
         <div>
           <span>
-            <div
-              @click="getQuestions"
-              :class="['select-questions', { grey: isGrey }]"
-            >
+            <div @click="getQuestions" class="select-questions">
               Select question
             </div>
             <select v-model="selectedFile" v-if="isSelectActive">
@@ -84,7 +81,6 @@ import ScrollBar from "@/components/ScrollBar.vue";
 import axios from "axios";
 export default {
   data: () => ({
-    isGrey: true,
     isActive: false,
     appInfo: {
       batch_id: null,
@@ -98,19 +94,6 @@ export default {
   }),
   methods: {
     createApplication() {
-      if (!this.selectedFile) {
-        alert("Select a question");
-        return;
-      }
-      if (!this.appInfo.date) {
-        alert("Select closure date");
-        return;
-      }
-      if (!this.appInfo.batch_id) {
-        alert("Batch ID missing");
-        return;
-      }
-
       this.isActive = true;
     },
     noConfirm() {
@@ -121,40 +104,38 @@ export default {
         let response = await axios.get(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-application`
         );
+        console.log(response.data.questions);
         this.questions = response.data.questions;
         this.isSelectActive = true;
       } catch (error) {
         console.log(error);
       }
-      this.isGrey = false;
     },
     async submit() {
       this.isActive = false;
       this.isSelectActive = false;
       const selectedQuestion = this.questions;
       let que;
-      let time;
+      console.log("Selected", this.selectedFile);
       for (let i = 0; i < selectedQuestion.length; i++) {
         if (selectedQuestion[i].id == this.selectedFile.split(" ")[1]) {
           que = selectedQuestion[i].docs;
-          time = selectedQuestion[i].time;
+          console.log("Question", que);
         }
       }
       this.appInfo.question = JSON.stringify(que);
-      this.appInfo.time = time;
       try {
         const response = await axios.post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
           this.appInfo
         );
-        alert("Application Created");
-
         console.log(response);
       } catch (error) {
         console.log(error);
       }
     },
   },
+  mounted() {},
   name: "CreateApplication",
   components: { AdminSideMenu, ScrollBar },
 };
@@ -315,8 +296,5 @@ label[for="files"] {
   display: flex;
   justify-content: center;
   align-items: center;
-}
-.grey {
-  background: grey;
 }
 </style>

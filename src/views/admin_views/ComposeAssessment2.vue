@@ -26,7 +26,7 @@
       </div>
       <div class="main">
         <div class="assessment-1">
-          <p>{{ questionIndex + 1 }}/{{ questions?.length }}</p>
+          <p>{{ questionIndex + 1 }}/30</p>
           <div class="choose_file" :class="{ 'no-img': !image }">
             <input
               ref="file"
@@ -98,7 +98,9 @@
               <button class="previous" v-on:click="prev" :disabled="checkPrev">
                 Previous
               </button>
-              <button class="next" v-on:click="next">Next</button>
+              <button class="next" v-on:click="next" :disabled="checkNext">
+                Next
+              </button>
             </div>
             <button class="finish" @click="save" :disabled="checkFinish">
               Save
@@ -184,9 +186,11 @@ export default {
         alert("Set Timer");
         return;
       }
+      this.questions.push({ timer: this.$refs.timer.innerText });
+      console.log("Timer", this.questions.time);
       const response = await axios.post(
         `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
-        { questions: this.questions, timer: this.$refs.timer.innerText }
+        { questions: this.questions }
       );
       alert("Assessment Saved");
       console.log(response);
@@ -219,11 +223,11 @@ export default {
     checkPrev: function () {
       return !(this.questionIndex > 0);
     },
-    // checkNext: function () {
-    //   return this.questionIndex < 4 ? false : true;
-    // },
+    checkNext: function () {
+      return this.questionIndex < 29 ? false : true;
+    },
     checkFinish: function () {
-      return this.questionIndex == 1 ? false : true;
+      return this.questionIndex == 29 ? false : true;
     },
   },
   components: {

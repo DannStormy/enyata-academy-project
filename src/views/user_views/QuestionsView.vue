@@ -58,7 +58,7 @@
               Finish
             </button>
             <!-- </router-link> -->
-            <p>Total score: {{ score() }} / {{ quiz?.length - 1 }}</p>
+            <p>Total score: {{ score() }} / {{ quiz?.length }}</p>
           </div>
         </div>
       </div>
@@ -91,8 +91,8 @@ export default {
   }),
 
   mounted() {
-    this.getQuestions();
     this.startInterval();
+    this.getQuestions();
     this.userResponse();
   },
 
@@ -165,6 +165,7 @@ export default {
       const response = await axios.get(
         `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
       );
+      console.log(response.data.quiz);
       this.quiz = JSON.parse(response.data.quiz[0].questions);
     },
   },
@@ -173,10 +174,10 @@ export default {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < this.quiz?.length - 2 ? false : true;
+      return this.questionIndex < this.quiz?.length - 1 ? false : true;
     },
     checkFinish: function () {
-      return this.questionIndex == this.quiz?.length - 2 ? false : true;
+      return this.questionIndex == this.quiz?.length - 1 ? false : true;
     },
     ...mapState({
       currentUser: (state) => state.user_dashboard.currentUser,

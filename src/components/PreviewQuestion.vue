@@ -2,7 +2,7 @@
   <div class="container">
     <p class="title">Preview Question</p>
     <div class="question_container" v-for="doc in docs" :key="doc.numb">
-      <p class="question">Question {{ doc.numb + 1 }}</p>
+      <p class="question">Question {{ doc.numb }}</p>
       <div class="choose_file" v-if="doc.img">
         <img :src="doc?.img" alt="question-image" />
       </div>
