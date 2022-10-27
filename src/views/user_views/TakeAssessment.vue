@@ -1,5 +1,6 @@
 <template>
   <!-- <QuestionsView v-if="showQuestions" /> -->
+  <ScrollBar />
   <div class="wrapper">
     <SideMenu />
     <div class="container">
@@ -33,12 +34,15 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
+import ScrollBar from "@/components/ScrollBar.vue";
 import { mapActions } from "vuex";
+import axios from "axios";
 export default {
   name: "TakeAssessment",
 
   data: () => ({
     showQuestions: false,
+    timer: null,
   }),
 
   methods: {
@@ -47,12 +51,20 @@ export default {
       this.changeAssessmentStatus();
       this.showQuestions = true;
     },
+    async getTime() {
+      const response = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/applicant/timer`
+      );
+      this.timer = response.data.time[0].time * 60;
+      localStorage.setItem("timer", this.timer);
+    },
   },
   components: {
     SideMenu,
+    ScrollBar,
   },
   mounted() {
-    localStorage.setItem("timer", 3600);
+    this.getTime();
   },
 };
 </script>
@@ -132,5 +144,11 @@ button {
   border: none;
   border-radius: 4px;
   cursor: pointer;
+}
+button:hover {
+  background-color: #7557d3;
+}
+button:active {
+  opacity: 0.7;
 }
 </style>

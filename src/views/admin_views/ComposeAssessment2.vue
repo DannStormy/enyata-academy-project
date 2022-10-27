@@ -17,7 +17,7 @@
             <div class="polygon">
               <img src="@/assets/svgs/polygon-logo.svg" alt="polygon-logo" />
             </div>
-            <span>000<sub>sec</sub></span>
+            <span>00<sub>sec</sub></span>
             <div class="polygon">
               <img src="@/assets/svgs/polygon-logo.svg" alt="polygon" />
             </div>
@@ -26,7 +26,7 @@
       </div>
       <div class="main">
         <div class="assessment-1">
-          <p>{{ questionIndex + 1 }}/30</p>
+          <p>{{ questionIndex + 1 }}/{{ questions?.length }}</p>
           <div class="choose_file" :class="{ 'no-img': !image }">
             <input
               ref="file"
@@ -37,8 +37,8 @@
               @change="previewImage"
               class="upload"
             />
-            <img v-show="image" :src="preview" class="img-fluid" />
-            <div v-show="!image" class="no-img">
+            <img ref="img" v-show="preview" :src="preview" class="img-fluid" />
+            <div v-show="!preview" class="no-img">
               <span>+ Choose file</span>
             </div>
           </div>
@@ -98,15 +98,11 @@
               <button class="previous" v-on:click="prev" :disabled="checkPrev">
                 Previous
               </button>
-              <button class="next" v-on:click="next" :disabled="checkNext">
-                Next
-              </button>
+              <button class="next" v-on:click="next">Next</button>
             </div>
-            <!-- <router-link to="/successful"> -->
             <button class="finish" @click="save" :disabled="checkFinish">
               Save
             </button>
-            <!-- </router-link> -->
           </div>
         </div>
       </div>
@@ -116,7 +112,7 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
-// import axios from 'axios';
+import axios from "axios";
 
 export default {
   name: "ComposeAssessment2",
@@ -161,7 +157,6 @@ export default {
     next: function () {
       if (this.questions.length - 1 === this.questionIndex) {
         this.questions[this.questionIndex].img = this.preview;
-        console.log(this.$refs.timer.innerText);
         this.questions.push({
           numb: this.questionIndex + 1,
           question: "",
@@ -173,26 +168,28 @@ export default {
             { text: "", correct: false },
           ],
         });
+        this.image = null;
+        this.preview = null;
+        console.log("Questions", this.questions);
       }
-      this.image = null;
-
       this.questionIndex++;
+      this.$refs.file.value = null;
       localStorage.setItem("questions", JSON.stringify(this.questions));
-      console.log(this.questions);
     },
     prev() {
       this.questionIndex--;
-      console.log(this.questions);
     },
     save: async function () {
       if (this.$refs.timer.innerText == "00") {
         alert("Set Timer");
         return;
       }
-      this.questions.time = this.$refs.timer.innerText;
-      // const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`, {questions: this.questions})
+      const response = await axios.post(
+        `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
+        { questions: this.questions, timer: this.$refs.timer.innerText }
+      );
       alert("Assessment Saved");
-      // console.log(response)
+      console.log(response);
       console.log("save:", this.questions);
     },
     answerA: function () {
@@ -222,25 +219,13 @@ export default {
     checkPrev: function () {
       return !(this.questionIndex > 0);
     },
-    checkNext: function () {
-      return this.questionIndex < 30 ? false : true;
-    },
+    // checkNext: function () {
+    //   return this.questionIndex < 4 ? false : true;
+    // },
     checkFinish: function () {
-      return this.questionIndex == 30 ? false : true;
+      return this.questionIndex == 1 ? false : true;
     },
   },
-
-  // computed: {
-  //   checkPrev: function () {
-  //     return !(this.questionIndex > 0);
-  //   },
-  //   checkNext: function () {
-  //     return this.questionIndex < 30 ? false : true;
-  //   },
-  //   checkFinish: function () {
-  //     return this.questionIndex == 30 ? false : true;
-  //   },
-  // },
   components: {
     AdminSideMenu,
   },
@@ -272,7 +257,7 @@ export default {
   display: flex;
   justify-content: space-between;
   width: 100%;
-  margin-left: 47px;
+  /* margin-left: 47px; */
   margin-bottom: 64px;
 }
 

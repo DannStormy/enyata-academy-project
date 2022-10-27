@@ -2,14 +2,22 @@
   <div class="container">
     <div class="header">
       <div class="title"><p>Profile Settings</p></div>
-      <button class="edit">Edit</button>
+      <button @click="edit" class="edit">Edit</button>
     </div>
     <div class="line"></div>
-    <form action="">
+    <form :class="{ disabled: isDisabled }" @submit.prevent="saveAdmin">
       <div class="profile-picture">
-        <img src="@/assets/svgs/account.svg" alt="profile-picture" />
+        <div class="pp_container">
+          <img :src="newAdmin.profilepic" alt="" />
+        </div>
         <label for="files" class="btn">Upload new image</label>
-        <input id="files" style="display: none" type="file" />
+        <input
+          id="files"
+          style="display: none"
+          type="file"
+          accept=".jpeg, .png, .jpg"
+          @change="previewImage"
+        />
         <div class="remove">
           <img src="@/assets/svgs/Vector.svg" alt="x" />
           <p>Remove</p>
@@ -18,7 +26,13 @@
       <div class="form-top">
         <div>
           <label for="name">Name</label><br />
-          <input type="text" id="name" name="name" :value="admin?.name" /><br />
+          <input
+            type="text"
+            id="name"
+            name="name"
+            :disabled="isDisabled"
+            v-model="newAdmin.fn"
+          /><br />
         </div>
         <div>
           <label for="email">Email</label><br />
@@ -26,7 +40,8 @@
             type="email"
             id="email"
             name="email"
-            :value="admin?.email"
+            :disabled="isDisabled"
+            v-model="newAdmin.email"
           /><br />
         </div>
         <div>
@@ -35,7 +50,8 @@
             type="tel"
             id="phone"
             name="phone"
-            :value="admin?.phone"
+            :disabled="isDisabled"
+            v-model="newAdmin.phone"
           /><br />
         </div>
       </div>
@@ -46,7 +62,8 @@
             type="text"
             id="country"
             name="country"
-            :value="admin?.country"
+            :disabled="isDisabled"
+            v-model="newAdmin.country"
           /><br />
         </div>
         <div>
@@ -55,23 +72,67 @@
             type="text"
             id="address"
             name="address"
-            :value="admin?.address"
+            :disabled="isDisabled"
+            v-model="newAdmin.address"
           /><br />
         </div>
       </div>
-      <div class="save"><button>Save</button></div>
+      <div class="save">
+        <button>Save</button>
+      </div>
     </form>
   </div>
 </template>
 
 <script>
+import axios from "axios";
 import { mapActions, mapState } from "vuex";
 export default {
+  data: () => ({
+    isDisabled: true,
+    newAdmin: {
+      fn: "",
+      email: "",
+      profilepic: "",
+      phone: "",
+      country: "",
+      address: "",
+    },
+  }),
   computed: {
     ...mapState({ admin: (state) => state.admin.adminDetails }),
   },
   methods: {
     ...mapActions(["adminDetails", "adminAuth"]),
+    previewImage: function (event) {
+      var input = event.target;
+      if (input.files) {
+        var reader = new FileReader();
+        reader.onload = (e) => {
+          this.newAdmin.profilepic = e.target.result;
+        };
+        // this.image = input.files[0];
+        reader.readAsDataURL(input.files[0]);
+      }
+    },
+    edit() {
+      this.isDisabled = false;
+    },
+    saveAdmin() {
+      console.log(this.newAdmin);
+      axios
+        .post(
+          `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
+          this.newAdmin
+        )
+        .then(function () {
+          this.isDisabled = true;
+          alert(`Admin Saved`);
+        })
+        .catch(function (error) {
+          alert(error.response.data.message);
+        });
+    },
   },
   mounted() {
     this.adminDetails();
@@ -102,6 +163,10 @@ export default {
   background-color: white;
   border-radius: 3px;
   cursor: pointer;
+}
+.edit:hover {
+  background: #7557d3;
+  color: white;
 }
 .line {
   background: #ffffff;
@@ -143,6 +208,7 @@ export default {
   color: white;
   border: none;
   cursor: pointer;
+  margin-bottom: 100px;
 }
 .form-top {
   display: flex;
@@ -171,7 +237,24 @@ input {
   padding: 15px;
   border: none;
 }
-
+.pp_container {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: grey;
+  border: none;
+}
+.pp_container img {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.disabled {
+  pointer-events: none;
+  /* background: rgb(25, 13, 74, 0.1); */
+  /* filter: blur(1px); */
+}
 #address {
   width: 469px;
 }

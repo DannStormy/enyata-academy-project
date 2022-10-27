@@ -29,7 +29,7 @@ export default {
 .timer {
     display: flex;
     flex-direction: column;
-    margin-right: 98px;
+    /* margin-right: 98px; */
 }
 
 .timer p {
