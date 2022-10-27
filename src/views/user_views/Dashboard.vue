@@ -2,8 +2,9 @@
   <div class="flex-container">
     <SideMenu />
     <div class="container">
-      <h1>Dashboard</h1>
       <LoaderComp v-if="isLoading" />
+      <div v-else>
+      <h1>Dashboard</h1>
       <p class="description">
         Your Application is currently being review, you wil be notified if
         successful
@@ -55,6 +56,7 @@
             >
           </div>
         </div>
+      </div>
       </div>
     </div>
   </div>

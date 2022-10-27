@@ -91,7 +91,7 @@ export default {
             } finally {
                 commit('SET_LOADING', false)
             }
-        },
+        }
 
     }
 };

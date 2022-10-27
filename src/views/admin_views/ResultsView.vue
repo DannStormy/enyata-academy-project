@@ -2,6 +2,8 @@
   <div class="flex-container">
     <AdminSideMenu />
     <div class="container">
+      <LoaderComp v-if="isLoading" />
+      <div v-else>
       <div class="header">
         <label for="batch">Results - </label>
         <div class="select">
@@ -83,6 +85,7 @@
           </table>
         </form>
       </div>
+      </div>
     </div>
   </div>
 </template>
@@ -90,6 +93,7 @@
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SendMail from "@/components/SendMail.vue";
+import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
@@ -128,6 +132,7 @@ export default {
   components: {
     AdminSideMenu,
     SendMail,
+    LoaderComp
   },
 };
 </script>
