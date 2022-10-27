@@ -91,8 +91,7 @@ export default {
   font-size: 13px;
 }
 .table-container {
-  margin-top: 107px;
-  margin-left: 353px;
+  margin: 107px 0 50px 353px;
   width: 800px;
 }
 .title {
@@ -110,6 +109,7 @@ export default {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px;
   padding: 30px;
+  overflow-y: scroll;
 }
 table {
   border-collapse: collapse;
