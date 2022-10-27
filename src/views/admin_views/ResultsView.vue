@@ -44,8 +44,8 @@
               </tr>
               <tr
                 class="table-data"
-                v-for="applicant in applicants"
-                :key="applicant.id"
+                v-for="(applicant, i) in applicants"
+                :key="i"
               >
                 <td class="check">
                   <input
@@ -65,15 +65,15 @@
                 <td>{{ applicant.cgpa }}</td>
                 <td class="scores">
                   <span>{{ applicant.test_score || "N/A" }} </span
-                  ><button @click="active">
+                  ><button @click="getEmail(applicant)">
                     <img
                       src="../../assets/svgs/three-dots.svg"
                       alt="send bulk email"
                     />
                   </button>
                   <SendMail
-                    :mail="`mailto:${applicant.email}`"
-                    v-if="isActive"
+                    :mail="`mailto:${email.email}`"
+                    v-if="isActive && email.email === applicant.email"
                   />
                 </td>
               </tr>
@@ -92,6 +92,7 @@ import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
     isActive: false,
+    email: "",
   }),
   methods: {
     ...mapActions(["getEntries"]),
@@ -105,8 +106,10 @@ export default {
       }
       return age;
     },
-    active() {
+    getEmail(val) {
       this.isActive = true;
+      this.email = val;
+      console.log(this.email);
     },
   },
   computed: {
