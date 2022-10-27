@@ -91,7 +91,7 @@ export default {
   font-size: 13px;
 }
 .table-container {
-  margin: 107px 0 50px 353px;
+  margin: 107px 0 25px 353px;
   width: 800px;
 }
 .title {
@@ -104,7 +104,7 @@ export default {
 }
 .table {
   width: 100%;
-  height: 476px;
+  height: 400px;
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px;

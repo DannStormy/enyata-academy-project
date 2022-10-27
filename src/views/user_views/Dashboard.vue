@@ -3,6 +3,7 @@
     <SideMenu />
     <div class="container">
       <h1>Dashboard</h1>
+      <LoaderComp v-if="isLoading" />
       <p class="description">
         Your Application is currently being review, you wil be notified if
         successful
@@ -61,7 +62,7 @@
 
 <script>
 import SideMenu from "@/components/SideMenu.vue";
-
+import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
@@ -105,6 +106,7 @@ export default {
     ...mapState({
       status: (state) => state.user_dashboard.status,
       profile: (state) => state.user_dashboard.profile,
+      isLoading: (state) => state.user_dashboard.isLoading,
     }),
   },
   mounted() {
@@ -114,6 +116,7 @@ export default {
   },
   components: {
     SideMenu,
+    LoaderComp,
   },
 };
 </script>

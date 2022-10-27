@@ -141,7 +141,7 @@ export default {
   display: flex;
 }
 .container {
-  margin: 107px 0 86px 290px;
+  margin: 107px 0 40px 290px;
   /* padding: 0 0 0 40px;
   width: 100%; */
 
@@ -286,5 +286,9 @@ table {
   table-layout: auto;
   word-wrap: break-word;
   width: 100%;
+}
+form {
+  height: 400px;
+  overflow-y: scroll;
 }
 </style>

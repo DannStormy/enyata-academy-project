@@ -304,4 +304,8 @@ table{
   width: 100%;
   
 }
+form {
+  height: 400px;
+  overflow-y: scroll;
+}
 </style>
