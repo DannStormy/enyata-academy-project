@@ -228,7 +228,6 @@ import axios from "axios";
 import router from "@/router";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
-
 export default {
   setup() {
     return { v$: useVuelidate() };
@@ -389,7 +388,6 @@ label {
   width: 100%;
   height: 100%;
 }
-
 .input-container input {
   width: 365px;
   height: 48px;
@@ -429,7 +427,6 @@ input:focus {
 .sign-up:disabled {
   opacity: 0.6;
 }
-
 .sign-in {
   font-weight: 500;
   font-size: 15px;

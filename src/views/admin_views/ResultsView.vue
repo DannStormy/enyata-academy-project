@@ -3,7 +3,7 @@
     <AdminSideMenu />
     <div class="container">
       <div class="header">
-        <label for="cars">Results - </label>
+        <label for="batch">Results - </label>
         <div class="select">
           <select id="batch" name="batchlist" form="batchform">
             <option value="batch1">Batch 1</option>
@@ -15,7 +15,7 @@
       </div>
       <div>
         <form action="" @submit.prevent>
-          <table class="table" width="100px">
+          <table class="table" style="width: 100%">
             <tbody>
               <tr class="header-row">
                 <th>Name</th>
@@ -34,7 +34,7 @@
                     alt="icon for sort"
                   />
                 </th>
-                <th colspan="2">
+                <th>
                   Test Scores
                   <img
                     src="../../assets/svgs/sort-arrow.svg"
@@ -64,13 +64,15 @@
                 <td>{{ applicant.university }}</td>
                 <td>{{ applicant.cgpa }}</td>
                 <td class="scores">
-                  <span>{{ applicant.test_score || "N/A" }} </span
-                  ><button @click="getEmail(applicant)">
-                    <img
-                      src="../../assets/svgs/three-dots.svg"
-                      alt="send bulk email"
-                    />
-                  </button>
+                  <div class="top">
+                    <span>{{ applicant.test_score || "N/A" }} </span
+                    ><button @click="getEmail(applicant)">
+                      <img
+                        src="../../assets/svgs/three-dots.svg"
+                        alt="send bulk email"
+                      />
+                    </button>
+                  </div>
                   <SendMail
                     :mail="`mailto:${email.email}`"
                     v-if="isActive && email.email === applicant.email"
@@ -111,6 +113,9 @@ export default {
       this.email = val;
       console.log(this.email);
     },
+    active() {
+      this.isActive = !this.isActive;
+    },
   },
   computed: {
     ...mapState({
@@ -146,9 +151,9 @@ export default {
   padding: 0 30px;
 }
 .check {
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 .header,
 select {
@@ -183,17 +188,13 @@ select::-ms-expand {
 .select {
   position: relative;
   display: inline-flex;
-  width: 20em;
-  height: 3em;
-  line-height: 3;
-  background: #5c6664;
+  width: 5em;
   overflow: hidden;
-  border-radius: 0.25em;
 }
 .select::after {
   content: "\25BC";
   position: absolute;
-  right: 0;
+  left: 120px;
   cursor: pointer;
   pointer-events: none;
   transition: 0.25s all ease;
@@ -221,14 +222,15 @@ select::-ms-expand {
   line-height: 17px;
   color: #ffffff;
 }
+
 th {
   padding: 15px 4px;
 }
 td {
   padding: 15px 4px;
   margin-right: 40px;
-  text-align: center;
-  width: fit-content;
+  /* text-align: center; */
+  /* width: fit-content; */
 }
 th img {
   margin-left: 7px;
@@ -241,28 +243,50 @@ table button {
   border: none;
   outline: none;
 }
+button img {
+  cursor: pointer;
+}
 /* tr{
     border-collapse:collapse;
     border-spacing:0 15px;
   } */
-.table-data {
-  padding: 22px 18px;
-  margin-top: 32px;
-  background: #ffffff;
-  border-left: 7px solid #ffffff;
-  border-spacing: 30px;
-  border-radius: 8px;
-}
 .table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
-  border-top-left-radius: 8px;
-  border-left: 7px solid #7557d3;
   transition: 0.2s;
-}
 
-.scores > button > img {
-  margin-left: 16px;
-  /* width: 100%; */
+  margin: 20px 0;
+}
+.table-data:hover td:first-of-type {
+  position: relative;
+}
+.table-data:hover td:first-of-type::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
   height: 100%;
+  background: #7557d3;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+.top {
+  display: flex;
+  justify-content: space-around;
+}
+/* td.scores {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+} */
+/* .scores > button > img {
+  margin-left: 16px;
+  width: 100%;
+  height: 100%;
+}  */
+table {
+  table-layout: auto;
+  word-wrap: break-word;
+  width: 100%;
 }
 </style>

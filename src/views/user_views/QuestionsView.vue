@@ -6,62 +6,65 @@
     <div class="container">
       <div class="container-body">
         <div class="header">
-        <div class="assessment">
-          <h1 class="title">Take Assessment</h1>
-          <p class="description">
-            Click the button below to start assessment, you have limited time
-            for this test
-          </p>
-        </div>
-        <TimerBar :displayMinutes="minutes" :displaySeconds="seconds" />
-      </div>
-      <div
-        class="main"
-        v-for="(question, index) in quiz"
-        :key="question.numb"
-        v-show="index === questionIndex"
-      >
-        <div class="question">
-          <p>Question {{ question.numb + 1 }}</p>
-          <span>{{ question.question }}</span>
-          <img :src="question.img" alt="" />
-          <div
-            :class="{ active: isActive }"
-            v-for="(option, i) in question.options"
-            :key="i"
-          >
-            <input
-              type="radio"
-              :id="option.text"
-              :name="index"
-              :value="i"
-              v-model="userResponses[index]"
-              @click="glow"
-            />
-            <label :for="option.text">{{ option.text }}</label>
+          <div class="assessment">
+            <h1 class="title">Take Assessment</h1>
+            <p class="description">
+              Click the button below to start assessment, you have limited time
+              for this test
+            </p>
           </div>
-          <div class="navigate">
-            <div class="buttons">
-              <button class="previous" v-on:click="prev" :disabled="checkPrev">
-                Previous
-              </button>
-              <button class="next" v-on:click="next" :disabled="checkNext">
-                Next
-              </button>
-            </div>
-            <!-- <router-link to="/success"> -->
-            <button
-              class="finish"
-              :disabled="checkFinish"
-              @click="finishAssessment"
+          <TimerBar :displayMinutes="minutes" :displaySeconds="seconds" />
+        </div>
+        <div
+          class="main"
+          v-for="(question, index) in quiz"
+          :key="question.numb"
+          v-show="index === questionIndex"
+        >
+          <div class="question">
+            <p>Question {{ question.numb + 1 }}</p>
+            <span>{{ question.question }}</span>
+            <img :src="question.img" alt="" />
+            <div
+              :class="{ active: isActive }"
+              v-for="(option, i) in question.options"
+              :key="i"
             >
-              Finish
-            </button>
-            <!-- </router-link> -->
-            <p>Total score: {{ score() }} / {{ quiz?.length - 1 }}</p>
+              <input
+                type="radio"
+                :id="option.text"
+                :name="index"
+                :value="i"
+                v-model="userResponses[index]"
+                @click="glow"
+              />
+              <label :for="option.text">{{ option.text }}</label>
+            </div>
+            <div class="navigate">
+              <div class="buttons">
+                <button
+                  class="previous"
+                  v-on:click="prev"
+                  :disabled="checkPrev"
+                >
+                  Previous
+                </button>
+                <button class="next" v-on:click="next" :disabled="checkNext">
+                  Next
+                </button>
+              </div>
+              <!-- <router-link to="/success"> -->
+              <button
+                class="finish"
+                :disabled="checkFinish"
+                @click="finishAssessment"
+              >
+                Finish
+              </button>
+              <!-- </router-link> -->
+            </div>
           </div>
         </div>
-      </div>
       </div>
     </div>
   </div>
@@ -113,6 +116,7 @@ export default {
           sec = sec - 1;
         } else {
           clearInterval(count);
+          this.finishAssessment();
         }
         if (this.finish) {
           clearInterval(count);
@@ -351,7 +355,7 @@ button:hover {
   border-radius: 4px;
   cursor: not-allowed;
 }
-.container-body{
+.container-body {
   margin: 0 47px;
 }
 </style>
