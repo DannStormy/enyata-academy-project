@@ -11,14 +11,14 @@ const ifNotAuthenticated = (to, from, next) => {
   next('/login')
 }
 
-// const checkAssessmentStatus = (to, from, next) => {
-//   if (!store.state.user_dashboard.taken_assessment) {
-//     next()
-//     return
-//   }
-//   alert('Assessment already taken for this Batch')
-//   next('/dashboard')
-// }
+const checkAssessmentStatus = (to, from, next) => {
+  if (!store.state.user_dashboard.taken_assessment) {
+    next()
+    return
+  }
+  alert('Assessment already taken for this Batch')
+  next('/dashboard')
+}
 
 const adminAuthenticated = (to, from, next) => {
   store.dispatch('adminAuth');
@@ -34,7 +34,7 @@ const routes = [
     path: '/assessment',
     name: 'TakeAssessment',
     component: () => import('../views/user_views/TakeAssessment.vue'),
-    // beforeEnter: checkAssessmentStatus
+    beforeEnter: checkAssessmentStatus
   },
   {
     path: '/',
@@ -105,7 +105,7 @@ const routes = [
     path: '/questions',
     name: 'QuestionsView',
     component: () => import('../views/user_views/QuestionsView.vue'),
-    // beforeEnter: checkAssessmentStatus
+    beforeEnter: checkAssessmentStatus
   },
   {
     path: '/success',

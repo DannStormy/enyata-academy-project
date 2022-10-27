@@ -3,8 +3,16 @@
     <div class="user-details">
       <div>
         <img
+          v-if="!admin?.profilepic"
+          class="profile-pic"
           src="../assets/svgs/admin-profile.svg"
           alt="admin profile picture"
+        />
+        <img
+          v-else
+          :src="admin?.profilepic"
+          alt="admin profile picture"
+          class="profile-pic"
         />
       </div>
       <p class="user-name">{{ admin?.name }}</p>
@@ -123,6 +131,12 @@ export default {
 .user-email {
   font-style: italic;
   font-weight: 400;
+}
+.profile-pic {
+  width: 80px;
+  height: 80px;
+  border-radius: 50%;
+  object-fit: cover;
 }
 .logout-button {
   margin-top: 50px;

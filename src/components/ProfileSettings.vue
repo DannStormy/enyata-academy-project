@@ -125,9 +125,11 @@ export default {
           `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
           this.newAdmin
         )
-        .then(function () {
+        .then(function (response) {
           this.isDisabled = true;
-          alert(`Admin Saved`);
+          if (response) {
+            alert(`Admin Saved`);
+          }
         })
         .catch(function (error) {
           alert(error.response.data.message);

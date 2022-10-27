@@ -292,8 +292,10 @@ export default {
           `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
           this.userData
         )
-        .then(function () {
-          alert(`Registered successfully`);
+        .then(function (response) {
+          if (response) {
+            alert(`Registered successfully`);
+          }
           router.push("/login");
         })
         .catch(function (error) {

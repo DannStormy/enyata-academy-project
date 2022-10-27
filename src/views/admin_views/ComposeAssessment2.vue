@@ -223,7 +223,7 @@ export default {
     //   return this.questionIndex < 4 ? false : true;
     // },
     checkFinish: function () {
-      return this.questionIndex == 1 ? false : true;
+      return this.questionIndex > 0 ? false : true;
     },
   },
   components: {

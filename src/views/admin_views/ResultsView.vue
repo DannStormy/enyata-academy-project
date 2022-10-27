@@ -109,13 +109,11 @@ export default {
       return age;
     },
     getEmail(val) {
-      this.isActive = true;
+      this.isActive = !this.isActive;
       this.email = val;
       console.log(this.email);
     },
-    active() {
-      this.isActive = !this.isActive;
-    },
+    active() {},
   },
   computed: {
     ...mapState({
