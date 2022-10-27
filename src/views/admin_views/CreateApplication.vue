@@ -225,8 +225,8 @@ export default {
   width: 100%;
 }
 .application {
-  margin-top: 137px;
-  margin-left: 367px;
+  margin-top: 107px;
+  margin-left: 351px;
   width: 100%;
 }
 .title {

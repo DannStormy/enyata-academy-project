@@ -91,8 +91,7 @@ export default {
   font-size: 13px;
 }
 .table-container {
-  margin-top: 111px;
-  margin-left: 334px;
+  margin: 107px 0 50px 353px;
   width: 800px;
 }
 .title {
@@ -127,7 +126,9 @@ td {
 tr {
   cursor: pointer;
 }
-
+tr.active {
+  border-left: 6px solid #ffffff;
+}
 tr.active:hover {
   background: white;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);

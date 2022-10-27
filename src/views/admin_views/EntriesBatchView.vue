@@ -149,7 +149,7 @@ export default {
   height: 100vh;
 }
 .container {
-  margin: 111px 20px 0px 323px;
+  margin: 107px 20px 0px 323px;
   width: 100%;
   /* height: 900px; */
 }
