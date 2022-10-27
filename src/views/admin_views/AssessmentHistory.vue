@@ -124,6 +124,7 @@ td {
 }
 tr {
   cursor: pointer;
+  border-left: 6px solid white;
 }
 
 tr.active:hover {
