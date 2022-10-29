@@ -10,7 +10,8 @@ export default {
         message: '',
         status: null,
         profile: [],
-        taken_assessment: null
+        taken_assessment: null,
+        isLoading: false
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -30,6 +31,9 @@ export default {
         },
         UPDATE_ASSESSMENT_STATUS: (state, taken_assessment) => {
             state.taken_assessment = taken_assessment
+        },
+        SET_LOADING: (state, isLoading) => {
+            state.isLoading = isLoading
         }
     },
     actions: {
@@ -53,6 +57,7 @@ export default {
         },
         async userLogin({ commit }, user) {
             try {
+                commit('SET_LOADING', true)
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/login`, user)
                 let token = response.data.data.token
                 let firstName = response.data.data.applicant[0].firstname
@@ -72,32 +77,37 @@ export default {
                 } else {
                     router.push('/applicationform')
                 }
-                commit('AUTH', true)
-
             } catch (error) {
                 localStorage.removeItem("user");
+                alert(error.response.data.message)
                 commit('UPDATE_MESSAGE', error.response.data.message)
 
+            } finally {
+                commit('SET_LOADING', false)
             }
         },
         async dashboardPic({ state, commit }) {
             try {
+                commit('SET_LOADING', true)
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
                 commit('UPDATE_PROFILE', response.data.data[0]);
                 commit('UPDATE_STATUS', response.data.applicantStatus[0].status)
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.data[0].taken_assessment)
-                // console.log('St', response.data.data[0].taken_assessment)
-                // console.log('State: ', state.profile)
             } catch (error) {
                 console.log(error)
+            } finally {
+                commit('SET_LOADING', false)
             }
         },
         async changeAssessmentStatus({ state, commit }) {
             try {
+                commit('SET_LOADING', true)
                 const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email })
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.taken_assessment[0].taken_assessment)
             } catch (err) {
                 console.log(err)
+            } finally {
+                commit('SET_LOADING', false)
             }
         }
     }

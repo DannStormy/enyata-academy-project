@@ -64,6 +64,7 @@ export default {
     getAssessment(assessment) {
       this.isActive = true;
       this.eachAssessment = assessment;
+      console.log(this.eachAssessment);
     },
     close(value) {
       this.isActive = value;
@@ -90,8 +91,7 @@ export default {
   font-size: 13px;
 }
 .table-container {
-  margin-top: 60px;
-  margin-left: 334px;
+  margin: 107px 0 25px 353px;
   width: 800px;
 }
 .title {
@@ -104,12 +104,13 @@ export default {
 }
 .table {
   width: 100%;
-  height: 476px;
-  overflow-y: scroll;
+  height: 400px;
   background: #ffffff;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   border-radius: 8px;
   padding: 30px;
+  overflow-y: scroll;
+  margin-bottom: 50px;
 }
 table {
   border-collapse: collapse;
@@ -124,9 +125,10 @@ td {
 }
 tr {
   cursor: pointer;
-  border-left: 6px solid white;
 }
-
+tr.active {
+  border-left: 6px solid #ffffff;
+}
 tr.active:hover {
   background: white;
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);

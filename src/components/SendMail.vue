@@ -30,5 +30,8 @@ export default {
   gap: 5px;
   color: black;
   text-decoration: none;
+  margin: 5px;
+  margin-bottom: -40px;
+  margin-right: -20px;
 }
 </style>

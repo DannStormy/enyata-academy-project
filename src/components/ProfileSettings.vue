@@ -116,18 +116,27 @@ export default {
       }
     },
     edit() {
-      this.isDisabled = false;
+      this.isDisabled = !this.isDisabled;
     },
     saveAdmin() {
-      console.log(this.newAdmin);
+      if (!this.newAdmin.email) {
+        alert("Admin email required");
+        return;
+      }
+      if (!this.newAdmin.fn) {
+        alert("Admin name required");
+        return;
+      }
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
           this.newAdmin
         )
-        .then(function () {
+        .then(function (response) {
           this.isDisabled = true;
-          alert(`Admin Saved`);
+          if (response) {
+            alert(`Admin Saved`);
+          }
         })
         .catch(function (error) {
           alert(error.response.data.message);

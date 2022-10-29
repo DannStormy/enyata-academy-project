@@ -19,7 +19,7 @@
             Join enyata academy today and bring your long awaiting dream to
             reality.
           </p>
-          <router-link :class="{ isActive: !isActive }" to="/applicationform">
+          <router-link :class="{ isActive: !isActive }" to="/signup">
             <button class="register-button">Register Now</button>
           </router-link>
           <div v-if="!isActive" class="error">
@@ -90,10 +90,10 @@ export default {
       const response = await axios.get(
         `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
       );
-      console.log(response.data.closure[0].date);
-      console.log(
-        `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
-      );
+      // console.log(response.data.closure[0].date);
+      // console.log(
+      //   `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
+      // );
       if (
         response.data.closure[0].date <
         `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`

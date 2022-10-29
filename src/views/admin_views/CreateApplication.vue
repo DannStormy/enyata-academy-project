@@ -110,7 +110,6 @@ export default {
         alert("Batch ID missing");
         return;
       }
-
       this.isActive = true;
     },
     noConfirm() {
@@ -148,7 +147,6 @@ export default {
           this.appInfo
         );
         alert("Application Created");
-
         console.log(response);
       } catch (error) {
         console.log(error);
@@ -227,8 +225,8 @@ export default {
   width: 100%;
 }
 .application {
-  margin-top: 137px;
-  margin-left: 367px;
+  margin-top: 107px;
+  margin-left: 351px;
   width: 100%;
 }
 .title {

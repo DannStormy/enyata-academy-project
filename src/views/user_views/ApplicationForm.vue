@@ -317,7 +317,10 @@ export default {
             router.push("/dashboard");
           }
         })
-        .catch((error) => console.log(error));
+        .catch((error) => {
+          console.log(error);
+          alert(error.response.data.message);
+        });
     },
   },
   computed: {

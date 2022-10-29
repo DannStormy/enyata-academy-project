@@ -19,8 +19,32 @@
       <div class="dashboard">
         <LoaderComp v-if="isLoading" />
         <div v-else>
-          <h1>Entries - Batch 2</h1>
-          <p class="sub">Comprises of all that applied for batch 2</p>
+          <div class="header">
+            <label for="batch">Entries - </label>
+            <div class="select">
+              <select
+                id="batch"
+                name="batchlist"
+                form="batchform"
+                v-model="selectedBatch"
+                @change="getBatch()"
+              >
+                <option disabled value="">Select Batch</option>
+                <option v-for="(batch, i) in batches" :key="i">
+                  Batch {{ batch.batch_id?.split(" ")[2] }}
+                </option>
+              </select>
+              <img
+                class="polygon"
+                src="@/assets/svgs/select.svg"
+                alt="polygon"
+              />
+            </div>
+            <p class="sub">
+              Comprises of all that applied for
+              {{ selectedBatch || "all batches" }}
+            </p>
+          </div>
 
           <form action="" @submit.prevent>
             <table class="table">
@@ -87,7 +111,7 @@
 </template>
 
 <script>
-// import axios from "axios";
+import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SideBarEntry from "@/components/SideBarEntry.vue";
 import LoaderComp from "@/components/LoaderComp.vue";
@@ -98,6 +122,8 @@ export default {
     applicantData: null,
     isActive: false,
     confirm: false,
+    batches: null,
+    selectedBatch: "",
   }),
   computed: {
     ...mapState({
@@ -106,7 +132,7 @@ export default {
     }),
   },
   methods: {
-    ...mapActions(["getEntries"]),
+    ...mapActions(["getEntries", "getEntriesByBatch"]),
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -116,6 +142,17 @@ export default {
         age--;
       }
       return age;
+    },
+    async getAllBatches() {
+      const batches = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`
+      );
+      this.batches = batches.data.batches;
+    },
+    getBatch() {
+      const batch = this.selectedBatch.split(" ")[1];
+      let searchBatch = `Enyata Academy ${batch}`;
+      this.getEntriesByBatch(searchBatch);
     },
     getUser(applicant) {
       this.applicantData = applicant;
@@ -134,6 +171,7 @@ export default {
   },
   mounted() {
     this.getEntries();
+    this.getAllBatches();
   },
   name: "EntriesBatchView",
 };
@@ -149,7 +187,7 @@ export default {
   height: 100vh;
 }
 .container {
-  margin: 111px 20px 0px 323px;
+  margin: 107px 20px 0px 323px;
   width: 100%;
   /* height: 900px; */
 }
@@ -182,8 +220,69 @@ export default {
 .sub {
   margin-bottom: 50px;
 }
+.header,
+select {
+  font-weight: 300;
+  font-size: 43px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  color: #2b3c4e;
 
+  font-size: 36px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+}
 select > option {
+  font-size: 16px;
+  background: #ffffff;
+  box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
+}
+select {
+  border: none;
+  outline: none;
+}
+select {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  -ms-appearance: none;
+  appearance: none;
+  outline: 0;
+  box-shadow: none;
+  border: 0 !important;
+  background: #ffffff;
+  background-image: none;
+  flex: 1;
+  cursor: pointer;
+}
+select::-ms-expand {
+  display: none;
+}
+.select {
+  position: relative;
+  display: inline-flex;
+  /* width: 5em; */
+  /* overflow: hidden; */
+}
+.polygon {
+  margin-left: 3px;
+}
+/* .select::after {
+  content: "\25BC";
+  position: absolute;
+  left: 120px;
+  cursor: pointer;
+  pointer-events: none;
+  transition: 0.25s all ease;
+} */
+.header-title {
+  font-style: italic;
+  font-weight: 400;
+  font-size: 14px;
+  line-height: 16px;
+  margin-bottom: 38px;
+}
+/* select > option {
   font-size: 16px;
 }
 
@@ -204,35 +303,35 @@ select {
   background-image: none;
   flex: 1;
   cursor: pointer;
-}
+} */
 
 select::-ms-expand {
   display: none;
 }
 .check {
-  display: flex;
+  /* display: flex; */
   align-items: center;
-  margin-top: 10px;
+  /* margin-top: 10px; */
 }
 .select {
   position: relative;
   display: inline-flex;
-  width: 20em;
+  /* width: 20em;
   height: 3em;
   line-height: 3;
   background: #5c6664;
   overflow: hidden;
-  border-radius: 0.25em;
+  border-radius: 0.25em; */
 }
 
-.select::after {
+/* .select::after {
   content: "\25BC";
   position: absolute;
   right: 0;
   cursor: pointer;
   pointer-events: none;
   transition: 0.15s all ease;
-}
+} */
 
 .header-title {
   font-style: italic;
@@ -297,5 +396,14 @@ table button {
   /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
+}
+table {
+  table-layout: auto;
+  word-wrap: break-word;
+  width: 100%;
+}
+form {
+  height: 400px;
+  overflow-y: scroll;
 }
 </style>

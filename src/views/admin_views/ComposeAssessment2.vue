@@ -223,7 +223,7 @@ export default {
     //   return this.questionIndex < 4 ? false : true;
     // },
     checkFinish: function () {
-      return this.questionIndex == 1 ? false : true;
+      return this.questionIndex > 0 ? false : true;
     },
   },
   components: {
@@ -249,7 +249,7 @@ export default {
 }
 
 .container {
-  margin: 111px 93px 0px 292px;
+  margin: 111px 93px 0px 358px;
   width: 876px;
 }
 
@@ -278,7 +278,7 @@ export default {
   display: flex;
   flex-direction: column;
   width: 876px;
-  margin-left: 47px;
+  /* margin-left: 47px; */
 }
 .assessment-1 {
   margin-top: 62px;

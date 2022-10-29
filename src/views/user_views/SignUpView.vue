@@ -214,7 +214,10 @@
             </div>
           </div>
         </div>
-        <button class="sign-up">Sign Up</button>
+        <div class="btn_container">
+          <button class="sign-up">Sign Up</button>
+          <FormLoaderVue v-if="loading" />
+        </div>
       </form>
       <p class="sign-in">
         Already have an account? <router-link to="/login">Sign In</router-link>
@@ -229,6 +232,8 @@ import router from "@/router";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 
+import FormLoaderVue from "@/components/FormLoader.vue";
+
 export default {
   setup() {
     return { v$: useVuelidate() };
@@ -236,6 +241,7 @@ export default {
   data: () => ({
     showPassword: false,
     confirmPassword_show: false,
+    loading: false,
     userData: {
       firstName: "",
       lastName: "",
@@ -288,21 +294,29 @@ export default {
       if (this.v$.$invalid) {
         return;
       }
+      this.loading = true;
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
           this.userData
         )
-        .then(function () {
-          alert(`Registered successfully`);
+        .then(function (response) {
+          if (response) {
+            alert(`Registered successfully`);
+          }
           router.push("/login");
         })
         .catch(function (error) {
           alert(error.response.data.message);
+          this.loading = false;
         });
+      this.loading = false;
     },
   },
   name: "SignUpView",
+  components: {
+    FormLoaderVue,
+  },
 };
 </script>
 
@@ -389,7 +403,6 @@ label {
   width: 100%;
   height: 100%;
 }
-
 .input-container input {
   width: 365px;
   height: 48px;
@@ -408,6 +421,10 @@ input {
 input:focus {
   outline: none !important;
   border: 1px solid #7557d3;
+}
+.btn_container {
+  display: flex;
+  align-items: flex-end;
 }
 .sign-up {
   width: 520px;
@@ -429,7 +446,6 @@ input:focus {
 .sign-up:disabled {
   opacity: 0.6;
 }
-
 .sign-in {
   font-weight: 500;
   font-size: 15px;
