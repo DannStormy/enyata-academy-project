@@ -4,87 +4,98 @@
     <div class="container">
       <LoaderComp v-if="isLoading" />
       <div v-else>
-      <div class="header">
-        <label for="batch">Results - </label>
-        <div class="select">
-          <select id="batch" name="batchlist" form="batchform">
-            <option value="batch1">Batch 1</option>
-            <option value="batch2" selected>Batch 2</option>
-            <option value="batch3">Batch 3</option>
-          </select>
+        <div class="header">
+          <label for="batch">Results - </label>
+          <div class="select">
+            <select
+              id="batch"
+              name="batchlist"
+              form="batchform"
+              v-model="selectedBatch"
+              @change="getBatch()"
+            >
+              <option disabled value="">Select Batch</option>
+              <option v-for="(batch, i) in batches" :key="i">
+                Batch {{ batch.batch_id?.split(" ")[2] }}
+              </option>
+            </select>
+            <img class="polygon" src="@/assets/svgs/select.svg" alt="polygon" />
+          </div>
+          <p class="header-title">
+            Comprises of all that applied for
+            {{ selectedBatch || "all batches" }}
+          </p>
         </div>
-        <p class="header-title">Comprises of all that applied for batch 2</p>
-      </div>
-      <div>
-        <form action="" @submit.prevent>
-          <table class="table" style="width: 100%">
-            <tbody>
-              <tr class="header-row">
-                <th>Name</th>
-                <th>Email</th>
-                <th>
-                  DOB - Age<img
-                    src="../../assets/svgs/sort-arrow.svg"
-                    alt="icon for sort"
-                  />
-                </th>
-                <th>Address</th>
-                <th>University</th>
-                <th>
-                  CGPA<img
-                    src="../../assets/svgs/sort-arrow.svg"
-                    alt="icon for sort"
-                  />
-                </th>
-                <th>
-                  Test Scores
-                  <img
-                    src="../../assets/svgs/sort-arrow.svg"
-                    alt="icon for sort"
-                  />
-                </th>
-              </tr>
-              <tr
-                class="table-data"
-                v-for="(applicant, i) in applicants"
-                :key="i"
-              >
-                <td class="check">
-                  <input
-                    type="checkbox"
-                    id="username1"
-                    name="username"
-                    :checked="applicant.status"
-                  />
-                  <label for="username"
-                    >{{ applicant.firstname }} {{ applicant.lastname }}</label
-                  ><br />
-                </td>
-                <td>{{ applicant.email }}</td>
-                <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
-                <td>{{ applicant.address }}</td>
-                <td>{{ applicant.university }}</td>
-                <td>{{ applicant.cgpa }}</td>
-                <td class="scores">
-                  <div class="top">
-                    <span>{{ applicant.test_score || "N/A" }} </span
-                    ><button @click="getEmail(applicant)">
-                      <img
-                        src="../../assets/svgs/three-dots.svg"
-                        alt="send bulk email"
-                      />
-                    </button>
-                  </div>
-                  <SendMail
-                    :mail="`mailto:${email.email}`"
-                    v-if="isActive && email.email === applicant.email"
-                  />
-                </td>
-              </tr>
-            </tbody>
-          </table>
-        </form>
-      </div>
+        <div>
+          <form action="" @submit.prevent>
+            <table class="table" style="width: 100%">
+              <tbody>
+                <tr class="header-row">
+                  <th>Name</th>
+                  <th>Email</th>
+                  <th>
+                    DOB - Age<img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th>
+                  <th>Address</th>
+                  <th>University</th>
+                  <th>
+                    CGPA<img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th>
+                  <th>
+                    Test Scores
+                    <img
+                      src="../../assets/svgs/sort-arrow.svg"
+                      alt="icon for sort"
+                    />
+                  </th>
+                </tr>
+                <tr
+                  class="table-data"
+                  v-for="(applicant, i) in applicants"
+                  :key="i"
+                >
+                  <td class="check">
+                    <input
+                      type="checkbox"
+                      id="username1"
+                      name="username"
+                      :checked="applicant.status"
+                    />
+                    <label for="username"
+                      >{{ applicant.firstname }} {{ applicant.lastname }}</label
+                    ><br />
+                  </td>
+                  <td>{{ applicant.email }}</td>
+                  <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+                  <td>{{ applicant.address }}</td>
+                  <td>{{ applicant.university }}</td>
+                  <td>{{ applicant.cgpa }}</td>
+                  <td class="scores">
+                    <div class="top">
+                      <span>{{ applicant.test_score || "N/A" }} </span
+                      ><button @click="getEmail(applicant)">
+                        <img
+                          src="../../assets/svgs/three-dots.svg"
+                          alt="send bulk email"
+                        />
+                      </button>
+                    </div>
+                    <SendMail
+                      :mail="`mailto:${email.email}`"
+                      v-if="isActive && email.email === applicant.email"
+                    />
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </form>
+        </div>
       </div>
     </div>
   </div>
@@ -95,13 +106,16 @@ import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SendMail from "@/components/SendMail.vue";
 import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
+import axios from "axios";
 export default {
   data: () => ({
     isActive: false,
     email: "",
+    batches: null,
+    selectedBatch: "",
   }),
   methods: {
-    ...mapActions(["getEntries"]),
+    ...mapActions(["getEntries", "getEntriesByBatch"]),
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -112,12 +126,22 @@ export default {
       }
       return age;
     },
+    getBatch() {
+      const batch = this.selectedBatch.split(" ")[1];
+      let searchBatch = `Enyata Academy ${batch}`;
+      this.getEntriesByBatch(searchBatch);
+    },
     getEmail(val) {
       this.isActive = !this.isActive;
       this.email = val;
-      console.log(this.email);
     },
     active() {},
+    async getAllBatches() {
+      const batches = await axios.get(
+        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`
+      );
+      this.batches = batches.data.batches;
+    },
   },
   computed: {
     ...mapState({
@@ -127,12 +151,13 @@ export default {
   },
   mounted() {
     this.getEntries();
+    this.getAllBatches();
   },
   name: "ResultsView",
   components: {
     AdminSideMenu,
     SendMail,
-    LoaderComp
+    LoaderComp,
   },
 };
 </script>
@@ -161,12 +186,20 @@ export default {
 .header,
 select {
   font-weight: 300;
+  font-size: 43px;
+  line-height: 52px;
+  letter-spacing: -0.02em;
+  color: #2b3c4e;
+
   font-size: 36px;
   line-height: 52px;
   letter-spacing: -0.02em;
 }
 select > option {
   font-size: 16px;
+  background: #ffffff;
+  box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
+  border-radius: 10px;
 }
 select {
   border: none;
@@ -191,17 +224,20 @@ select::-ms-expand {
 .select {
   position: relative;
   display: inline-flex;
-  width: 5em;
-  overflow: hidden;
+  /* width: 5em; */
+  /* overflow: hidden; */
 }
-.select::after {
+.polygon {
+  margin-left: 3px;
+}
+/* .select::after {
   content: "\25BC";
   position: absolute;
   left: 120px;
   cursor: pointer;
   pointer-events: none;
   transition: 0.25s all ease;
-}
+} */
 .header-title {
   font-style: italic;
   font-weight: 400;
@@ -295,5 +331,6 @@ table {
 form {
   height: 400px;
   overflow-y: scroll;
+  min-width: 930px;
 }
 </style>

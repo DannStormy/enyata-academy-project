@@ -4,59 +4,72 @@
     <div class="container">
       <LoaderComp v-if="isLoading" />
       <div v-else>
-      <h1>Dashboard</h1>
-      <p class="description">
-        Your Application is currently being review, you wil be notified if
-        successful
-      </p>
-      <div class="dashboard-status">
-        <div class="dofapplication">
-          <p class="titles">Date of Application</p>
-          <p class="data">
-            {{ formatDate() }}
-            <!-- {{ formatDate(profile?.date?.split("T")[0]) }} -->
-            <!-- {{ profile?.date }} -->
-            <!-- {{ new Date() }} -->
-          </p>
-          <hr />
-          <p class="comments">{{ formatDateString() }}</p>
-        </div>
-        <div
-          :class="[
-            'status',
-            { denied: activeColor == 'red' },
-            { approved: activeColor == 'green' },
-          ]"
-        >
-          <p class="titles">Application Status</p>
-          <p class="data">{{ setStatus() }}</p>
-          <hr />
-          <p class="comments">We will get back to you</p>
-        </div>
-      </div>
-      <div class="further-info">
-        <div class="updates">
-          <p class="finfo">Updates</p>
-          <ul>
-            <li></li>
-            <li></li>
-            <li></li>
-            <li></li>
-          </ul>
-        </div>
-        <div class="assessments">
-          <p class="finfo">Take Assessment</p>
-          <div class="assessment-details">
-            <p>We have 4 days left until the next assessment</p>
-            <p>Watch this space</p>
-            <router-link to="/assessment"
-              ><button class="assessment-button">
-                Take Assessment
-              </button></router-link
-            >
+        <h1>Dashboard</h1>
+        <p class="description">
+          Your Application is currently being reviewed, you wil be notified if
+          successful
+        </p>
+        <div class="dashboard-status">
+          <div class="dofapplication">
+            <p class="titles">Date of Application</p>
+            <p class="data">
+              {{ formatDate() }}
+            </p>
+            <hr />
+            <p class="comments">{{ formatDateString() }}</p>
+          </div>
+          <div
+            :class="[
+              'status',
+              { denied: activeColor == 'red' },
+              { approved: activeColor == 'green' },
+            ]"
+          >
+            <p class="titles">Application Status</p>
+            <p class="data">{{ setStatus() }}</p>
+            <hr />
+            <p class="comments">We will get back to you</p>
           </div>
         </div>
-      </div>
+        <div class="further-info">
+          <div class="updates">
+            <p class="finfo">Updates</p>
+            <ul>
+              <li v-if="status === null">
+                Current status is: {{ setStatus() }}, we will get back to you
+              </li>
+              <li v-if="status === true">
+                Current status is: {{ setStatus() }}, Congratulations!
+              </li>
+              <li v-if="status === false">
+                Current status is: {{ setStatus() }}, please try again next year
+              </li>
+              <li>Enyata Academy 6.0 is officially a go!</li>
+              <li v-if="taken_assessment">
+                Your assessment score has been recorded.
+              </li>
+              <li v-else>Please proceed to take assessment...</li>
+              <li></li>
+            </ul>
+          </div>
+          <div class="assessments">
+            <p class="finfo">Take Assessment</p>
+            <div class="assessment-details">
+              <p>Few days left until the next assessment</p>
+              <p>Watch this space</p>
+              <router-link to="/assessment"
+                ><button
+                  :class="[
+                    'assessment-button',
+                    { can_take: !taken_assessment },
+                  ]"
+                >
+                  Take Assessment
+                </button></router-link
+              >
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -109,12 +122,11 @@ export default {
       status: (state) => state.user_dashboard.status,
       profile: (state) => state.user_dashboard.profile,
       isLoading: (state) => state.user_dashboard.isLoading,
+      taken_assessment: (state) => state.user_dashboard.taken_assessment,
     }),
   },
   mounted() {
-    // this.setStatus();
-    // this.dashboardPic();
-    // console.log("Dashboard statys", this.status);
+    console.log(this.taken_assessment);
   },
   components: {
     SideMenu,
@@ -207,6 +219,7 @@ ul li {
   list-style: none;
   border-bottom: 1px solid #cecece;
   padding-top: 74px;
+  padding-bottom: 3px;
   max-width: 412.5px;
 }
 .assessment-details {
@@ -227,5 +240,8 @@ ul li {
   border-radius: 4px;
   font-weight: 700;
   margin-top: 34px;
+}
+.can_take {
+  background-color: #12c52f;
 }
 </style>

@@ -53,8 +53,19 @@ export default {
             try {
                 commit('SET_LOADING', true)
                 const response = await axios.get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
-                console.log(response.data.data)
-                await commit('UPDATE_APPLICANTS', response.data.data)
+                commit('UPDATE_APPLICANTS', response.data.data)
+            } catch (error) {
+                console.log(error)
+                return error
+            } finally {
+                commit('SET_LOADING', false)
+            }
+        },
+        async getEntriesByBatch({ commit }, batch) {
+            try {
+                commit('SET_LOADING', true)
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/application-by-batch`, { batch: batch })
+                commit('UPDATE_APPLICANTS', response.data.data)
             } catch (error) {
                 console.log(error)
                 return error

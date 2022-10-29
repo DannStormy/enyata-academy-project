@@ -214,7 +214,10 @@
             </div>
           </div>
         </div>
-        <button class="sign-up">Sign Up</button>
+        <div class="btn_container">
+          <button class="sign-up">Sign Up</button>
+          <FormLoaderVue v-if="loading" />
+        </div>
       </form>
       <p class="sign-in">
         Already have an account? <router-link to="/login">Sign In</router-link>
@@ -228,6 +231,9 @@ import axios from "axios";
 import router from "@/router";
 import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
+
+import FormLoaderVue from "@/components/FormLoader.vue";
+
 export default {
   setup() {
     return { v$: useVuelidate() };
@@ -235,6 +241,7 @@ export default {
   data: () => ({
     showPassword: false,
     confirmPassword_show: false,
+    loading: false,
     userData: {
       firstName: "",
       lastName: "",
@@ -287,6 +294,7 @@ export default {
       if (this.v$.$invalid) {
         return;
       }
+      this.loading = true;
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
@@ -300,10 +308,15 @@ export default {
         })
         .catch(function (error) {
           alert(error.response.data.message);
+          this.loading = false;
         });
+      this.loading = false;
     },
   },
   name: "SignUpView",
+  components: {
+    FormLoaderVue,
+  },
 };
 </script>
 
@@ -408,6 +421,10 @@ input {
 input:focus {
   outline: none !important;
   border: 1px solid #7557d3;
+}
+.btn_container {
+  display: flex;
+  align-items: flex-end;
 }
 .sign-up {
   width: 520px;

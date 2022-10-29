@@ -1,7 +1,4 @@
 <template>
-  <div class="message_containe" v-show="elementVisible">
-    <p class="message">{{ message }}</p>
-  </div>
   <div class="wrapper">
     <div class="container">
       <div class="heading">
@@ -9,7 +6,6 @@
         <p class="title">Log In</p>
       </div>
       <form action="" @submit.prevent="login">
-
         <label for="lname">Email Address</label><br />
         <input
           type="email"
@@ -19,27 +15,38 @@
         /><br />
         <label for="password">Password</label>
         <div class="input-container">
-        <input
-          v-if="showPassword"
-          type="text"
-          id="password"
-          name="password"
-          v-model="user.password"
-        />
-        <input
-          v-else
-          type="password"
-          id="password"
-          name="password"
-          v-model="user.password"
-        />
-        <div @click="toggleShow" class="eye">
-          <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon"/>
-          <iconify-icon v-if="showPassword" icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+          <input
+            v-if="showPassword"
+            type="text"
+            id="password"
+            name="password"
+            v-model="user.password"
+          />
+          <input
+            v-else
+            type="password"
+            id="password"
+            name="password"
+            v-model="user.password"
+          />
+          <div @click="toggleShow" class="eye">
+            <img
+              v-if="!showPassword"
+              src="@/assets/svgs/eye-icon.svg"
+              alt="eye-icon"
+            />
+            <iconify-icon
+              v-if="showPassword"
+              icon="ph:eye-slash-thin"
+              width="15"
+              height="15"
+            ></iconify-icon>
+          </div>
         </div>
+        <div class="btn_container">
+          <button class="login">Sign In</button>
+          <FormLoaderVue v-if="isLoading" />
         </div>
-        <button class="login">Sign In</button>
-
       </form>
       <div class="footer">
         <p>
@@ -56,12 +63,13 @@
 
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
+import FormLoaderVue from "@/components/FormLoader.vue";
 // import F
 // import router from "@/router";
 
 export default {
   data: () => ({
-    showPassword:false,
+    showPassword: false,
     user: {
       email: "",
       password: "",
@@ -80,22 +88,21 @@ export default {
         return;
       }
       this.userLogin(this.user);
-      setTimeout(() => (this.elementVisible = false), 3000);
-
-      console.log("Message", this.message);
     },
-     toggleShow() {
+    toggleShow() {
       this.showPassword = !this.showPassword;
-    }
+    },
   },
   computed: {
-    ...mapState({ message: (state) => state.user_dashboard.message }),
-    ...mapState({ accessToken: (state) => state.user_dashboard.accessToken }),
+    ...mapState({
+      message: (state) => state.user_dashboard.message,
+      isLoading: (state) => state.user_dashboard.isLoading,
+      accessToken: (state) => state.user_dashboard.accessToken,
+    }),
     ...mapGetters(["isAuthenticated"]),
   },
-  created() {
-    // console.log(this.$flashMessage);
-    // setTimeout(() => (this.elementVisible = false), 10);
+  components: {
+    FormLoaderVue,
   },
   name: "LoginView",
 };
@@ -142,44 +149,49 @@ label {
   margin-bottom: 5px;
   margin-top: 22px;
 }
-#email{
+#email {
   width: 100%;
   height: 48px;
   border: 1.5px solid #bdbdbd;
   padding: 15px;
   border-radius: 4px;
 }
-.input-container{
-    display: flex;
-    align-items:center;
-    width: 100%;
-    height: 48px;
+.input-container {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  height: 48px;
 }
-.eye{
-  width:15px;
-  height:15px;
+.eye {
+  width: 15px;
+  height: 15px;
   margin-bottom: 4px;
-  margin-left:351px;
-  cursor:pointer;
+  margin-left: 351px;
+  cursor: pointer;
   z-index: 100;
-  position:absolute;
+  position: absolute;
 }
-.eye i{
-  width:100%;
-  height:100%;
+.eye i {
+  width: 100%;
+  height: 100%;
 }
-.input-container input{
+.input-container input {
   width: 100%;
   height: 48px;
-  border:none;
+  border: none;
   padding: 15px;
   border-radius: 4px;
   border: 1.5px solid #bdbdbd;
-  position:relative;
+  position: relative;
 }
 input:focus {
   outline: none !important;
   border: 1px solid #7557d3;
+}
+.btn_container {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
 }
 .login {
   width: 100%;
@@ -195,8 +207,8 @@ input:focus {
   font-weight: 600;
   font-size: 16px;
 }
-.login:active{
-  opacity:0.8;
+.login:active {
+  opacity: 0.8;
 }
 .footer {
   width: 380px;
