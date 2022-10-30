@@ -1,5 +1,5 @@
 <template>
-  <SideBarEntry
+  <SideBarEntry @close="closeModal"
     :name="applicantData?.firstname + ' ' + applicantData?.lastname"
     :email="applicantData?.email"
     :address="applicantData?.address"
@@ -163,6 +163,9 @@ export default {
     confirmation(value) {
       this.isActive = value;
     },
+    closeModal() {
+        this.isActive = false;
+    }
   },
   components: {
     AdminSideMenu,
