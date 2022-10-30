@@ -18,7 +18,7 @@
     <div class="container">
       <div class="dashboard">
         <LoaderComp v-if="isLoading" />
-        <div v-else>
+        <div v-if="!isLoading">
           <div class="header">
             <label for="batch">Entries - </label>
             <div class="select">
