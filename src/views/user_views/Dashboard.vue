@@ -49,7 +49,6 @@
                 Your assessment score has been recorded.
               </li>
               <li v-else>Please proceed to take assessment...</li>
-              <li></li>
             </ul>
           </div>
           <div class="assessments">
