@@ -362,7 +362,9 @@ select::-ms-expand {
   line-height: 17px;
   color: #ffffff;
 }
-
+tr {
+  cursor: pointer;
+}
 th {
   /* width: 10px; */
   padding: 15px 4px;
@@ -400,6 +402,27 @@ table button {
   border-spacing: 30px;
   border-radius: 8px;
 }
+.table-data:hover {
+  box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
+  transition: 0.2s;
+
+  margin: 20px 0;
+}
+.table-data:hover td:first-of-type {
+  position: relative;
+}
+.table-data:hover td:first-of-type::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 5px;
+  height: 100%;
+  background: #7557d3;
+  border-top-left-radius: 4px;
+  border-bottom-left-radius: 4px;
+}
+
 table {
   table-layout: auto;
   word-wrap: break-word;

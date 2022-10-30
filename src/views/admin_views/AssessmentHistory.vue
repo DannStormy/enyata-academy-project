@@ -30,7 +30,7 @@
                 <td class="active">Batch {{ assessment.id }}</td>
                 <td>{{ formatDate(assessment.created_at) }}</td>
                 <td>{{ assessment.docs.length }}</td>
-                <td>30 minutes</td>
+                <td>{{ assessment.time }} minutes</td>
               </tr>
             </tbody>
           </table>
