@@ -49,7 +49,7 @@
                 </p>
                 <p class="history-date">
                   started
-                  {{ dashboardDetails?.updates[0]?.date?.replaceAll("-", "/") }}
+                  {{ formatDate() }}
                 </p>
               </li>
             </ul>
@@ -98,6 +98,13 @@ export default {
         currentdate.getHours() +
         ":" +
         currentdate.getMinutes();
+    },
+    formatDate() {
+      let date = new Date(this.dashboardDetails?.updates[0]?.created_at);
+      let month = date.getUTCMonth() + 1;
+      var day = date.getUTCDate();
+      var year = date.getUTCFullYear()?.toString()?.slice(-2);
+      return day + "/" + month + "/" + year;
     },
   },
   computed: {
