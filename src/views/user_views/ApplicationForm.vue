@@ -282,11 +282,11 @@ export default {
       this.selectedPhoto = selectedPhoto;
     },
     async submit() {
-      this.submitted = true;
-      this.v$.$touch();
-      if (this.v$.$invalid) {
-        return;
-      }
+      // this.submitted = true;
+      // this.v$.$touch();
+      // if (this.v$.$invalid) {
+      //   return;
+      // }
       const formData = new FormData();
       const file = await this.convertToBase64(this.selectedFile);
       const photo = await this.convertToBase64(this.selectedPhoto);
