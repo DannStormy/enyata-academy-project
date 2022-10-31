@@ -33,7 +33,7 @@
                 <tr class="header-row">
                   <th>Name</th>
                   <th>Email</th>
-                  <th>
+                  <th @click="chooseAgeSort">
                     DOB - Age<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
@@ -41,13 +41,13 @@
                   </th>
                   <th>Address</th>
                   <th>University</th>
-                  <th>
+                  <th @click="chooseCgpaSort">
                     CGPA<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
                     />
                   </th>
-                  <th>
+                  <th @click="chooseScoresSort">
                     Test Scores
                     <img
                       src="../../assets/svgs/sort-arrow.svg"
@@ -72,7 +72,9 @@
                     ><br />
                   </td>
                   <td>{{ applicant.email }}</td>
-                  <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+                  <td class="age">
+                    {{ applicant.dob }} - {{ getAge(applicant.dob) }}
+                  </td>
                   <td>{{ applicant.address }}</td>
                   <td>{{ applicant.university }}</td>
                   <td>{{ applicant.cgpa }}</td>
@@ -105,7 +107,7 @@
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SendMail from "@/components/SendMail.vue";
 import LoaderComp from "@/components/LoaderComp.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapState, mapGetters } from "vuex";
 import axios from "axios";
 export default {
   data: () => ({
@@ -113,6 +115,9 @@ export default {
     email: "",
     batches: null,
     selectedBatch: "",
+    sortCgpa: false,
+    sortAge: false,
+    sortScores: false,
   }),
   methods: {
     ...mapActions(["getEntries", "getEntriesByBatch"]),
@@ -142,12 +147,44 @@ export default {
       );
       this.batches = batches.data.batches;
     },
+    chooseCgpaSort() {
+      this.sortCgpa = !this.sortCgpa;
+      if (this.sortCgpa) {
+        this.sortCgpaDown;
+      } else {
+        this.sortCgpaUp;
+      }
+    },
+    chooseAgeSort() {
+      this.sortAge = !this.sortAge;
+      if (this.sortAge) {
+        this.sortAgeDown;
+      } else {
+        this.sortAgeUp;
+      }
+    },
+    chooseScoresSort() {
+      this.sortScores = !this.sortScores;
+      if (this.sortScores) {
+        this.sortScoresDown;
+      } else {
+        this.sortScoresUp;
+      }
+    },
   },
   computed: {
     ...mapState({
       applicants: (state) => state.admin.applicants,
       isLoading: (state) => state.admin.isLoading,
     }),
+    ...mapGetters([
+      "sortCgpaUp",
+      "sortCgpaDown",
+      "sortAgeUp",
+      "sortAgeDown",
+      "sortScoresUp",
+      "sortScoresDown",
+    ]),
   },
   mounted() {
     this.getEntries();
@@ -179,9 +216,10 @@ export default {
   padding: 0 30px;
 }
 .check {
-  /* display: flex; */
+  display: flex;
   align-items: center;
-  /* margin-top: 10px; */
+  white-space: nowrap;
+  margin-top: 10px;
 }
 .header,
 select {
@@ -264,13 +302,17 @@ select::-ms-expand {
 
 th {
   padding: 15px 4px;
+  cursor: pointer;
 }
 td {
   padding: 15px 4px;
   margin-right: 40px;
-  /* text-align: center; */
-  /* width: fit-content; */
+  text-align: center;
 }
+.age {
+  white-space: nowrap;
+}
+
 th img {
   margin-left: 7px;
 }
@@ -289,6 +331,9 @@ button img {
     border-collapse:collapse;
     border-spacing:0 15px;
   } */
+.table_data {
+  vertical-align: middle;
+}
 .table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);
   transition: 0.2s;

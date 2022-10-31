@@ -2,12 +2,12 @@ import axios from 'axios';
 
 export default {
     state: () => ({
-        applicants: null,
+        applicants: [],
         adminDetails: null,
         adminAuth: null,
         dashboardDetails: null,
         assessments: null,
-        isLoading: false
+        isLoading: false,
     }),
     mutations: {
         UPDATE_APPLICANTS: (state, applicants) => {
@@ -29,6 +29,26 @@ export default {
             state.isLoading = isLoading
         }
 
+    },
+    getters: {
+        sortCgpaUp: (state) => {
+            return state.applicants.sort((a, b) => a.cgpa - b.cgpa)
+        },
+        sortCgpaDown: (state) => {
+            return state.applicants.sort((a, b) => b.cgpa - a.cgpa)
+        },
+        sortAgeUp: (state) => {
+            return state.applicants.sort((a, b) => parseInt(b.dob) - parseInt(a.dob))
+        },
+        sortAgeDown: (state) => {
+            return state.applicants.sort((a, b) => parseInt(a.dob) - parseInt(b.dob))
+        },
+        sortScoresUp: (state) => {
+            return state.applicants.sort((a, b) => a.test_score - b.test_score)
+        },
+        sortScoresDown: (state) => {
+            return state.applicants.sort((a, b) => b.test_score - a.test_score)
+        },
     },
     actions: {
         async adminDetails({ commit, state }) {

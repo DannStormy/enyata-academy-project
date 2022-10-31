@@ -16,7 +16,7 @@
   <div class="wrapper" v-if="!isActive">
     <div class="container">
       <div class="close-icon" @click="$emit('close')">
-        <Icon icon="fa:close" />  
+        <Icon icon="fa:close" />
       </div>
       <div class="profile-picture">
         <img :src="image" alt="dummy-logo" />
@@ -113,7 +113,7 @@
 
 <script>
 import axios from "axios";
-import { Icon } from '@iconify/vue';
+import { Icon } from "@iconify/vue";
 
 // import ScrollBar from "@/components/ScrollBar.vue";
 export default {
@@ -155,11 +155,11 @@ export default {
       this.isActive = false;
     },
   },
-  emits: ["sendConfirm"],
+  emits: ["sendConfirm", "close"],
   name: "SideBarEntry",
   components: {
-		Icon,
-	},
+    Icon,
+  },
   //   components: { ScrollBar },
 };
 </script>
@@ -336,7 +336,7 @@ button:hover {
   background: #7557d3;
   color: white;
 }
-.close-icon{
+.close-icon {
   font-size: 20px;
   display: flex;
   justify-content: flex-end;
