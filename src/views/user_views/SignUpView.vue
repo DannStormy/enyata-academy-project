@@ -308,7 +308,6 @@ export default {
         })
         .catch(function (error) {
           alert(error.response.data.message);
-          this.loading = false;
         });
       this.loading = false;
     },

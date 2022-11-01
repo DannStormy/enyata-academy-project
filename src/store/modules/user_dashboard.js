@@ -67,7 +67,7 @@ export default {
                 let firstName = response.data.data.applicant[0].firstname
                 let lastName = response.data.data.applicant[0].lastname
                 let email = response.data.data.applicant[0].email
-                console.log('Response', response)
+                // console.log('Response', response)
                 const currentUser = {
                     "accessToken": token,
                     "firstName": firstName,
@@ -75,7 +75,7 @@ export default {
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
-                console.log('Resonse', response.data.message)
+                // console.log('Resonse', response.data.message)
                 if (response.data.message === 'Logged In Successfully') {
                     router.push('/dashboard')
                 } else {

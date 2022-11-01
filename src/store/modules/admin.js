@@ -28,7 +28,6 @@ export default {
         SET_LOADING: (state, isLoading) => {
             state.isLoading = isLoading
         }
-
     },
     getters: {
         sortCgpaUp: (state) => {

@@ -38,18 +38,19 @@
           <div class="history">
             <p class="finfo">History</p>
             <p class="finfo-description">Last Update {{ history }}</p>
-            <ul>
+            <ul v-for="update in dashboardDetails?.updates" :key="update">
               <li>
                 <p class="history-title">
                   Academy Batch
-                  {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
+                  {{ update?.batch_id?.split(" ")[2] }}
                 </p>
                 <p class="candidates">
-                  {{ dashboardDetails?.approved[0].count }} candidates
+                  -
+                  <!-- {{ update?.approved?.count }} candidates -->
                 </p>
                 <p class="history-date">
                   started
-                  {{ formatDate() }}
+                  {{ formatDate(update?.created_at) }}
                 </p>
               </li>
             </ul>
@@ -99,8 +100,8 @@ export default {
         ":" +
         currentdate.getMinutes();
     },
-    formatDate() {
-      let date = new Date(this.dashboardDetails?.updates[0]?.created_at);
+    formatDate(d) {
+      let date = new Date(d);
       let month = date.getUTCMonth() + 1;
       var day = date.getUTCDate();
       var year = date.getUTCFullYear()?.toString()?.slice(-2);
@@ -116,6 +117,7 @@ export default {
   mounted() {
     this.details();
     this.getDetails();
+    console.log("Details", this.dashboardDetails);
   },
   name: "AdminDashboard",
   components: {

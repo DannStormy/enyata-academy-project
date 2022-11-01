@@ -17,6 +17,7 @@ const ifApplicationsOpen = (to, from, next) => {
   store.dispatch('checkApplicationClosure');
   if (store.state.user_dashboard.applicationOpen) {
     next()
+    return
   }
   alert('Applications Closed')
   next('/')
@@ -55,7 +56,8 @@ const routes = [
   {
     path: '/signup',
     name: 'Sign-Up',
-    component: () => import('../views/user_views/SignUpView.vue')
+    component: () => import('../views/user_views/SignUpView.vue'),
+    beforeEnter: ifApplicationsOpen
   },
   {
     path: '/login',

@@ -5,9 +5,15 @@
       <LoaderComp v-if="isLoading" />
       <div v-else>
         <h1>Dashboard</h1>
-        <p class="description">
-          Your Application is currently being reviewed, you wil be notified if
+        <p class="description" v-if="status === null">
+          Your Application is currently being reviewed, you will be notified if
           successful
+        </p>
+        <p class="description" v-if="status === true">
+          Your Application has been reviewed, congratulations!
+        </p>
+        <p class="description" v-if="status === false">
+          Your Application has been reviewed, better luck next time!
         </p>
         <div class="dashboard-status">
           <div class="dofapplication">
@@ -28,7 +34,12 @@
             <p class="titles">Application Status</p>
             <p class="data">{{ setStatus() }}</p>
             <hr />
-            <p class="comments">We will get back to you</p>
+            <p v-if="status === null" class="comments">
+              We will get back to you
+            </p>
+            <p v-if="status === true || status === false" class="comments">
+              Thank you
+            </p>
           </div>
         </div>
         <div class="further-info">
@@ -44,7 +55,7 @@
               <li v-if="status === false">
                 Current status is: {{ setStatus() }}, please try again next year
               </li>
-              <li>Enyata Academy 6.0 is officially a go!</li>
+              <li>Applications to the current cohort is on!</li>
               <li v-if="taken_assessment">
                 Your assessment score has been recorded.
               </li>
@@ -98,8 +109,8 @@ export default {
 
       const days = (date_1, date_2) => {
         let difference = date_2.getTime() - date_1.getTime();
-        let TotalDays = Math.ceil(difference / (1000 * 3600 * 24));
-        return TotalDays;
+        let totalDays = Math.ceil(difference / (1000 * 3600 * 24));
+        return totalDays;
       };
       return days(date_1, date_2) + " day(s) since applied";
     },
@@ -125,7 +136,7 @@ export default {
     }),
   },
   mounted() {
-    console.log(this.taken_assessment);
+    console.log(this.dashboardDetails);
   },
   components: {
     SideMenu,
