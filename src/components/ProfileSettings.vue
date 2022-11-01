@@ -127,20 +127,31 @@ export default {
         alert("Admin name required");
         return;
       }
+      this.isDisabled = true;
+
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
           this.newAdmin
         )
         .then(function (response) {
-          this.isDisabled = true;
+          console.log(response);
           if (response) {
             alert(`Admin Saved`);
           }
         })
         .catch(function (error) {
-          alert(error.response.data.message);
+          alert(error);
         });
+
+      this.newAdmin = {
+        fn: "",
+        email: "",
+        profilepic: "",
+        phone: "",
+        country: "",
+        address: "",
+      };
     },
   },
   mounted() {

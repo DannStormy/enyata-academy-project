@@ -1,5 +1,6 @@
 <template>
   <SideBarEntry
+    @close="closeModal"
     :name="applicantData?.firstname + ' ' + applicantData?.lastname"
     :email="applicantData?.email"
     :address="applicantData?.address"
@@ -52,7 +53,7 @@
                 <tr class="header-row">
                   <th>Name</th>
                   <th>Email</th>
-                  <th>
+                  <th @click="chooseAgeSort">
                     DOB - Age<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
@@ -60,19 +61,12 @@
                   </th>
                   <th>Address</th>
                   <th>University</th>
-                  <th @click="sortCgpa">
+                  <th @click="chooseCgpaSort">
                     CGPA<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
                     />
                   </th>
-                  <!-- <th colspan="2">
-                    Test Scores
-                    <img
-                      src="../../assets/svgs/sort-arrow.svg"
-                      alt="icon for sort"
-                    />
-                  </th> -->
                 </tr>
                 <tr
                   :class="['table-data', { active: isActive }]"
@@ -96,7 +90,9 @@
                     ><br />
                   </td>
                   <td>{{ applicant.email }}</td>
-                  <td>{{ applicant.dob }} - {{ getAge(applicant.dob) }}</td>
+                  <td class="age">
+                    {{ applicant.dob }} - {{ getAge(applicant.dob) }}
+                  </td>
                   <td>{{ applicant.address }}</td>
                   <td>{{ applicant.university }}</td>
                   <td>{{ applicant.cgpa }}</td>
@@ -115,7 +111,7 @@ import axios from "axios";
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import SideBarEntry from "@/components/SideBarEntry.vue";
 import LoaderComp from "@/components/LoaderComp.vue";
-import { mapActions, mapState } from "vuex";
+import { mapActions, mapGetters, mapState } from "vuex";
 
 export default {
   data: () => ({
@@ -124,15 +120,34 @@ export default {
     confirm: false,
     batches: null,
     selectedBatch: "",
+    sortCgpa: false,
+    sortAge: false,
   }),
   computed: {
     ...mapState({
       applicants: (state) => state.admin.applicants,
       isLoading: (state) => state.admin.isLoading,
     }),
+    ...mapGetters(["sortCgpaUp", "sortCgpaDown", "sortAgeUp", "sortAgeDown"]),
   },
   methods: {
     ...mapActions(["getEntries", "getEntriesByBatch"]),
+    chooseCgpaSort() {
+      this.sortCgpa = !this.sortCgpa;
+      if (this.sortCgpa) {
+        this.sortCgpaDown;
+      } else {
+        this.sortCgpaUp;
+      }
+    },
+    chooseAgeSort() {
+      this.sortAge = !this.sortAge;
+      if (this.sortAge) {
+        this.sortAgeDown;
+      } else {
+        this.sortAgeUp;
+      }
+    },
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -162,6 +177,9 @@ export default {
     },
     confirmation(value) {
       this.isActive = value;
+    },
+    closeModal() {
+      this.isActive = false;
     },
   },
   components: {
@@ -234,7 +252,7 @@ select {
 }
 select > option {
   font-size: 16px;
-  background: #ffffff;
+  background: white;
   box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -250,7 +268,7 @@ select {
   outline: 0;
   box-shadow: none;
   border: 0 !important;
-  background: #ffffff;
+  background: inherit;
   background-image: none;
   flex: 1;
   cursor: pointer;
@@ -267,14 +285,6 @@ select::-ms-expand {
 .polygon {
   margin-left: 3px;
 }
-/* .select::after {
-  content: "\25BC";
-  position: absolute;
-  left: 120px;
-  cursor: pointer;
-  pointer-events: none;
-  transition: 0.25s all ease;
-} */
 .header-title {
   font-style: italic;
   font-weight: 400;
@@ -282,56 +292,19 @@ select::-ms-expand {
   line-height: 16px;
   margin-bottom: 38px;
 }
-/* select > option {
-  font-size: 16px;
-}
-
-select {
-  border: none;
-  outline: none;
-}
-
-select {
-  -webkit-appearance: none;
-  -moz-appearance: none;
-  -ms-appearance: none;
-  appearance: none;
-  outline: 0;
-  box-shadow: none;
-  border: 0 !important;
-  background: #ffffff;
-  background-image: none;
-  flex: 1;
-  cursor: pointer;
-} */
-
 select::-ms-expand {
   display: none;
 }
 .check {
-  /* display: flex; */
+  display: flex;
   align-items: center;
-  /* margin-top: 10px; */
+  white-space: nowrap;
+  margin-top: 10px;
 }
 .select {
   position: relative;
   display: inline-flex;
-  /* width: 20em;
-  height: 3em;
-  line-height: 3;
-  background: #5c6664;
-  overflow: hidden;
-  border-radius: 0.25em; */
 }
-
-/* .select::after {
-  content: "\25BC";
-  position: absolute;
-  right: 0;
-  cursor: pointer;
-  pointer-events: none;
-  transition: 0.15s all ease;
-} */
 
 .header-title {
   font-style: italic;
@@ -366,11 +339,13 @@ th {
   /* width: 10px; */
   padding: 15px 4px;
 }
-
+.age {
+  white-space: nowrap;
+}
 td {
   padding: 15px 4px;
   margin-right: 35px;
-  /* text-align: start; */
+  text-align: left;
   /* width: 10px; */
   width: fit-content;
   background: inherit;
@@ -393,11 +368,15 @@ table button {
 .table-data {
   padding: 14px 12px;
   margin-top: 32px;
+  font-size: 15px;
   /* background: #ffffff; */
   background: inherit;
   /* border-left: 7px solid #ffffff; */
   border-spacing: 30px;
   border-radius: 8px;
+}
+.table_data {
+  vertical-align: middle;
 }
 .table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);

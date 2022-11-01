@@ -1,14 +1,25 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 
+import NotFound from '../views/user_views/NotFound.vue'
+
 const ifNotAuthenticated = (to, from, next) => {
   store.dispatch('fetchAccessToken');
   if (store.state.user_dashboard.accessToken) {
     next()
     return
   }
-  alert('Access Denied')
+  alert('Access Denied, please login')
   next('/login')
+}
+
+const ifApplicationsOpen = (to, from, next) => {
+  store.dispatch('checkApplicationClosure');
+  if (store.state.user_dashboard.applicationOpen) {
+    next()
+  }
+  alert('Applications Closed')
+  next('/')
 }
 
 const checkAssessmentStatus = (to, from, next) => {
@@ -60,7 +71,7 @@ const routes = [
     path: '/applicationform',
     name: 'ApplicationForm',
     component: () => import('../views/user_views/ApplicationForm.vue'),
-    beforeEnter: ifNotAuthenticated
+    beforeEnter: [ifNotAuthenticated, ifApplicationsOpen]
   },
   {
     path: '/dashboard',
@@ -131,7 +142,12 @@ const routes = [
     component: () => import('../views/admin_views/EntriesBatchView.vue'),
     beforeEnter: adminAuthenticated
 
-  }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: NotFound
+  },
 ]
 
 

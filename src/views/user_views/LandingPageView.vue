@@ -19,10 +19,11 @@
             Join enyata academy today and bring your long awaiting dream to
             reality.
           </p>
-          <router-link :class="{ isActive: !isActive }" to="/signup">
+          <router-link :class="{ isActive: !applicationOpen }" to="/signup">
             <button class="register-button">Register Now</button>
           </router-link>
-          <div v-if="!isActive" class="error">
+
+          <div v-if="!applicationOpen" class="error">
             <img src="@/assets/svgs/error.svg" alt="error" />
             <p>Registration not open</p>
           </div>
@@ -80,32 +81,18 @@
 </template>
 
 <script>
-import axios from "axios";
+import { mapActions, mapState } from "vuex";
 export default {
-  data: () => ({
-    isActive: true,
-  }),
   methods: {
-    async getClosure() {
-      const response = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
-      );
-      // console.log(response.data.closure[0].date);
-      // console.log(
-      //   `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
-      // );
-      if (
-        response.data.closure[0].date >
-        `${new Date().getFullYear()}-${new Date().getMonth()}-${new Date().getDay()}`
-      ) {
-        this.isActive = true;
-      } else {
-        this.isActive = false;
-      }
-    },
+    ...mapActions(["checkApplicationClosure"]),
+  },
+  computed: {
+    ...mapState({
+      applicationOpen: (state) => state.user_dashboard.applicationOpen,
+    }),
   },
   mounted() {
-    this.getClosure();
+    this.checkApplicationClosure();
   },
   name: "LandingPageView",
 };

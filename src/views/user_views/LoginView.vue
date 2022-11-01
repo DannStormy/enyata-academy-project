@@ -64,8 +64,6 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import FormLoaderVue from "@/components/FormLoader.vue";
-// import F
-// import router from "@/router";
 
 export default {
   data: () => ({
