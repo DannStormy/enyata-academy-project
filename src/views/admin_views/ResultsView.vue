@@ -41,13 +41,13 @@
                   </th>
                   <th>Address</th>
                   <th>University</th>
-                  <th @click="chooseCgpaSort">
+                  <th @click="chooseCgpaSort" class="sort">
                     CGPA<img
                       src="../../assets/svgs/sort-arrow.svg"
                       alt="icon for sort"
                     />
                   </th>
-                  <th @click="chooseScoresSort">
+                  <th @click="chooseScoresSort" class="sort">
                     Test Scores
                     <img
                       src="../../assets/svgs/sort-arrow.svg"
@@ -65,7 +65,7 @@
                       type="checkbox"
                       id="username1"
                       name="username"
-                      :checked="applicant.status"
+                      @change="getEmails(applicant.email)"
                     />
                     <label for="username"
                       >{{ applicant.firstname }} {{ applicant.lastname }}</label
@@ -90,7 +90,21 @@
                     </div>
                     <SendMail
                       :mail="`mailto:${email.email}`"
-                      v-if="isActive && email.email === applicant.email"
+                      v-if="
+                        isActive &&
+                        email.email === applicant.email &&
+                        allEmails.length <= 1
+                      "
+                      :val="`Send Mail`"
+                    />
+                    <SendMail
+                      :mail="`mailto:${allEmails.join(',')}`"
+                      v-if="
+                        allEmails.length > 1 &&
+                        email.email === applicant.email &&
+                        isActive
+                      "
+                      :val="`Send bulk mail`"
                     />
                   </td>
                 </tr>
@@ -118,9 +132,17 @@ export default {
     sortCgpa: false,
     sortAge: false,
     sortScores: false,
+    allEmails: [],
   }),
   methods: {
     ...mapActions(["getEntries", "getEntriesByBatch"]),
+    getEmails(email) {
+      if (this.allEmails.indexOf(email) === -1) {
+        this.allEmails.push(email);
+      } else {
+        this.allEmails.splice(this.allEmails.indexOf(email), 1);
+      }
+    },
     getAge(dateString) {
       var today = new Date();
       var birthDate = new Date(dateString);
@@ -307,9 +329,10 @@ th {
 td {
   padding: 15px 4px;
   margin-right: 40px;
-  text-align: center;
+  text-align: left;
 }
-.age {
+.age,
+.sort {
   white-space: nowrap;
 }
 
@@ -331,8 +354,9 @@ button img {
     border-collapse:collapse;
     border-spacing:0 15px;
   } */
-.table_data {
+.table-data {
   vertical-align: middle;
+  font-size: 14px;
 }
 .table-data:hover {
   box-shadow: 0px 5px 15px rgba(33, 31, 38, 0.05);

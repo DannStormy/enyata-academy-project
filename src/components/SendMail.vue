@@ -2,7 +2,7 @@
   <div class="button_container">
     <a :href="mail">
       <img src="@/assets/svgs/email.svg" alt="mail_icon" />
-      <p>Send mail</p>
+      <p>{{ val }}</p>
     </a>
   </div>
 </template>
@@ -11,6 +11,7 @@
 export default {
   props: {
     mail: String,
+    val: String,
   },
   name: "SendMail",
 };
