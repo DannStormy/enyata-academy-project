@@ -11,7 +11,8 @@ export default {
         status: null,
         profile: [],
         taken_assessment: null,
-        isLoading: false
+        isLoading: false,
+        applicationOpen: false,
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -31,6 +32,9 @@ export default {
         },
         UPDATE_ASSESSMENT_STATUS: (state, taken_assessment) => {
             state.taken_assessment = taken_assessment
+        },
+        UPDATE_APPLICATION_STATE: (state, applicationOpen) => {
+            state.applicationOpen = applicationOpen
         },
         SET_LOADING: (state, isLoading) => {
             state.isLoading = isLoading
@@ -108,6 +112,28 @@ export default {
                 console.log(err)
             } finally {
                 commit('SET_LOADING', false)
+            }
+        },
+        async checkApplicationClosure({ commit, state }) {
+            const response = await axios.get(
+                `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
+            );
+            var q = new Date();
+            var m = q.getMonth();
+            var d = q.getDay() - 1;
+            var y = q.getFullYear();
+
+            var date = new Date(y, m, d);
+            var closure = new Date(response.data.closure[0].date);
+
+            console.log("Closure", closure);
+            console.log("Current", date);
+            if (closure >= date) {
+                console.log("greater");
+                console.log('initial', state.applicationOpen)
+                commit('UPDATE_APPLICATION_STATE', true)
+                console.log('now', state.applicationOpen)
+
             }
         }
     }

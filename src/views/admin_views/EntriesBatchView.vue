@@ -252,7 +252,7 @@ select {
 }
 select > option {
   font-size: 16px;
-  background: #ffffff;
+  background: white;
   box-shadow: 0px 4px 48px rgba(0, 0, 0, 0.1);
   border-radius: 10px;
 }
@@ -268,7 +268,7 @@ select {
   outline: 0;
   box-shadow: none;
   border: 0 !important;
-  background: #ffffff;
+  background: inherit;
   background-image: none;
   flex: 1;
   cursor: pointer;
@@ -345,7 +345,7 @@ th {
 td {
   padding: 15px 4px;
   margin-right: 35px;
-  text-align: center;
+  text-align: left;
   /* width: 10px; */
   width: fit-content;
   background: inherit;
@@ -368,6 +368,7 @@ table button {
 .table-data {
   padding: 14px 12px;
   margin-top: 32px;
+  font-size: 15px;
   /* background: #ffffff; */
   background: inherit;
   /* border-left: 7px solid #ffffff; */
