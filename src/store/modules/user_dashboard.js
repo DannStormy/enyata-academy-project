@@ -114,7 +114,7 @@ export default {
                 commit('SET_LOADING', false)
             }
         },
-        async checkApplicationClosure({ commit, state }) {
+        async checkApplicationClosure({ commit }) {
             const response = await axios.get(
                 `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
             );
@@ -125,15 +125,8 @@ export default {
 
             var date = new Date(y, m, d);
             var closure = new Date(response.data.closure[0].date);
-
-            console.log("Closure", closure);
-            console.log("Current", date);
             if (closure >= date) {
-                console.log("greater");
-                console.log('initial', state.applicationOpen)
                 commit('UPDATE_APPLICATION_STATE', true)
-                console.log('now', state.applicationOpen)
-
             }
         }
     }

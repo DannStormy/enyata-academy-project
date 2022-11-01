@@ -1,9 +1,10 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import store from '@/store';
 
+import NotFound from '../views/user_views/NotFound.vue'
+
 const ifNotAuthenticated = (to, from, next) => {
   store.dispatch('fetchAccessToken');
-  console.log('Auth', store.dispatch('fetchAccessToken'))
   if (store.state.user_dashboard.accessToken) {
     next()
     return
@@ -14,7 +15,6 @@ const ifNotAuthenticated = (to, from, next) => {
 
 const ifApplicationsOpen = (to, from, next) => {
   store.dispatch('checkApplicationClosure');
-  console.log('From store', store.dispatch('checkApplicationClosure'))
   if (store.state.user_dashboard.applicationOpen) {
     next()
   }
@@ -142,7 +142,12 @@ const routes = [
     component: () => import('../views/admin_views/EntriesBatchView.vue'),
     beforeEnter: adminAuthenticated
 
-  }
+  },
+  {
+    path: '/:pathMatch(.*)*',
+    name: 'not-found',
+    component: NotFound
+  },
 ]
 
 
