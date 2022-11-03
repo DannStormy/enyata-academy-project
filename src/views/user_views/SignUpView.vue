@@ -151,6 +151,8 @@
                 }"
                 type="tel"
                 id="tel"
+                min="11"
+                max="11"
                 name="phone-number"
                 v-model="userData.phone"
               /><br />
