@@ -10,7 +10,8 @@
           successful
         </p>
         <p class="description" v-if="status === true">
-          Your Application has been reviewed, congratulations!
+          Your Application has been reviewed, further details will be
+          communicated via email
         </p>
         <p class="description" v-if="status === false">
           Your Application has been reviewed, better luck next time!
