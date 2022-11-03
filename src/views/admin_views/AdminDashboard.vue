@@ -59,7 +59,7 @@
             <p class="finfo">Create Assessment</p>
             <div class="assessment-details">
               <p>Create test question for an incoming academy <br />students</p>
-              <router-link to="/create-application"
+              <router-link to="/compose-assessment"
                 ><button class="assessment-button">
                   Create Assessment
                 </button></router-link

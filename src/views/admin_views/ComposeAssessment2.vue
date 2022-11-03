@@ -113,6 +113,7 @@
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import axios from "axios";
+import router from "@/router";
 
 export default {
   name: "ComposeAssessment2",
@@ -188,9 +189,10 @@ export default {
         `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
         { questions: this.questions, timer: this.$refs.timer.innerText }
       );
-      alert("Assessment Saved");
-      console.log(response);
-      console.log("save:", this.questions);
+      if (response) {
+        alert("Assessment Saved");
+        router.go();
+      }
     },
     answerA: function () {
       this.questions[this.questionIndex].options[0].correct =

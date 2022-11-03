@@ -40,29 +40,19 @@
               />
               <label :for="option.text">{{ option.text }}</label>
             </div>
-            <div class="navigate">
-              <div class="buttons">
-                <button
-                  class="previous"
-                  v-on:click="prev"
-                  :disabled="checkPrev"
-                >
-                  Previous
-                </button>
-                <button class="next" v-on:click="next" :disabled="checkNext">
-                  Next
-                </button>
-              </div>
-              <!-- <router-link to="/success"> -->
-              <button
-                class="finish"
-                :disabled="checkFinish"
-                @click="finishAssessment"
-              >
-                Finish
+          </div>
+          <div class="navigate">
+            <div class="buttons">
+              <button class="previous" v-on:click="prev" :disabled="checkPrev">
+                Previous
               </button>
-              <!-- </router-link> -->
+              <button class="next" v-on:click="next" :disabled="checkNext">
+                Next
+              </button>
             </div>
+            <!-- <router-link to="/success"> -->
+            <button class="finish" @click="finishAssessment">Finish</button>
+            <!-- </router-link> -->
           </div>
         </div>
       </div>
@@ -151,15 +141,18 @@ export default {
     async finishAssessment() {
       this.finish = true;
       const userScore = this.score();
-      const response = await axios.post(
-        `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
-        {
-          result: userScore,
-          user: this.currentUser.email,
+      var result = confirm("Submit assessment?");
+      if (result) {
+        const response = await axios.post(
+          `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
+          {
+            result: userScore,
+            user: this.currentUser.email,
+          }
+        );
+        if (response) {
+          router.push("/success");
         }
-      );
-      if (response) {
-        router.push("/success");
       }
     },
     glow() {
@@ -177,11 +170,11 @@ export default {
       return this.questionIndex > 0 ? false : true;
     },
     checkNext: function () {
-      return this.questionIndex < this.quiz?.length - 2 ? false : true;
+      return this.questionIndex < this.quiz?.length - 1 ? false : true;
     },
-    checkFinish: function () {
-      return this.questionIndex == this.quiz?.length - 2 ? false : true;
-    },
+    // checkFinish: function () {
+    //   return this.questionIndex == this.quiz?.length - 1 ? false : true;
+    // },
     ...mapState({
       currentUser: (state) => state.user_dashboard.currentUser,
     }),

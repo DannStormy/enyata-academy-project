@@ -82,6 +82,7 @@
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import ScrollBar from "@/components/ScrollBar.vue";
 import axios from "axios";
+import router from "@/router";
 export default {
   data: () => ({
     isGrey: true,
@@ -142,12 +143,12 @@ export default {
       this.appInfo.question = JSON.stringify(que);
       this.appInfo.time = time;
       try {
-        const response = await axios.post(
+        await axios.post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
           this.appInfo
         );
         alert("Application Created");
-        console.log(response);
+        router.go();
       } catch (error) {
         console.log(error);
       }
