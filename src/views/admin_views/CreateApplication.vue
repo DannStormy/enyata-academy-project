@@ -117,9 +117,16 @@ export default {
       this.isActive = false;
     },
     async getQuestions() {
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       try {
         let response = await axios.get(
-          `${process.env.VUE_APP_SERVER_URL}/admin/create-application`
+          `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
+          customConfig
         );
         this.questions = response.data.questions;
         this.isSelectActive = true;
@@ -142,10 +149,17 @@ export default {
       }
       this.appInfo.question = JSON.stringify(que);
       this.appInfo.time = time;
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       try {
         await axios.post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-application`,
-          this.appInfo
+          this.appInfo,
+          customConfig
         );
         alert("Application Created");
         router.go();

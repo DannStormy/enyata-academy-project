@@ -159,8 +159,15 @@ export default {
       return age;
     },
     async getAllBatches() {
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       const batches = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`
+        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`,
+        customConfig
       );
       this.batches = batches.data.batches;
     },

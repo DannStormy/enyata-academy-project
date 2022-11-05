@@ -35,7 +35,7 @@
 <script>
 import SideMenu from "@/components/SideMenu.vue";
 import ScrollBar from "@/components/ScrollBar.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import axios from "axios";
 export default {
   name: "TakeAssessment",
@@ -48,12 +48,23 @@ export default {
       this.changeAssessmentStatus();
     },
     async getTime() {
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${this.currentUser.accessToken}`,
+        },
+      };
       const response = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/applicant/timer`
+        `${process.env.VUE_APP_SERVER_URL}/applicant/timer`,
+        customConfig
       );
       this.timer = response.data.time[0].time * 60;
       localStorage.setItem("timer", this.timer);
     },
+  },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+    }),
   },
   components: {
     SideMenu,

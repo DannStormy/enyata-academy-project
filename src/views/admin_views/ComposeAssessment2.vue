@@ -185,9 +185,16 @@ export default {
         alert("Set Timer");
         return;
       }
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       const response = await axios.post(
         `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
-        { questions: this.questions, timer: this.$refs.timer.innerText }
+        { questions: this.questions, timer: this.$refs.timer.innerText },
+        customConfig
       );
       if (response) {
         alert("Assessment Saved");

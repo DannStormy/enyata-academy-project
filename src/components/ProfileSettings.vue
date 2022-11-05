@@ -128,11 +128,17 @@ export default {
         return;
       }
       this.isDisabled = true;
-
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
-          this.newAdmin
+          this.newAdmin,
+          customConfig
         )
         .then(function (response) {
           console.log(response);

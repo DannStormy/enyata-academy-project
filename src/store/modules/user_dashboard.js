@@ -93,7 +93,13 @@ export default {
         async dashboardPic({ state, commit }) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
+                const customConfig = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Basic ${state.currentUser.accessToken}`,
+                    },
+                };
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email }, customConfig)
                 commit('UPDATE_PROFILE', response.data.data[0]);
                 commit('UPDATE_STATUS', response.data.applicantStatus[0].status)
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.data[0].taken_assessment)
@@ -106,7 +112,13 @@ export default {
         async changeAssessmentStatus({ state, commit }) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email })
+                const customConfig = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Basic ${state.currentUser.accessToken}`,
+                    },
+                };
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email }, customConfig)
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.taken_assessment[0].taken_assessment)
             } catch (err) {
                 console.log(err)

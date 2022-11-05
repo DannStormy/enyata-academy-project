@@ -139,16 +139,23 @@ export default {
       return score;
     },
     async finishAssessment() {
-      this.finish = true;
       const userScore = this.score();
       var result = confirm("Submit assessment?");
       if (result) {
+        this.finish = true;
+        const customConfig = {
+          headers: {
+            "Content-Type": "multipart/form-data",
+            Authorization: `Basic ${this.currentUser.accessToken}`,
+          },
+        };
         const response = await axios.post(
           `${process.env.VUE_APP_SERVER_URL}/applicant/score`,
           {
             result: userScore,
             user: this.currentUser.email,
-          }
+          },
+          customConfig
         );
         if (response) {
           router.push("/success");
@@ -159,8 +166,14 @@ export default {
       this.isGlow = true;
     },
     async getQuestions() {
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${this.currentUser.accessToken}`,
+        },
+      };
       const response = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`
+        `${process.env.VUE_APP_SERVER_URL}/applicant/get-assessment`,
+        customConfig
       );
       this.quiz = JSON.parse(response.data.quiz[0].questions);
     },
