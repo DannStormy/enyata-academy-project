@@ -25,6 +25,7 @@
         </div>
       </div>
       <div class="main">
+        <p>Double tap option to select as correct answer</p>
         <div class="assessment-1">
           <p>{{ questionIndex + 1 }}/{{ questions?.length }}</p>
           <div class="choose_file" :class="{ 'no-img': !image }">
