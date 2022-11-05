@@ -80,11 +80,13 @@ export default {
       "fetchAccessToken",
       "removeAccessToken",
       "fetchUser",
+      "getNewUserEmail",
     ]),
     login() {
       if (!this.user.email || !this.user.password) {
         return;
       }
+      this.getNewUserEmail(this.user.email);
       this.userLogin(this.user);
     },
     toggleShow() {

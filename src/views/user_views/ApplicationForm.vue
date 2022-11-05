@@ -73,7 +73,8 @@
                 type="text"
                 id="firstName"
                 name="firstName"
-                v-model="userData.firstName"
+                :value="newUserDetails?.firstname"
+                readonly
               />
               <div
                 v-if="submitted && !v$.userData.firstName.$model"
@@ -89,7 +90,8 @@
                 type="email"
                 id="email"
                 name="email"
-                v-model="userData.email"
+                :value="newUserDetails?.email"
+                readonly
               /><br />
               <div
                 v-if="submitted && v$.userData.email.$error"
@@ -146,7 +148,8 @@
                 type="text"
                 id="lastName"
                 name="lastName"
-                v-model="userData.lastName"
+                :value="newUserDetails?.lastname"
+                readonly
               /><br />
               <div
                 v-if="submitted && !v$.userData.lastName.$model"
@@ -165,6 +168,7 @@
                 id="date"
                 name="date"
                 v-model="userData.dob"
+                :max="date"
               /><br />
               <div
                 v-if="submitted && !v$.userData.dob.$model"
@@ -243,6 +247,7 @@ export default {
     selectedFile: "",
     selectedPhoto: "",
     submitted: false,
+    date: new Date().toISOString().substr(0, 10),
     // valid: false,
   }),
   validations: {
@@ -260,7 +265,7 @@ export default {
     selectedPhoto: { required },
   },
   methods: {
-    ...mapActions(["fetchUser"]),
+    ...mapActions(["fetchUser", "fetchNewUserDetails"]),
     convertToBase64(file) {
       return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -324,10 +329,14 @@ export default {
     },
   },
   computed: {
-    ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+      newUserDetails: (state) => state.user_dashboard.newUserDetails,
+    }),
   },
   mounted() {
     this.fetchUser();
+    this.fetchNewUserDetails();
   },
   name: "ApplicationForm",
 };

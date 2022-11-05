@@ -13,6 +13,8 @@ export default {
         taken_assessment: null,
         isLoading: false,
         applicationOpen: false,
+        newUserEmail: '',
+        newUserDetails: null
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -38,6 +40,12 @@ export default {
         },
         SET_LOADING: (state, isLoading) => {
             state.isLoading = isLoading
+        },
+        UPDATE_NEW_USER_EMAIL: (state, newUserEmail) => {
+            state.newUserEmail = newUserEmail
+        },
+        UPDATE_NEW_USER_DETAILS: (state, newUserDetails) => {
+            state.newUserDetails = newUserDetails
         }
     },
     actions: {
@@ -54,6 +62,14 @@ export default {
                 const user = JSON.parse(currentUser)
                 commit('UPDATE_TOKEN', user.accessToken);
             }
+        },
+        getNewUserEmail({ commit }, email) {
+            commit('UPDATE_NEW_USER_EMAIL', email)
+        },
+        async fetchNewUserDetails({ state, commit }) {
+            let email = state.newUserEmail
+            const response = await axios.get(`${process.env.VUE_APP_SERVER_URL}/applicant/apply/${email}`)
+            commit('UPDATE_NEW_USER_DETAILS', response.data.details[0])
         },
         removeAccessToken({ commit }) {
             localStorage.removeItem("user");
