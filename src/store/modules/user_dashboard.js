@@ -142,19 +142,22 @@ export default {
                 commit('SET_LOADING', false)
             }
         },
-        async checkApplicationClosure({ commit }) {
+        async checkApplicationClosure({ commit, state }) {
             const response = await axios.get(
                 `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
             );
             var q = new Date();
             var m = q.getMonth();
-            var d = q.getDay() - 1;
+            var d = q.getDate();
             var y = q.getFullYear();
 
             var date = new Date(y, m, d);
             var closure = new Date(response.data.closure[0].date);
             if (closure >= date) {
-                commit('UPDATE_APPLICATION_STATE', true)
+                await commit('UPDATE_APPLICATION_STATE', true)
+            }
+            if (!state.applicationOpen) {
+                await axios.put(`${process.env.VUE_APP_SERVER_URL}/admin/application-closure`, { closed: true, running: false })
             }
         }
     }

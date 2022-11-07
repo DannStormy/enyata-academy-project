@@ -123,7 +123,7 @@ export default {
                 const response = await axios.get(
                     `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`, customConfig
                 );
-                console.log('Response', response.data.allDetails.currentBatch)
+                // console.log('Response', response.data.allDetails.currentBatch)
                 await commit('UPDATE_DASHBOARD', response.data.allDetails)
 
             } catch (error) {

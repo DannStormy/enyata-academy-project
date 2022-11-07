@@ -14,7 +14,7 @@
             <hr />
             <p class="comments">
               Academy
-              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+              {{ dashboardDetails?.currentBatch[0].batch_id?.split(" ")[2] }}
             </p>
           </div>
           <div class="total-application">
@@ -28,7 +28,7 @@
           <div class="batch">
             <p class="titles">Academys</p>
             <p class="data">
-              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+              {{ dashboardDetails?.currentBatch[0].batch_id?.split(" ")[2] }}
             </p>
             <hr />
             <p class="comments">So far</p>
