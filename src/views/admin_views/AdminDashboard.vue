@@ -2,20 +2,23 @@
   <div class="flex-container">
     <AdminSideMenu />
     <div class="container">
-      <LoaderComp v-if="isLoading" />
-      <div v-else>
+      <LoaderComp v-if="!dashboardDetails" />
+      <div v-if="dashboardDetails">
         <h1>Dashboard</h1>
         <div class="dashboard-status">
           <div class="current-applciation">
             <p class="titles">Current Applications</p>
-            <p class="data">
+            <p class="data" v-if="dashboardDetails?.currentBatchCount">
               {{ dashboardDetails?.currentBatchCount[0].count }}
             </p>
+            <p class="data" v-else>N/A</p>
             <hr />
-            <p class="comments">
+            <p class="comments" v-if="dashboardDetails?.currentBatch">
               Academy
-              {{ dashboardDetails?.currentBatch[0].batch_id?.split(" ")[2] }}
+              {{ dashboardDetails?.currentBatch.batch_id?.split(" ")[2] }}
             </p>
+            <p class="comments" v-else>Academy null</p>
+            <p class="comments">Academy</p>
           </div>
           <div class="total-application">
             <p class="titles">Total Applications</p>
@@ -28,7 +31,7 @@
           <div class="batch">
             <p class="titles">Academys</p>
             <p class="data">
-              {{ dashboardDetails?.currentBatch[0].batch_id?.split(" ")[2] }}
+              {{ dashboardDetails?.updates?.length }}
             </p>
             <hr />
             <p class="comments">So far</p>
@@ -78,9 +81,7 @@ import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
-    totalApplications: "",
-    currentApplications: "",
-    currentBatch: "",
+    // currentBatch: "",
     updates: null,
     history: null,
     approved: 0,
@@ -117,7 +118,6 @@ export default {
   mounted() {
     this.details();
     this.getDetails();
-    console.log("Details", this.dashboardDetails);
   },
   name: "AdminDashboard",
   components: {

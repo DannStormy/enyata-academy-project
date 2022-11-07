@@ -1,4 +1,5 @@
 <template>
+  <FlashMessage :message="message" :showMessage="message" />
   <div class="wrapper">
     <div class="container">
       <div class="heading">
@@ -64,6 +65,7 @@
 <script>
 import { mapActions, mapGetters, mapState } from "vuex";
 import FormLoaderVue from "@/components/FormLoader.vue";
+import FlashMessage from "@/components/FlashMessage.vue";
 
 export default {
   data: () => ({
@@ -72,7 +74,7 @@ export default {
       email: "",
       password: "",
     },
-    elementVisible: true,
+    showMessage: true,
   }),
   methods: {
     ...mapActions([
@@ -103,6 +105,7 @@ export default {
   },
   components: {
     FormLoaderVue,
+    FlashMessage,
   },
   name: "LoginView",
 };

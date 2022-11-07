@@ -7,7 +7,7 @@ export default {
         lastName: '',
         currentUser: [],
         accessToken: null,
-        message: '',
+        message: null,
         status: null,
         profile: [],
         taken_assessment: null,
@@ -91,7 +91,6 @@ export default {
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
-                // console.log('Resonse', response.data.message)
                 if (response.data.message === 'Logged In Successfully') {
                     router.push('/dashboard')
                 } else {
@@ -99,9 +98,10 @@ export default {
                 }
             } catch (error) {
                 localStorage.removeItem("user");
-                alert(error.response.data.message)
                 commit('UPDATE_MESSAGE', error.response.data.message)
-
+                setTimeout(() => {
+                    commit('UPDATE_MESSAGE', null)
+                }, 2000);
             } finally {
                 commit('SET_LOADING', false)
             }

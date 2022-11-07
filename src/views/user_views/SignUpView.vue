@@ -1,4 +1,5 @@
 <template>
+  <FlashMessage :message="response" :showMessage="response" />
   <div class="wrapper">
     <div class="container">
       <div class="heading">
@@ -235,12 +236,14 @@ import useVuelidate from "@vuelidate/core";
 import { required, email, minLength, sameAs } from "vuelidate/lib/validators";
 
 import FormLoaderVue from "@/components/FormLoader.vue";
+import FlashMessage from "@/components/FlashMessage.vue";
 
 export default {
   setup() {
     return { v$: useVuelidate() };
   },
   data: () => ({
+    response: null,
     showPassword: false,
     confirmPassword_show: false,
     loading: false,
@@ -296,7 +299,7 @@ export default {
       if (this.v$.$invalid) {
         return;
       }
-      this.loading = true;
+      const self = this;
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/applicant/signup`,
@@ -304,19 +307,23 @@ export default {
         )
         .then(function (response) {
           if (response) {
-            alert(`Registered successfully`);
+            self.response = "Registered successfully";
+            // alert(`Registered successfully`);
           }
           router.push("/login");
         })
         .catch(function (error) {
-          alert(error.response.data.message);
+          self.response = error.response.data.message;
+          setTimeout(() => {
+            self.response = null;
+          }, 2000);
         });
-      this.loading = false;
     },
   },
   name: "SignUpView",
   components: {
     FormLoaderVue,
+    FlashMessage,
   },
 };
 </script>

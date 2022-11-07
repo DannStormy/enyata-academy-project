@@ -57,7 +57,7 @@ const routes = [
     path: '/signup',
     name: 'Sign-Up',
     component: () => import('../views/user_views/SignUpView.vue'),
-    beforeEnter: ifApplicationsOpen
+    // beforeEnter: ifApplicationsOpen
   },
   {
     path: '/login',

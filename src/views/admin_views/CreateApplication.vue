@@ -13,67 +13,70 @@
   </div>
   <div :class="['flex-container', { active: isActive }]">
     <AdminSideMenu />
-    <div class="application">
-      <div class="title">
-        <p>Create Application</p>
-      </div>
-      <form action="" class="container" @submit.prevent="createApplication">
-        <div class="top">
-          <div>
-            <label for="closure">Application closure date</label><br />
-            <input
-              :disabled="isActive"
-              type="date"
-              id="date"
-              name="date"
-              placeholder="dd/mm/yyyy"
-              v-model="appInfo.date"
-              :min="date"
-            /><br />
-          </div>
-          <div>
-            <label for="batch">Batch ID</label><br />
-            <input
-              :disabled="isActive"
-              type="text"
-              step=".01"
-              id="id"
-              name="batch-ID"
-              placeholder="Enyata Academy 6.0"
-              v-model="appInfo.batch_id"
-            /><br />
-          </div>
+    <div class="wrapper">
+      <FlashMessage :message="response" :showMessage="response" />
+      <div class="application">
+        <div class="title">
+          <p>Create Application</p>
         </div>
-        <label for="instructions">Instructions</label><br />
-        <textarea
-          :disabled="isActive"
-          rows="9"
-          cols="50"
-          v-model="appInfo.instructions"
-        >
-        </textarea>
-        <div>
-          <span>
-            <div
-              @click="getQuestions"
-              :class="['select-questions', { grey: isGrey }]"
-            >
-              Select question
+        <form action="" class="container" @submit.prevent="createApplication">
+          <div class="top">
+            <div>
+              <label for="closure">Application closure date</label><br />
+              <input
+                :disabled="isActive"
+                type="date"
+                id="date"
+                name="date"
+                placeholder="dd/mm/yyyy"
+                v-model="appInfo.date"
+                :min="date"
+              /><br />
             </div>
-            <select v-model="selectedFile" v-if="isSelectActive">
-              <option disabled value="">Choose Assessment</option>
-              <option v-for="question in questions" :key="question.id">
-                Batch {{ question.id }}
-              </option>
-            </select>
-            <!-- </div> -->
-          </span>
-        </div>
-        <br />
-        <div class="button-container">
-          <button class="submit" :disabled="isActive">Submit</button>
-        </div>
-      </form>
+            <div>
+              <label for="batch">Batch ID</label><br />
+              <input
+                :disabled="isActive"
+                type="text"
+                step=".01"
+                id="id"
+                name="batch-ID"
+                placeholder="Enyata Academy 6.0"
+                v-model="appInfo.batch_id"
+              /><br />
+            </div>
+          </div>
+          <label for="instructions">Instructions</label><br />
+          <textarea
+            :disabled="isActive"
+            rows="9"
+            cols="50"
+            v-model="appInfo.instructions"
+          >
+          </textarea>
+          <div>
+            <span>
+              <div
+                @click="getQuestions"
+                :class="['select-questions', { grey: isGrey }]"
+              >
+                Select question
+              </div>
+              <select v-model="selectedFile" v-if="isSelectActive">
+                <option disabled value="">Choose Assessment</option>
+                <option v-for="question in questions" :key="question.id">
+                  Batch {{ question.id }}
+                </option>
+              </select>
+              <!-- </div> -->
+            </span>
+          </div>
+          <br />
+          <div class="button-container">
+            <button class="submit" :disabled="isActive">Submit</button>
+          </div>
+        </form>
+      </div>
     </div>
   </div>
 </template>
@@ -81,10 +84,13 @@
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
 import ScrollBar from "@/components/ScrollBar.vue";
+import FlashMessage from "@/components/FlashMessage.vue";
+
 import axios from "axios";
 import router from "@/router";
 export default {
   data: () => ({
+    response: null,
     isGrey: true,
     isActive: false,
     appInfo: {
@@ -100,15 +106,24 @@ export default {
   methods: {
     createApplication() {
       if (!this.selectedFile) {
-        alert("Select a question");
+        this.response = "Select a question";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
         return;
       }
       if (!this.appInfo.date) {
-        alert("Select closure date");
+        this.response = "Closure Date empty";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
         return;
       }
       if (!this.appInfo.batch_id) {
-        alert("Batch ID missing");
+        this.response = "Batch ID empty";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
         return;
       }
       this.isActive = true;
@@ -161,7 +176,10 @@ export default {
           this.appInfo,
           customConfig
         );
-        alert("Application Created");
+        this.response = "Application Created";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
         router.go();
       } catch (error) {
         console.log(error);
@@ -169,7 +187,7 @@ export default {
     },
   },
   name: "CreateApplication",
-  components: { AdminSideMenu, ScrollBar },
+  components: { AdminSideMenu, ScrollBar, FlashMessage },
 };
 </script>
 
