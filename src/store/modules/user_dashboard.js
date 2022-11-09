@@ -14,7 +14,8 @@ export default {
         isLoading: false,
         applicationOpen: false,
         newUserEmail: '',
-        newUserDetails: null
+        newUserDetails: null,
+        resetPassword: null
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -46,6 +47,9 @@ export default {
         },
         UPDATE_NEW_USER_DETAILS: (state, newUserDetails) => {
             state.newUserDetails = newUserDetails
+        },
+        UPDATE_RESET_PASSWORD: (state, resetPassword) => {
+            state.resetPassword = resetPassword
         }
     },
     actions: {
@@ -74,6 +78,22 @@ export default {
         removeAccessToken({ commit }) {
             localStorage.removeItem("user");
             commit('UPDATE_TOKEN', null);
+        },
+        async getEmail({ commit }, email) {
+
+            try {
+                let response = await axios.post(
+                    `${process.env.VUE_APP_SERVER_URL}/applicant/reset-password`,
+                    {
+                        email: email,
+                    }
+                );
+                console.log(response)
+                commit('UPDATE_RESET_PASSWORD', response.data.data.token)
+            } catch (error) {
+                console.log(error.response.data.message)
+                commit('UPDATE_MESSAGE', error.response.data.message)
+            }
         },
         async userLogin({ commit }, user) {
             try {

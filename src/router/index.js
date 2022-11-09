@@ -57,7 +57,7 @@ const routes = [
     path: '/signup',
     name: 'Sign-Up',
     component: () => import('../views/user_views/SignUpView.vue'),
-    // beforeEnter: ifApplicationsOpen
+    beforeEnter: ifApplicationsOpen
   },
   {
     path: '/login',
@@ -68,6 +68,11 @@ const routes = [
     path: '/forgotpassword',
     name: 'ForgotPassword',
     component: () => import('../views/user_views/ForgotPasswordView.vue')
+  },
+  {
+    path: '/password-reset/:email/:token',
+    name: 'ResetPassword',
+    component: () => import('../views/user_views/ResetPassword.vue')
   },
   {
     path: '/applicationform',
