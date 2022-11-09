@@ -152,7 +152,7 @@
                 }"
                 type="number"
                 id="tel"
-                min="11"
+                minlength="11"
                 maxlength="11"
                 name="phone-number"
                 v-model="userData.phone"
@@ -161,7 +161,9 @@
                 v-if="submitted && !v$.userData.phone.$model"
                 class="invalid-feedback"
               >
-                Phone Number is required
+                <span v-if="!v$.userData.phone.$model"
+                  >Phone number is required</span
+                >
               </div>
             </div>
             <div class="form__input">
@@ -246,6 +248,7 @@ export default {
     response: null,
     showPassword: false,
     confirmPassword_show: false,
+    numberLength: false,
     loading: false,
     userData: {
       firstName: "",
@@ -265,7 +268,11 @@ export default {
       firstName: { required },
       lastName: { required },
       email: { required, email },
-      phone: { required },
+      phone: {
+        required,
+        minLength: minLength(10),
+        // maxLength: maxLength(10),
+      },
       password: {
         required,
         minLength: minLength(6),
