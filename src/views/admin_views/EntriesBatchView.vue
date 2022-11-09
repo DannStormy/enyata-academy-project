@@ -18,7 +18,7 @@
     <AdminSideMenu />
     <div class="container">
       <div class="dashboard">
-        <LoaderComp v-if="!applicants" />
+        <LoaderComp v-if="isLoading" />
         <div v-else>
           <div class="header">
             <label for="batch">Entries - </label>
