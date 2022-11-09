@@ -150,10 +150,10 @@
                 :class="{
                   'is-invalid': submitted && v$.userData.phone.$error,
                 }"
-                type="tel"
+                type="number"
                 id="tel"
                 min="11"
-                max="11"
+                maxlength="11"
                 name="phone-number"
                 v-model="userData.phone"
               /><br />

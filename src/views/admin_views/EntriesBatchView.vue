@@ -78,13 +78,14 @@
                   "
                 >
                   <td class="check">
-                    <input
+                    <div :class="['ch', { approved: applicant.status }]"></div>
+                    <!-- <input
                       type="checkbox"
                       id="username1"
                       name="username"
                       :checked="applicant.status"
-                      readonly
-                    />
+                      disabled
+                    /> -->
                     <label for="username"
                       >{{ applicant.firstname }} {{ applicant.lastname }}</label
                     ><br />
@@ -301,6 +302,16 @@ select::-ms-expand {
 }
 select::-ms-expand {
   display: none;
+}
+.ch {
+  height: 13px;
+  width: 13px;
+  border-radius: 2px;
+  background: white;
+  margin-right: 5px;
+}
+.approved {
+  background: #7557d3;
 }
 .check {
   display: flex;
