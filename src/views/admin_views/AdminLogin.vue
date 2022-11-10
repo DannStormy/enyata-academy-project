@@ -1,4 +1,5 @@
 <template>
+  <FlashMessage :message="response" :showMessage="response" />
   <div class="wrapper">
     <div class="container">
       <div class="heading">
@@ -15,24 +16,34 @@
         /><br />
         <label for="password">Password</label>
         <div class="input-container">
-        <input
-          v-if="showPassword"
-          type="text"
-          id="password"
-          name="password"
-          v-model="details.password"
-        />
-        <input 
-          v-else 
-          type="password" 
-          id="password" 
-          name="password" 
-          v-model="details.password" />
+          <input
+            v-if="showPassword"
+            type="text"
+            id="password"
+            name="password"
+            v-model="details.password"
+          />
+          <input
+            v-else
+            type="password"
+            id="password"
+            name="password"
+            v-model="details.password"
+          />
           <div @click="toggleShow" class="eye">
-            <img v-if="!showPassword" src="@/assets/svgs/eye-icon.svg" alt="eye-icon" />
-            <iconify-icon v-if="showPassword" icon="ph:eye-slash-thin" width="15" height="15"></iconify-icon>
+            <img
+              v-if="!showPassword"
+              src="@/assets/svgs/eye-icon.svg"
+              alt="eye-icon"
+            />
+            <iconify-icon
+              v-if="showPassword"
+              icon="ph:eye-slash-thin"
+              width="15"
+              height="15"
+            ></iconify-icon>
           </div>
-      </div>
+        </div>
         <button class="login">Sign In</button>
       </form>
     </div>
@@ -42,13 +53,17 @@
 <script>
 import axios from "axios";
 import router from "@/router";
+
+import FlashMessage from "@/components/FlashMessage.vue";
+
 export default {
   data: () => ({
     showPassword: false,
+    response: null,
     details: { email: "", password: "" },
   }),
   methods: {
-     toggleShow() {
+    toggleShow() {
       this.showPassword = !this.showPassword;
     },
     async adminLogin() {
@@ -66,12 +81,17 @@ export default {
         localStorage.setItem("admin", JSON.stringify(adminAuth));
         router.push("/admin-dashboard");
       } catch (error) {
-        console.log(error);
-        return error;
+        this.response = error.response.data.message;
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
       }
     },
   },
   name: "AdminLogin",
+  components: {
+    FlashMessage,
+  },
 };
 </script>
 
@@ -120,7 +140,7 @@ label {
 .input-container {
   display: flex;
   width: 100%;
-  align-items:center;
+  align-items: center;
   height: 48px;
 }
 input {
@@ -133,14 +153,14 @@ input {
   color: white;
 }
 
-.input-container input{
+.input-container input {
   width: 100%;
-    height: 48px;
-    border: 1.5px solid white;
-    background-color: #7557d3;
-    padding: 15px;
-    border-radius: 4px;
-    color: white;
+  height: 48px;
+  border: 1.5px solid white;
+  background-color: #7557d3;
+  padding: 15px;
+  border-radius: 4px;
+  color: white;
 }
 .eye {
   width: 15px;

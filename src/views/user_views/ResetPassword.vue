@@ -4,31 +4,27 @@
     <div class="container">
       <div class="heading">
         <img src="@/assets/svgs/Group1.svg" alt="company-logo" />
-        <p class="title">Log In</p>
+        <p class="title">Reset Password</p>
       </div>
-      <form action="" @submit.prevent="login">
-        <label for="lname">Email Address</label><br />
-        <input
-          type="email"
-          id="email"
-          name="email"
-          v-model="user.email"
-        /><br />
-        <label for="password">Password</label>
+      <form action="" @submit.prevent="resetPassword">
+        <label for="lname">New Password</label><br />
+        <input type="password" id="p" name="text" v-model="user.password" />
+
+        <label for="password">Retype Password</label>
         <div class="input-container">
           <input
             v-if="showPassword"
             type="text"
-            id="password"
+            id="pass"
             name="password"
-            v-model="user.password"
+            v-model="user.retypePassword"
           />
           <input
             v-else
             type="password"
             id="password"
             name="password"
-            v-model="user.password"
+            v-model="user.retypePassword"
           />
           <div @click="toggleShow" class="eye">
             <img
@@ -45,63 +41,65 @@
           </div>
         </div>
         <div class="btn_container">
-          <button class="login">Sign In</button>
+          <button class="login">Reset Password</button>
           <FormLoaderVue v-if="isLoading" />
         </div>
       </form>
-      <div class="footer">
-        <p>
-          Don’t have an account yet?
-          <router-link to="/signup">Sign Up</router-link>
-        </p>
-        <router-link to="/forgotpassword" class="forgot-p"
-          >Forgot Password?</router-link
-        >
-      </div>
     </div>
   </div>
 </template>
 
 <script>
-import { mapActions, mapGetters, mapState } from "vuex";
 import FormLoaderVue from "@/components/FormLoader.vue";
 import FlashMessage from "@/components/FlashMessage.vue";
+import axios from "axios";
 
 export default {
   data: () => ({
     showPassword: false,
+    message: "",
     user: {
-      email: "",
       password: "",
+      retypePassword: "",
     },
     showMessage: true,
   }),
   methods: {
-    ...mapActions([
-      "userLogin",
-      "fetchAccessToken",
-      "removeAccessToken",
-      "fetchUser",
-      "getNewUserEmail",
-    ]),
-    login() {
-      if (!this.user.email || !this.user.password) {
+    async resetPassword() {
+      if (!this.user.password || !this.user.retypePassword) {
         return;
       }
-      this.getNewUserEmail(this.user.email);
-      this.userLogin(this.user);
+      if (this.user.password !== this.user.retypePassword) {
+        this.message = "passwords dont match";
+        setTimeout(() => {
+          this.message = null;
+        }, 2000);
+        return;
+      }
+      try {
+        let r = this.$router.currentRoute.value.params;
+        const customConfig = {
+          headers: {
+            Authorization: `Basic ${r.token}`,
+          },
+        };
+        const response = await axios.put(
+          `${process.env.VUE_APP_SERVER_URL}/applicant/update-password`,
+          { password: this.user.password, email: r.email },
+          customConfig
+        );
+        this.message = response.data.message;
+        this.$router.push("/login");
+      } catch (error) {
+        this.message = error.response.data.message;
+        setTimeout(() => {
+          this.message = null;
+        }, 2000);
+      }
     },
     toggleShow() {
       this.showPassword = !this.showPassword;
     },
-  },
-  computed: {
-    ...mapState({
-      message: (state) => state.user_dashboard.message,
-      isLoading: (state) => state.user_dashboard.isLoading,
-      accessToken: (state) => state.user_dashboard.accessToken,
-    }),
-    ...mapGetters(["isAuthenticated"]),
   },
   components: {
     FormLoaderVue,
@@ -152,7 +150,8 @@ label {
   margin-bottom: 5px;
   margin-top: 22px;
 }
-#email {
+#password,
+#p {
   width: 100%;
   height: 48px;
   border: 1.5px solid #bdbdbd;

@@ -28,7 +28,6 @@ export default {
         SET_LOADING: (state, isLoading) => {
             state.isLoading = isLoading
         }
-
     },
     getters: {
         sortCgpaUp: (state) => {
@@ -52,9 +51,15 @@ export default {
     },
     actions: {
         async adminDetails({ commit, state }) {
+            const admin = JSON.parse(localStorage.getItem("admin"));
+            const customConfig = {
+                headers: {
+                    Authorization: `Basic ${admin.accessToken}`,
+                },
+            };
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/admin-details`, { email: state.adminAuth.email })
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/admin-details`, { email: state.adminAuth.email }, customConfig)
                 commit('UPDATE_ADMIN', response.data.data[0])
             } catch (error) {
                 console.log(error)
@@ -72,7 +77,13 @@ export default {
         async getEntries({ commit }) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`)
+                const admin = JSON.parse(localStorage.getItem("admin"));
+                const customConfig = {
+                    headers: {
+                        Authorization: `Basic ${admin.accessToken}`,
+                    },
+                };
+                const response = await axios.get(`${process.env.VUE_APP_SERVER_URL}/admin/application-entries`, customConfig)
                 commit('UPDATE_APPLICANTS', response.data.data)
             } catch (error) {
                 console.log(error)
@@ -84,7 +95,13 @@ export default {
         async getEntriesByBatch({ commit }, batch) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/application-by-batch`, { batch: batch })
+                const admin = JSON.parse(localStorage.getItem("admin"));
+                const customConfig = {
+                    headers: {
+                        Authorization: `Basic ${admin.accessToken}`,
+                    },
+                };
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/application-by-batch`, { batch: batch }, customConfig)
                 commit('UPDATE_APPLICANTS', response.data.data)
             } catch (error) {
                 console.log(error)
@@ -96,12 +113,17 @@ export default {
         async getDetails({ commit }) {
             try {
                 commit('SET_LOADING', true)
+                const admin = JSON.parse(localStorage.getItem('admin'))
+                const customConfig = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Basic ${admin.accessToken}`,
+                    },
+                };
                 const response = await axios.get(
-                    `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`
+                    `${process.env.VUE_APP_SERVER_URL}/admin/dashboard`, customConfig
                 );
-                console.log('Response', response.data.allDetails.currentBatch)
                 await commit('UPDATE_DASHBOARD', response.data.allDetails)
-
             } catch (error) {
                 console.log(error)
             } finally {
@@ -110,10 +132,16 @@ export default {
             }
         },
         async getAssessments({ commit }) {
+            const admin = JSON.parse(localStorage.getItem("admin"));
+            const customConfig = {
+                headers: {
+                    Authorization: `Basic ${admin.accessToken}`,
+                },
+            };
             try {
                 commit('SET_LOADING', true)
                 const response = await axios.get(
-                    `${process.env.VUE_APP_SERVER_URL}/admin/get-assessments`
+                    `${process.env.VUE_APP_SERVER_URL}/admin/get-assessments`, customConfig
                 );
                 await commit('UPDATE_ASSESSMENTS', response.data.assessments)
 

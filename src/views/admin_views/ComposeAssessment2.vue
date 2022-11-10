@@ -1,108 +1,121 @@
 <template>
   <div class="wrapper">
     <AdminSideMenu />
-    <div class="container">
-      <div class="header">
-        <div class="assessment">
-          <h1 class="title">Compose Assessment</h1>
-        </div>
-        <!-- <TimeBarAdmin /> -->
-        <div class="timer">
-          <p>Set Time</p>
-          <div class="time">
-            <div class="min">
-              <h3 ref="timer" contenteditable class="val">00</h3>
-              <sub style="margin-top: 44px">min</sub>
-            </div>
-            <div class="polygon">
-              <img src="@/assets/svgs/polygon-logo.svg" alt="polygon-logo" />
-            </div>
-            <span>00<sub>sec</sub></span>
-            <div class="polygon">
-              <img src="@/assets/svgs/polygon-logo.svg" alt="polygon" />
+    <div class="wrapper">
+      <FlashMessage :message="response" :showMessage="response" />
+      <div class="container">
+        <div class="header">
+          <div class="assessment">
+            <h1 class="title">Compose Assessment</h1>
+          </div>
+          <!-- <TimeBarAdmin /> -->
+          <div class="timer">
+            <p>Set Time</p>
+            <div class="time">
+              <div class="min">
+                <h3 ref="timer" contenteditable class="val">00</h3>
+                <sub style="margin-top: 44px">min</sub>
+              </div>
+              <div class="polygon">
+                <img src="@/assets/svgs/polygon-logo.svg" alt="polygon-logo" />
+              </div>
+              <span>00<sub>sec</sub></span>
+              <div class="polygon">
+                <img src="@/assets/svgs/polygon-logo.svg" alt="polygon" />
+              </div>
             </div>
           </div>
         </div>
-      </div>
-      <div class="main">
-        <div class="assessment-1">
-          <p>{{ questionIndex + 1 }}/{{ questions?.length }}</p>
-          <div class="choose_file" :class="{ 'no-img': !image }">
-            <input
-              ref="file"
-              type="file"
-              name="assessment-file"
-              id="assessment-file"
-              accept="image/*"
-              @change="previewImage"
-              class="upload"
-            />
-            <img ref="img" v-show="preview" :src="preview" class="img-fluid" />
-            <div v-show="!preview" class="no-img">
-              <span>+ Choose file</span>
-            </div>
-          </div>
-          <form>
-            <p><label for="question">Questions</label></p>
-            <textarea
-              id="question"
-              name="question"
-              v-model="questions[questionIndex].question"
-            ></textarea>
-            <div class="options">
-              <div @dblclick="answerA">
-                <p><label for="A">Option A</label></p>
-                <input
-                  :class="{ correct: isCorrectA }"
-                  type="text"
-                  id="A"
-                  name="A"
-                  v-model="questions[questionIndex].options[0].text"
-                />
-              </div>
-              <div v-on:dblclick="answerB">
-                <p><label for="B">Option B</label></p>
-                <input
-                  :class="{ correct: isCorrectB }"
-                  type="text"
-                  id="B"
-                  name="B"
-                  v-model="questions[questionIndex].options[1].text"
-                />
-              </div>
-              <div v-on:dblclick="answerC">
-                <p><label for="C">Option C</label></p>
-                <input
-                  :class="{ correct: isCorrectC }"
-                  type="text"
-                  id="C"
-                  name="C"
-                  v-model="questions[questionIndex].options[2].text"
-                />
-              </div>
-              <div>
-                <p><label for="D">Option D</label></p>
-                <input
-                  :class="{ correct: isCorrectD }"
-                  v-on:dblclick="answerD"
-                  type="text"
-                  id="D"
-                  name="D"
-                  v-model="questions[questionIndex].options[3].text"
-                />
+        <div class="main">
+          <p>Double tap option to select as correct answer</p>
+          <div class="assessment-1">
+            <p>{{ questionIndex + 1 }}/{{ questions?.length }}</p>
+            <div class="choose_file" :class="{ 'no-img': !image }">
+              <input
+                ref="file"
+                type="file"
+                name="assessment-file"
+                id="assessment-file"
+                accept="image/*"
+                @change="previewImage"
+                class="upload"
+              />
+              <img
+                ref="img"
+                v-show="preview"
+                :src="preview"
+                class="img-fluid"
+              />
+              <div v-show="!preview" class="no-img">
+                <span>+ Choose file</span>
               </div>
             </div>
-          </form>
-          <div class="navigate">
-            <div class="buttons">
-              <button class="previous" v-on:click="prev" :disabled="checkPrev">
-                Previous
+            <form>
+              <p><label for="question">Questions</label></p>
+              <textarea
+                id="question"
+                name="question"
+                v-model="questions[questionIndex].question"
+              ></textarea>
+              <div class="options">
+                <div @dblclick="answerA">
+                  <p><label for="A">Option A</label></p>
+                  <input
+                    :class="{ correct: isCorrectA }"
+                    type="text"
+                    id="A"
+                    name="A"
+                    v-model="questions[questionIndex].options[0].text"
+                  />
+                </div>
+                <div v-on:dblclick="answerB">
+                  <p><label for="B">Option B</label></p>
+                  <input
+                    :class="{ correct: isCorrectB }"
+                    type="text"
+                    id="B"
+                    name="B"
+                    v-model="questions[questionIndex].options[1].text"
+                  />
+                </div>
+                <div v-on:dblclick="answerC">
+                  <p><label for="C">Option C</label></p>
+                  <input
+                    :class="{ correct: isCorrectC }"
+                    type="text"
+                    id="C"
+                    name="C"
+                    v-model="questions[questionIndex].options[2].text"
+                  />
+                </div>
+                <div>
+                  <p><label for="D">Option D</label></p>
+                  <input
+                    :class="{ correct: isCorrectD }"
+                    v-on:dblclick="answerD"
+                    type="text"
+                    id="D"
+                    name="D"
+                    v-model="questions[questionIndex].options[3].text"
+                  />
+                </div>
+              </div>
+            </form>
+            <div class="navigate">
+              <div class="buttons">
+                <button
+                  class="previous"
+                  v-on:click="prev"
+                  :disabled="checkPrev"
+                >
+                  Previous
+                </button>
+                <button class="next" v-on:click="next">Next</button>
+              </div>
+              <button class="finish" @click="save" :disabled="checkFinish">
+                Save
               </button>
-              <button class="next" v-on:click="next">Next</button>
             </div>
-            <button class="finish" @click="save" :disabled="checkFinish">
-              Save
-            </button>
           </div>
         </div>
       </div>
@@ -112,11 +125,15 @@
 
 <script>
 import AdminSideMenu from "@/components/AdminSideMenu.vue";
+import FlashMessage from "@/components/FlashMessage.vue";
+
 import axios from "axios";
+import router from "@/router";
 
 export default {
   name: "ComposeAssessment2",
   data: () => ({
+    response: null,
     isCorrectA: false,
     isCorrectB: false,
     isCorrectC: false,
@@ -184,13 +201,24 @@ export default {
         alert("Set Timer");
         return;
       }
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       const response = await axios.post(
         `${process.env.VUE_APP_SERVER_URL}/admin/compose-assessment`,
-        { questions: this.questions, timer: this.$refs.timer.innerText }
+        { questions: this.questions, timer: this.$refs.timer.innerText },
+        customConfig
       );
-      alert("Assessment Saved");
-      console.log(response);
-      console.log("save:", this.questions);
+      if (response) {
+        this.response = "Assessment Saved";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
+        router.go();
+      }
     },
     answerA: function () {
       this.questions[this.questionIndex].options[0].correct =
@@ -228,6 +256,7 @@ export default {
   },
   components: {
     AdminSideMenu,
+    FlashMessage,
   },
 };
 </script>

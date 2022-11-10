@@ -22,7 +22,7 @@
           <img src="@/assets/svgs/hourglass-logo.svg" alt="TimeSand-logo" />
         </div>
         <p class="notification">
-          We have 4 days left until the next assessment Watch this space
+          Few days left until the next assessment Watch this space
         </p>
         <router-link to="/questions">
           <button @click="start">Take Assessment</button>
@@ -35,27 +35,36 @@
 <script>
 import SideMenu from "@/components/SideMenu.vue";
 import ScrollBar from "@/components/ScrollBar.vue";
-import { mapActions } from "vuex";
+import { mapActions, mapState } from "vuex";
 import axios from "axios";
 export default {
   name: "TakeAssessment",
   data: () => ({
-    showQuestions: false,
     timer: null,
   }),
   methods: {
     ...mapActions(["changeAssessmentStatus"]),
     start() {
       this.changeAssessmentStatus();
-      this.showQuestions = true;
     },
     async getTime() {
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${this.currentUser.accessToken}`,
+        },
+      };
       const response = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/applicant/timer`
+        `${process.env.VUE_APP_SERVER_URL}/applicant/timer`,
+        customConfig
       );
       this.timer = response.data.time[0].time * 60;
       localStorage.setItem("timer", this.timer);
     },
+  },
+  computed: {
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+    }),
   },
   components: {
     SideMenu,

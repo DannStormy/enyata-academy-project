@@ -146,10 +146,20 @@ export default {
     },
     yesConfirm() {
       this.$emit("sendConfirm", false);
-      axios.post(`${process.env.VUE_APP_SERVER_URL}/admin/status`, {
-        status: this.status,
-        applicant_id: this.email,
-      });
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
+      axios.post(
+        `${process.env.VUE_APP_SERVER_URL}/admin/status`,
+        {
+          status: this.status,
+          applicant_id: this.email,
+        },
+        customConfig
+      );
     },
     noConfirm() {
       this.isActive = false;

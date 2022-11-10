@@ -19,7 +19,7 @@
     <div class="container">
       <div class="dashboard">
         <LoaderComp v-if="isLoading" />
-        <div v-if="!isLoading">
+        <div v-else>
           <div class="header">
             <label for="batch">Entries - </label>
             <div class="select">
@@ -78,13 +78,14 @@
                   "
                 >
                   <td class="check">
-                    <input
+                    <div :class="['ch', { approved: applicant.status }]"></div>
+                    <!-- <input
                       type="checkbox"
                       id="username1"
                       name="username"
                       :checked="applicant.status"
-                      readonly
-                    />
+                      disabled
+                    /> -->
                     <label for="username"
                       >{{ applicant.firstname }} {{ applicant.lastname }}</label
                     ><br />
@@ -159,8 +160,15 @@ export default {
       return age;
     },
     async getAllBatches() {
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       const batches = await axios.get(
-        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`
+        `${process.env.VUE_APP_SERVER_URL}/admin/all_batches`,
+        customConfig
       );
       this.batches = batches.data.batches;
     },
@@ -294,6 +302,16 @@ select::-ms-expand {
 }
 select::-ms-expand {
   display: none;
+}
+.ch {
+  height: 13px;
+  width: 13px;
+  border-radius: 2px;
+  background: white;
+  margin-right: 5px;
+}
+.approved {
+  background: #7557d3;
 }
 .check {
   display: flex;

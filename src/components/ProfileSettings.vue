@@ -1,6 +1,7 @@
 <template>
   <div class="container">
     <div class="header">
+      <FlashMessage :message="response" :showMessage="response" />
       <div class="title"><p>Profile Settings</p></div>
       <button @click="edit" class="edit">Edit</button>
     </div>
@@ -87,8 +88,11 @@
 <script>
 import axios from "axios";
 import { mapActions, mapState } from "vuex";
+import FlashMessage from "./FlashMessage.vue";
+
 export default {
   data: () => ({
+    response: null,
     isDisabled: true,
     newAdmin: {
       fn: "",
@@ -120,24 +124,39 @@ export default {
     },
     saveAdmin() {
       if (!this.newAdmin.email) {
-        alert("Admin email required");
+        this.response = "Application Email Required";
+        // setTimeout(() => {
+        //   this.response = null;
+        // }, 2000);
         return;
       }
       if (!this.newAdmin.fn) {
-        alert("Admin name required");
+        this.response = "Application Name Required";
+        setTimeout(() => {
+          this.response = null;
+        }, 2000);
         return;
       }
       this.isDisabled = true;
-
+      const admin = JSON.parse(localStorage.getItem("admin"));
+      const customConfig = {
+        headers: {
+          Authorization: `Basic ${admin.accessToken}`,
+        },
+      };
       axios
         .post(
           `${process.env.VUE_APP_SERVER_URL}/admin/create-admin`,
-          this.newAdmin
+          this.newAdmin,
+          customConfig
         )
         .then(function (response) {
           console.log(response);
           if (response) {
-            alert(`Admin Saved`);
+            this.response = "Admin Saved";
+            setTimeout(() => {
+              this.response = null;
+            }, 2000);
           }
         })
         .catch(function (error) {
@@ -158,6 +177,7 @@ export default {
     this.adminDetails();
   },
   name: "ProfileComp",
+  components: { FlashMessage },
 };
 </script>
 

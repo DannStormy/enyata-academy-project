@@ -7,12 +7,14 @@ export default {
         lastName: '',
         currentUser: [],
         accessToken: null,
-        message: '',
+        message: null,
         status: null,
         profile: [],
         taken_assessment: null,
         isLoading: false,
         applicationOpen: false,
+        newUserEmail: '',
+        newUserDetails: null,
     }),
     mutations: {
         UPDATE_TOKEN: (state, accessToken) => {
@@ -38,6 +40,12 @@ export default {
         },
         SET_LOADING: (state, isLoading) => {
             state.isLoading = isLoading
+        },
+        UPDATE_NEW_USER_EMAIL: (state, newUserEmail) => {
+            state.newUserEmail = newUserEmail
+        },
+        UPDATE_NEW_USER_DETAILS: (state, newUserDetails) => {
+            state.newUserDetails = newUserDetails
         }
     },
     actions: {
@@ -55,9 +63,39 @@ export default {
                 commit('UPDATE_TOKEN', user.accessToken);
             }
         },
+        getNewUserEmail({ commit }, email) {
+            commit('UPDATE_NEW_USER_EMAIL', email)
+        },
+        async fetchNewUserDetails({ state, commit }) {
+            let email = state.newUserEmail
+            const response = await axios.get(`${process.env.VUE_APP_SERVER_URL}/applicant/apply/${email}`)
+            commit('UPDATE_NEW_USER_DETAILS', response.data.details[0])
+        },
         removeAccessToken({ commit }) {
             localStorage.removeItem("user");
             commit('UPDATE_TOKEN', null);
+        },
+        async getEmail({ commit }, email) {
+            try {
+                commit('SET_LOADING', true)
+                let response = await axios.post(
+                    `${process.env.VUE_APP_SERVER_URL}/applicant/reset-password`,
+                    {
+                        email: email,
+                    }
+                );
+                commit('UPDATE_MESSAGE', response.data.message)
+                setTimeout(() => {
+                    commit('UPDATE_MESSAGE', null)
+                }, 2000);
+            } catch (error) {
+                commit('UPDATE_MESSAGE', error.response.data.message)
+                setTimeout(() => {
+                    commit('UPDATE_MESSAGE', null)
+                }, 2000);
+            } finally {
+                commit('SET_LOADING', false)
+            }
         },
         async userLogin({ commit }, user) {
             try {
@@ -67,7 +105,7 @@ export default {
                 let firstName = response.data.data.applicant[0].firstname
                 let lastName = response.data.data.applicant[0].lastname
                 let email = response.data.data.applicant[0].email
-                console.log('Response', response)
+                // console.log('Response', response)
                 const currentUser = {
                     "accessToken": token,
                     "firstName": firstName,
@@ -75,7 +113,6 @@ export default {
                     "email": email
                 }
                 localStorage.setItem('user', JSON.stringify(currentUser));
-                console.log('Resonse', response.data.message)
                 if (response.data.message === 'Logged In Successfully') {
                     router.push('/dashboard')
                 } else {
@@ -83,9 +120,10 @@ export default {
                 }
             } catch (error) {
                 localStorage.removeItem("user");
-                alert(error.response.data.message)
                 commit('UPDATE_MESSAGE', error.response.data.message)
-
+                setTimeout(() => {
+                    commit('UPDATE_MESSAGE', null)
+                }, 2000);
             } finally {
                 commit('SET_LOADING', false)
             }
@@ -93,7 +131,13 @@ export default {
         async dashboardPic({ state, commit }) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email })
+                const customConfig = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Basic ${state.currentUser.accessToken}`,
+                    },
+                };
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/dashboard`, { email: state.currentUser.email }, customConfig)
                 commit('UPDATE_PROFILE', response.data.data[0]);
                 commit('UPDATE_STATUS', response.data.applicantStatus[0].status)
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.data[0].taken_assessment)
@@ -106,7 +150,13 @@ export default {
         async changeAssessmentStatus({ state, commit }) {
             try {
                 commit('SET_LOADING', true)
-                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email })
+                const customConfig = {
+                    headers: {
+                        "Content-Type": "multipart/form-data",
+                        Authorization: `Basic ${state.currentUser.accessToken}`,
+                    },
+                };
+                const response = await axios.post(`${process.env.VUE_APP_SERVER_URL}/applicant/assessment-status`, { email: state.currentUser.email }, customConfig)
                 commit('UPDATE_ASSESSMENT_STATUS', response.data.taken_assessment[0].taken_assessment)
             } catch (err) {
                 console.log(err)
@@ -114,19 +164,22 @@ export default {
                 commit('SET_LOADING', false)
             }
         },
-        async checkApplicationClosure({ commit }) {
+        async checkApplicationClosure({ commit, state }) {
             const response = await axios.get(
                 `${process.env.VUE_APP_SERVER_URL}/admin/application-closure`
             );
             var q = new Date();
             var m = q.getMonth();
-            var d = q.getDay() - 1;
+            var d = q.getDate();
             var y = q.getFullYear();
 
             var date = new Date(y, m, d);
             var closure = new Date(response.data.closure[0].date);
             if (closure >= date) {
-                commit('UPDATE_APPLICATION_STATE', true)
+                await commit('UPDATE_APPLICATION_STATE', true)
+            }
+            if (!state.applicationOpen) {
+                await axios.put(`${process.env.VUE_APP_SERVER_URL}/admin/application-closure`, { closed: true, running: false })
             }
         }
     }

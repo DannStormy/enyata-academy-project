@@ -67,36 +67,22 @@
             <div class="form__input">
               <label for="firstName">First Name</label><br />
               <input
-                :class="{
-                  'is-invalid': submitted && v$.userData.firstName.$error,
-                }"
                 type="text"
                 id="firstName"
                 name="firstName"
-                v-model="userData.firstName"
+                :value="newUserDetails?.firstname"
+                readonly
               />
-              <div
-                v-if="submitted && !v$.userData.firstName.$model"
-                class="invalid-feedback"
-              >
-                First Name is required
-              </div>
             </div>
             <div class="form__input">
               <label for="email">Email</label><br />
               <input
-                :class="{ 'is-invalid': submitted && v$.userData.email.$error }"
                 type="email"
                 id="email"
                 name="email"
-                v-model="userData.email"
-              /><br />
-              <div
-                v-if="submitted && v$.userData.email.$error"
-                class="invalid-feedback"
-              >
-                <span v-if="!v$.userData.email.$model">Email is required</span>
-              </div>
+                :value="newUserDetails?.email"
+                readonly
+              />
             </div>
             <div class="form__input">
               <label for="address">Address</label><br />
@@ -140,20 +126,12 @@
             <div class="form__input">
               <label for="lname">Last Name</label><br />
               <input
-                :class="{
-                  'is-invalid': submitted && v$.userData.lastName.$error,
-                }"
                 type="text"
                 id="lastName"
                 name="lastName"
-                v-model="userData.lastName"
-              /><br />
-              <div
-                v-if="submitted && !v$.userData.lastName.$model"
-                class="invalid-feedback"
-              >
-                Last Name is required
-              </div>
+                :value="newUserDetails?.lastname"
+                readonly
+              />
             </div>
             <div class="form__input">
               <label for="dob">Date of Birth</label><br />
@@ -165,6 +143,7 @@
                 id="date"
                 name="date"
                 v-model="userData.dob"
+                :max="date"
               /><br />
               <div
                 v-if="submitted && !v$.userData.dob.$model"
@@ -220,7 +199,7 @@
 
 <script>
 import useVuelidate from "@vuelidate/core";
-import { required, email } from "vuelidate/lib/validators";
+import { required } from "vuelidate/lib/validators";
 import axios from "axios";
 import { mapActions, mapState } from "vuex";
 import router from "@/router";
@@ -231,8 +210,8 @@ export default {
   },
   data: () => ({
     userData: {
-      firstName: "",
-      lastName: "",
+      firstname: "",
+      lastname: "",
       email: "",
       address: "",
       dob: "",
@@ -243,13 +222,11 @@ export default {
     selectedFile: "",
     selectedPhoto: "",
     submitted: false,
+    date: new Date().toISOString().substr(0, 10),
     // valid: false,
   }),
   validations: {
     userData: {
-      firstName: { required },
-      lastName: { required },
-      email: { required, email },
       address: { required },
       dob: { required },
       university: { required },
@@ -260,7 +237,7 @@ export default {
     selectedPhoto: { required },
   },
   methods: {
-    ...mapActions(["fetchUser"]),
+    ...mapActions(["fetchUser", "fetchNewUserDetails"]),
     convertToBase64(file) {
       return new Promise((resolve, reject) => {
         const fileReader = new FileReader();
@@ -282,15 +259,17 @@ export default {
       this.selectedPhoto = selectedPhoto;
     },
     async submit() {
-      // this.submitted = true;
-      // this.v$.$touch();
-      // if (this.v$.$invalid) {
-      //   return;
-      // }
+      this.submitted = true;
+      this.v$.$touch();
+      if (this.v$.$invalid) {
+        return;
+      }
       const formData = new FormData();
       const file = await this.convertToBase64(this.selectedFile);
       const photo = await this.convertToBase64(this.selectedPhoto);
-
+      this.userData.firstname = this.newUserDetails?.firstname;
+      this.userData.lastname = this.newUserDetails?.lastname;
+      this.userData.email = this.newUserDetails?.email;
       formData.append("file", file);
       formData.append("image", photo);
       formData.append("user_id", this.currentUser.email);
@@ -324,10 +303,14 @@ export default {
     },
   },
   computed: {
-    ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+      newUserDetails: (state) => state.user_dashboard.newUserDetails,
+    }),
   },
   mounted() {
     this.fetchUser();
+    this.fetchNewUserDetails();
   },
   name: "ApplicationForm",
 };

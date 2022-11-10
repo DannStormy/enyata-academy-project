@@ -108,6 +108,7 @@ export default {
 }
 .isActive {
   pointer-events: none;
+  display: none;
 }
 .wrapper {
   background: white;

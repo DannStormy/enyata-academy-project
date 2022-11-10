@@ -2,20 +2,23 @@
   <div class="flex-container">
     <AdminSideMenu />
     <div class="container">
-      <LoaderComp v-if="isLoading" />
-      <div v-else>
+      <LoaderComp v-if="!dashboardDetails" />
+      <div v-if="dashboardDetails">
         <h1>Dashboard</h1>
         <div class="dashboard-status">
           <div class="current-applciation">
             <p class="titles">Current Applications</p>
-            <p class="data">
+            <p class="data" v-if="dashboardDetails?.currentBatchCount">
               {{ dashboardDetails?.currentBatchCount[0].count }}
             </p>
+            <p class="data" v-else>N/A</p>
             <hr />
-            <p class="comments">
+            <p class="comments" v-if="dashboardDetails?.currentBatch">
               Academy
-              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+              {{ dashboardDetails?.currentBatch.batch_id?.split(" ")[2] }}
             </p>
+            <p class="comments" v-else>Academy null</p>
+            <p class="comments">Academy</p>
           </div>
           <div class="total-application">
             <p class="titles">Total Applications</p>
@@ -28,7 +31,7 @@
           <div class="batch">
             <p class="titles">Academys</p>
             <p class="data">
-              {{ dashboardDetails?.currentBatch[0].max?.split(" ")[2] }}
+              {{ dashboardDetails?.updates?.length }}
             </p>
             <hr />
             <p class="comments">So far</p>
@@ -38,18 +41,19 @@
           <div class="history">
             <p class="finfo">History</p>
             <p class="finfo-description">Last Update {{ history }}</p>
-            <ul>
+            <ul v-for="update in dashboardDetails?.updates" :key="update">
               <li>
                 <p class="history-title">
                   Academy Batch
-                  {{ dashboardDetails?.updates[0]?.batch_id?.split(" ")[2] }}
+                  {{ update?.batch_id?.split(" ")[2] }}
                 </p>
                 <p class="candidates">
-                  {{ dashboardDetails?.approved[0].count }} candidates
+                  -
+                  <!-- {{ update?.approved?.count }} candidates -->
                 </p>
                 <p class="history-date">
                   started
-                  {{ formatDate() }}
+                  {{ formatDate(update?.created_at) }}
                 </p>
               </li>
             </ul>
@@ -58,7 +62,7 @@
             <p class="finfo">Create Assessment</p>
             <div class="assessment-details">
               <p>Create test question for an incoming academy <br />students</p>
-              <router-link to="/create-application"
+              <router-link to="/compose-assessment"
                 ><button class="assessment-button">
                   Create Assessment
                 </button></router-link
@@ -77,9 +81,7 @@ import LoaderComp from "@/components/LoaderComp.vue";
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
-    totalApplications: "",
-    currentApplications: "",
-    currentBatch: "",
+    // currentBatch: "",
     updates: null,
     history: null,
     approved: 0,
@@ -99,8 +101,8 @@ export default {
         ":" +
         currentdate.getMinutes();
     },
-    formatDate() {
-      let date = new Date(this.dashboardDetails?.updates[0]?.created_at);
+    formatDate(d) {
+      let date = new Date(d);
       let month = date.getUTCMonth() + 1;
       var day = date.getUTCDate();
       var year = date.getUTCFullYear()?.toString()?.slice(-2);

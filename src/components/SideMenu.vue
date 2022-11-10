@@ -53,8 +53,10 @@ export default {
     },
   },
   computed: {
-    ...mapState({ currentUser: (state) => state.user_dashboard.currentUser }),
-    ...mapState({ profile: (state) => state.user_dashboard.profile }),
+    ...mapState({
+      currentUser: (state) => state.user_dashboard.currentUser,
+      profile: (state) => state.user_dashboard.profile,
+    }),
   },
   mounted() {
     this.fetchUser();
