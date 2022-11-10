@@ -28,6 +28,7 @@
                 />
                 Upload CV
               </span>
+              <p class="upload-item" v-if="fileName"><Icon icon="material-symbols:attach-file" />{{fileName}}</p>
               <div
                 v-if="submitted && !v$.selectedFile.$model"
                 class="invalid-feedback"
@@ -54,6 +55,7 @@
               />
               Upload Photo
             </span>
+            <p class="upload-item" v-if="photoName"><Icon icon="material-symbols:photo-camera" />{{photoName}}</p>
             <div
               v-if="submitted && !v$.selectedPhoto.$model"
               class="invalid-feedback"
@@ -203,12 +205,15 @@ import { required } from "vuelidate/lib/validators";
 import axios from "axios";
 import { mapActions, mapState } from "vuex";
 import router from "@/router";
+import { Icon } from '@iconify/vue';
 
 export default {
   setup() {
     return { v$: useVuelidate() };
   },
   data: () => ({
+    fileName: '',
+    photoName: '',
     userData: {
       firstname: "",
       lastname: "",
@@ -253,10 +258,12 @@ export default {
     onFileChange(e) {
       const selectedFile = e.target.files[0]; // accessing file
       this.selectedFile = selectedFile;
+      this.fileName = selectedFile.name;
     },
     onPhotoChange(e) {
       const selectedPhoto = e.target.files[0]; // accessing file
       this.selectedPhoto = selectedPhoto;
+      this.photoName = selectedPhoto.name;
     },
     async submit() {
       this.submitted = true;
@@ -312,6 +319,9 @@ export default {
     this.fetchUser();
     this.fetchNewUserDetails();
   },
+  components: {
+		Icon,
+	},
   name: "ApplicationForm",
 };
 </script>
@@ -369,6 +379,12 @@ input[type="file"] {
   color: red;
   font-size: 12px;
   margin-top: 4px;
+}
+.upload-item{
+  font-size: 12px;
+  margin-top: 4px;
+  color: #7557d3;
+  font-weight: 900
 }
 span {
   display: block;
