@@ -1,7 +1,6 @@
 <template>
-  <FlashMessage :message="message" :showMessage="message" />
   <ScrollBar />
-  <div class="container">
+  <div class="container" v-if="!switchView">
     <p class="title">Forgot Password</p>
     <p class="select">Please select option to send link to reset password</p>
     <div class="es-container active">
@@ -32,23 +31,29 @@
         <img src="@/assets/svgs/checkmark.svg" alt="checkmark" />
       </div>
     </div>
-    <button class="send-link" @click="sendLink">Reset</button>
+    <button class="send-link" @click="reset">Reset</button>
     <p class="resend">Didn’t receive link? <span>Resend</span></p>
   </div>
-  <InputResetEmail />
+  <InputResetEmail v-if="switchView" />
 </template>
 
 <script>
 import ScrollBar from "@/components/ScrollBar.vue";
 import InputResetEmail from "@/components/InputResetEmail.vue";
-import FlashMessage from "@/components/FlashMessage.vue";
 
 export default {
+  data: () => ({
+    switchView: false,
+  }),
+  methods: {
+    reset() {
+      this.switchView = true;
+    },
+  },
   name: "ForgotPasswordView",
   components: {
     ScrollBar,
     InputResetEmail,
-    FlashMessage,
   },
 };
 </script>
