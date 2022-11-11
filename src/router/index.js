@@ -13,15 +13,15 @@ const ifNotAuthenticated = (to, from, next) => {
   next('/login')
 }
 
-// const ifApplicationsOpen = (to, from, next) => {
-//   store.dispatch('checkApplicationClosure');
-//   if (store.state.user_dashboard.applicationOpen) {
-//     next()
-//     return
-//   }
-//   alert('Applications Closed')
-//   next('/')
-// }
+const ifApplicationsOpen = (to, from, next) => {
+  store.dispatch('checkApplicationClosure');
+  if (store.state.user_dashboard.applicationOpen) {
+    next()
+    return
+  }
+  alert('Applications Closed')
+  next('/')
+}
 
 const checkAssessmentStatus = (to, from, next) => {
   if (!store.state.user_dashboard.taken_assessment) {
@@ -57,7 +57,7 @@ const routes = [
     path: '/signup',
     name: 'Sign-Up',
     component: () => import('../views/user_views/SignUpView.vue'),
-    // beforeEnter: ifApplicationsOpen
+    beforeEnter: ifApplicationsOpen
   },
   {
     path: '/login',
@@ -78,7 +78,7 @@ const routes = [
     path: '/applicationform',
     name: 'ApplicationForm',
     component: () => import('../views/user_views/ApplicationForm.vue'),
-    // beforeEnter: [ifNotAuthenticated, ifApplicationsOpen]
+    beforeEnter: [ifNotAuthenticated, ifApplicationsOpen]
   },
   {
     path: '/dashboard',

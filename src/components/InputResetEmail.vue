@@ -1,6 +1,11 @@
 <template>
   <FlashMessage :message="message" :showMessage="message" />
   <div class="container">
+    <div class="close-button">
+      <button class="close-icon" @click="$emit('close')">
+        <Icon icon="fa:close" />
+      </button>
+    </div>
     <form action="" @submit.prevent>
       <label for="password">Email</label>
       <input type="email" name="email" id="email" v-model="email" />
@@ -16,7 +21,7 @@
 <script>
 import FlashMessage from "@/components/FlashMessage.vue";
 import FormLoaderVue from "@/components/FormLoader.vue";
-
+import { Icon } from '@iconify/vue';
 import { mapActions, mapState } from "vuex";
 export default {
   data: () => ({
@@ -41,6 +46,7 @@ export default {
   components: {
     FlashMessage,
     FormLoaderVue,
+    Icon,
   },
 };
 </script>
@@ -106,6 +112,18 @@ button:active {
 }
 button:disabled {
   background-color: grey;
-  pointer-events: none;
+  cursor: not-allowed
+}
+.close-icon{
+  width: auto;
+  height: auto;
+  padding: 2px 3px;
+  color: grey;
+  background: none;
+  margin: 22px 0 0 0 ;
+}
+.close-button{
+  left: 250px;
+  position: relative;
 }
 </style>

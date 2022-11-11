@@ -17,7 +17,7 @@
         <img src="@/assets/svgs/checkmark.svg" alt="checkmark" />
       </div>
     </div>
-    <div class="es-container">
+    <div class="es-container sms">
       <div class="icon">
         <img src="@/assets/svgs/calling.svg" alt="calling-icon" />
       </div>
@@ -34,7 +34,7 @@
     <button class="send-link" @click="reset">Reset</button>
     <p class="resend">Didn’t receive link? <span>Resend</span></p>
   </div>
-  <InputResetEmail v-if="switchView" />
+  <InputResetEmail v-if="switchView" @close='close' />
 </template>
 
 <script>
@@ -49,6 +49,9 @@ export default {
     reset() {
       this.switchView = true;
     },
+    close() {
+      this.switchView = false
+    }
   },
   name: "ForgotPasswordView",
   components: {
@@ -169,5 +172,8 @@ export default {
 .resend span {
   color: #7557d3;
   cursor: pointer;
+}
+.sms:hover{
+  cursor:not-allowed
 }
 </style>
